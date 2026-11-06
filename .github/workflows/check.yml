@@ -1,0 +1,33 @@
+name: check
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+      - run: npm ci
+      # Шар даних, карта, ансамбль, глибинний шар, прецеденти.
+      - run: npm run check
+      # Продукт: один офлайн-файл dist/kamerton.html.
+      - run: npm run build
+      # Бандл у межах ліміту, без зовнішніх посилань, без схеми й SheetJS,
+      # без довгих тире в UI; сирці не змінені перерахунком.
+      - run: npm run check:invariants
+      - run: npm run check:raw-immutable
+      - uses: actions/upload-artifact@v4
+        with:
+          name: kamerton-html
+          path: app/dist/kamerton.html
+          retention-days: 14

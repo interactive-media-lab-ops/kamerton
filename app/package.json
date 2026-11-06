@@ -4,8 +4,12 @@
   "version": "0.1.0",
   "type": "module",
   "description": "КАМЕРТОН v0: щотижневик з памʼяттю. Дані з контракту тижня, дизайн-система Астролябія.",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "vite",
+    "verify": "npm run check && npm run build && npm run check:invariants && npm run check:raw-immutable",
     "build": "vite build",
     "preview": "vite preview",
     "check": "npm run check:contract && npm run check:corpus && npm run check:depth && npm run check:plots && npm run check:graviton && npm run check:new && npm run check:data && npm run check:map && npm run check:actors && npm run check:tween && npm run check:ensemble",

@@ -9,18 +9,26 @@
 
 ```
 app/                 React 18 + Vite застосунок
-  src/data/raw/      сирі тижневі контракти
-  src/data/derived/  похідні проєкції; їх перебудовують скрипти
+  src/data/raw/      сирі тижневі контракти; недоторканні для збірки
+  src/data/derived/  похідні проєкції; їх перебудовують скрипти (prebuild)
   src/data/registry/ реєстри ID; ручні рішення мають зберігатися
   src/data/corpus/   корпус прецедентів і глибинної розмітки
-  src/map/           canvas/SVG-карта та її геометрія
+  src/map/           canvas-карта та її геометрія
   src/panels/        React-панелі
   src/plots/         вкладка «СЮЖЕТИ» і зум-сцена
+  src/graviton/      шар ГРАВІТОН
+  src/play/          показ PLAY
   scripts/           білдери, міграції, перевірки та QA
   importer/          окремий інструмент редактора, не частина продукту
-astrolabe-ds/        «Астролябія» — локальна дизайн-система
-docs/                специфікації, схема контракту, інструкції
+astrolabe-ds/        «Астролябія», локальна дизайн-система
+docs/                чинні специфікації, схема контракту, інструкції
+  archive/           історичні документи: не backlog
+  pilots/            пілот F0 прецедентів і шаблон картки
+.github/workflows/   CI: check, build, інваріанти продукту
 ```
+
+Для участі в розробці: `CONTRIBUTING.md` (правила і старт за 10 хвилин),
+`HACKATHON.md` (що це за продукт, стан і відкриті задачі).
 
 ## Швидкий старт
 
@@ -30,6 +38,7 @@ docs/                специфікації, схема контракту, і
 npm ci                 # чисте встановлення за package-lock.json
 npm run check          # контракт, корпус, глибинний шар, карта, ансамбль
 npm run build          # збирає app/dist/kamerton.html (один офлайн-файл)
+npm run verify         # check + build + інваріанти продукту + недоторканість сирців
 npm run build:import   # окремо збирає importer у dist-import/
 npm run qa:shots       # базові browser-скріншоти
 npm run qa:plots       # живий QA вкладки «СЮЖЕТИ»
@@ -44,6 +53,6 @@ npm run qa:depth       # QA глибинного шару
 - `docs/DEVELOPMENT.md` — правила роботи з кодом і даними, інваріанти.
 - `docs/CODE_SPEC.md` — архітектура та звичайний цикл перевірки.
 - `docs/KAMERTON_SPEC_deep_layer.md` — специфікація глибинного шару.
-- `docs/kamerton.schema.json` — JSON-схема контракту тижня.
+- `docs/kamerton.schema.json` — JSON-схема контракту тижня (генерується `check:contract`).
 - `docs/import_cheatsheet.md` — як зібрати новий тиждень в імпортері.
 - `app/README.md` — як додати новий тиждень у дані вручну.
