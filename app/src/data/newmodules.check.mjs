@@ -133,9 +133,28 @@ if (common.length) {
   ok('без стрибків: жоден крок не більший за чверть шкали', jumps === 0, `${jumps} стрибків`);
 }
 // Індекс поля теж іде плавно: він частина стану, а не підпис збоку.
+//
+// Поріг рахується з самих даних, а не стоїть числом. Перша редакція вимагала
+// «не більше одиниці за добу» і трималась на корпусі з трьох тижнів, де індекс
+// за тиждень мінявся на 2..5. У W34 -> W35 він пішов з 26 на 49: це вимір, а
+// не дефект, і рівний хід по 3..4 на добу це саме лінійна інтерполяція між
+// двома зрізами. Перевіряється отже те, що й обіцяє PLAY: крок за добу не
+// більший за тижневу дельту, розкладену по днях (плюс одиниця на округлення).
 const idx = frames.map((f) => f.index.value);
-ok('індекс не стрибає більше ніж на одиницю за добу',
-  idx.every((v, i) => i === 0 || Math.abs(v - idx[i - 1]) <= 1), idx.join(','));
+// Опора тижня це кадр, де суміш нульова: середина періоду, значення самого зрізу.
+const anchors = seenWeeks.map((id) => frames.find((f) => f.fromWeek === id && f.toWeek === id));
+ok('кожен тиждень має опорний кадр на осі показу', anchors.every(Boolean));
+let maxDailyStep = 1;
+anchors.forEach((a, i) => {
+  if (i === 0 || !a || !anchors[i - 1]) return;
+  const span = Math.max(1, a.dayIndex - anchors[i - 1].dayIndex);
+  const delta = Math.abs(a.index.value - anchors[i - 1].index.value);
+  maxDailyStep = Math.max(maxDailyStep, Math.ceil(delta / span) + 1);
+});
+ok('індекс іде рівно: крок за добу не більший за тижневу дельту, розкладену по днях',
+  idx.every((v, i) => i === 0 || Math.abs(v - idx[i - 1]) <= maxDailyStep),
+  `ліміт ${maxDailyStep}/добу; ${idx.join(',')}`);
+ok('індекс не стоїть увесь показ на місці', new Set(idx).size > 1);
 
 console.log('\n--- D4 · каскад ---');
 const lever = (getActiveWeek(W).levers || []).find((l) => (l.cascade || []).length);

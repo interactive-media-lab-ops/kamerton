@@ -156,7 +156,7 @@ export default function PrecedentsMode({ card, corpus, caseTitle, onClose }) {
           <b>{analogs.length}</b>{' '}
           {plural(analogs.length, ['схожий випадок', 'схожі випадки', 'схожих випадків'])} в історії,{' '}
           {outcomePhrase}. Зараз ми на стадії <b>{PHASES[phaseIdx].label}</b>
-          {' '}— {phaseIdx + 1} з {PHASES.length}.
+          {' '}({phaseIdx + 1} з {PHASES.length}).
         </p>
 
         {(card.watch_signals || []).length > 0 && (
