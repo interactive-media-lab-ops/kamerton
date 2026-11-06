@@ -1,0 +1,44 @@
+[
+  {
+    "id": "case_lviv_tck",
+    "title": "Інцидент з ТЦК у Львові 08.07",
+    "opened": "2026-W28",
+    "first_seen": "2026-W30",
+    "host_topic": "t_tck"
+  },
+  {
+    "id": "case_225_425",
+    "title": "Звинувачення командування 225 і 425 штурмових полків у втраті особового складу",
+    "opened": "2026-W31",
+    "first_seen": "2026-W31",
+    "host_topic": "t_case_225"
+  },
+  {
+    "id": "case_szch_order",
+    "title": "Розпорядження про розшук СЗЧ до понеділка",
+    "opened": "2026-W31",
+    "first_seen": "2026-W31",
+    "host_topic": "t_tck"
+  },
+  {
+    "id": "case_svr_appointment",
+    "title": "Призначення в керівництві зовнішньої розвідки",
+    "opened": "2026-W32",
+    "first_seen": "2026-W32",
+    "host_topic": "t_appointment"
+  },
+  {
+    "id": "case_return_program",
+    "title": "Процедурні збої програми повернення після самовільного залишення частини",
+    "opened": "2026-W33",
+    "first_seen": "2026-W33",
+    "host_topic": "t_tck"
+  },
+  {
+    "id": "case_anticorr_pressure",
+    "title": "Корупційна хвиля довкола оточення влади і тиск на антикорупційні органи",
+    "opened": "2026-W34",
+    "first_seen": "2026-W34",
+    "host_topic": "t_anticorr"
+  }
+]

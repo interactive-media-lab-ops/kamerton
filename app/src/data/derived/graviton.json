@@ -1,0 +1,3145 @@
+{
+ "_note": "Породжується scripts/build-graviton.mjs з raw/weeks.json і derived/depth.json. Руками не редагується.",
+ "_method_note": "Метод походження величини один на величину, а не на запис: мапа methods нижче. Відсутній вимір це відсутнє поле, а не нуль.",
+ "methods": {
+  "mass": "виміряно: вага уваги тижня",
+  "resonance": "розмічено: глибинний шар",
+  "distance": "модель: проксі v1 з виміряних компонент",
+  "entropy": "виміряно: волатильність тону по треку",
+  "halfLife": "модель: експонента по треку спаду",
+  "inertia": "виміряно: тижні присутності",
+  "gravity": "звʼязки виміряно, сила модельна",
+  "pairs": "модель з виміряних компонент",
+  "residual": "модель: факт мінус прогноз звʼязків",
+  "motion": "виміряно: дельта до минулого тижня",
+  "force": "модель: маса × резонанс / дистанція²",
+  "phaseRisk": "модель: резонанс + дистанція + ріст ваги"
+ },
+ "weeks": {
+  "2026-W29": {
+   "bodies": [
+    {
+     "id": "t_hc_change",
+     "mass": {
+      "value": 0.8
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.5,
+      "components": {
+       "resonance": 0,
+       "aud": 1,
+       "duration": 1
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 1
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 1,
+      "inForce": 0,
+      "outForce": 1
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_gov_trust",
+     "mass": {
+      "value": 0.8
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.5,
+      "components": {
+       "resonance": 0,
+       "aud": 1,
+       "duration": 1
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 1
+     },
+     "gravity": {
+      "inDegree": 1,
+      "outDegree": 0,
+      "inForce": 1,
+      "outForce": 0
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_tck",
+     "mass": {
+      "value": 0.6
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.5,
+      "components": {
+       "resonance": 0,
+       "aud": 1,
+       "duration": 1
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 1
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 0,
+      "inForce": 0,
+      "outForce": 0
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_brotherhood",
+     "mass": {
+      "value": 0.4
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.7,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 1
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 1
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 0,
+      "inForce": 0,
+      "outForce": 0
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_tech",
+     "mass": {
+      "value": 0.4
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.5,
+      "components": {
+       "resonance": 0,
+       "aud": 1,
+       "duration": 1
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 1
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 0,
+      "inForce": 0,
+      "outForce": 0
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    }
+   ],
+   "pairs": [
+    {
+     "from": "t_hc_change",
+     "to": "t_gov_trust",
+     "force": 1,
+     "distance": 1.1
+    }
+   ]
+  },
+  "2026-W30": {
+   "bodies": [
+    {
+     "id": "t_hc_change",
+     "mass": {
+      "value": 1
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.5,
+      "components": {
+       "resonance": 0,
+       "aud": 1,
+       "duration": 1
+      }
+     },
+     "entropy": {
+      "volatility": 0.2,
+      "points": 2
+     },
+     "motion": {
+      "dTone": 0.4,
+      "dSalience": 1,
+      "isNew": false
+     },
+     "inertia": {
+      "weeksPresent": 2,
+      "weeksTotal": 2
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 0,
+      "inForce": 0,
+      "outForce": 0
+     },
+     "residual": {
+      "actual": 0.4,
+      "predicted": -0.2,
+      "value": 0.6
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none",
+     "verdicts": [
+      {
+       "id": "unexplained_motion",
+       "text": "рух не пояснено видимими звʼязками: можливий прихований драйвер",
+       "method": "модель"
+      }
+     ]
+    },
+    {
+     "id": "t_cardboard",
+     "mass": {
+      "value": 0.8
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.85,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.5
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 2
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 0,
+      "inForce": 0,
+      "outForce": 0
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_legitimacy",
+     "mass": {
+      "value": 0.6
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.85,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.5
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 2
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 0,
+      "inForce": 0,
+      "outForce": 0
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_tck",
+     "mass": {
+      "value": 0.6
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.5,
+      "components": {
+       "resonance": 0,
+       "aud": 1,
+       "duration": 1
+      }
+     },
+     "entropy": {
+      "volatility": 0.025,
+      "points": 2
+     },
+     "motion": {
+      "dTone": 0.05,
+      "dSalience": 0,
+      "isNew": false
+     },
+     "inertia": {
+      "weeksPresent": 2,
+      "weeksTotal": 2
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 0,
+      "inForce": 0,
+      "outForce": 0
+     },
+     "residual": {
+      "actual": 0.05,
+      "predicted": 0,
+      "value": 0.05
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_opk",
+     "mass": {
+      "value": 0.4
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.85,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.5
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 2
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 0,
+      "inForce": 0,
+      "outForce": 0
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    }
+   ],
+   "pairs": []
+  },
+  "2026-W31": {
+   "bodies": [
+    {
+     "id": "t_gov_trust",
+     "mass": {
+      "value": 0.8
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.8,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.667
+      }
+     },
+     "entropy": {
+      "volatility": 0,
+      "points": 2
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 2,
+      "weeksTotal": 3
+     },
+     "gravity": {
+      "inDegree": 3,
+      "outDegree": 0,
+      "inForce": 2.46,
+      "outForce": 0
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none",
+     "verdicts": [
+      {
+       "id": "attractor",
+       "text": "атрактор: стягує звʼязки поля (3 вхідних)",
+       "method": "модель"
+      }
+     ]
+    },
+    {
+     "id": "t_anticorr",
+     "mass": {
+      "value": 0.8
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.9,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.333
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 3
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 1,
+      "inForce": 0,
+      "outForce": 1
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_tech_update",
+     "mass": {
+      "value": 0.6
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.8,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.667
+      }
+     },
+     "entropy": {
+      "volatility": 0,
+      "points": 2
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 2,
+      "weeksTotal": 3
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 0,
+      "inForce": 0,
+      "outForce": 0
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_tck",
+     "mass": {
+      "value": 0.6
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.5,
+      "components": {
+       "resonance": 0,
+       "aud": 1,
+       "duration": 1
+      }
+     },
+     "entropy": {
+      "volatility": 0.024,
+      "points": 3
+     },
+     "motion": {
+      "dTone": 0,
+      "dSalience": 0,
+      "isNew": false
+     },
+     "inertia": {
+      "weeksPresent": 3,
+      "weeksTotal": 3
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 1,
+      "inForce": 0,
+      "outForce": 0.48
+     },
+     "residual": {
+      "actual": 0,
+      "predicted": 0,
+      "value": 0
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_gratitude",
+     "mass": {
+      "value": 0.6
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.9,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.333
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 3
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 0,
+      "inForce": 0,
+      "outForce": 0
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_case_225",
+     "mass": {
+      "value": 0.6
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.9,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.333
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 3
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 1,
+      "inForce": 0,
+      "outForce": 0.98
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    }
+   ],
+   "pairs": [
+    {
+     "from": "t_anticorr",
+     "to": "t_gov_trust",
+     "force": 1,
+     "distance": 0.4
+    },
+    {
+     "from": "t_tck",
+     "to": "t_gov_trust",
+     "force": 0.48,
+     "distance": 0.5
+    },
+    {
+     "from": "t_case_225",
+     "to": "t_gov_trust",
+     "force": 0.98,
+     "distance": 0.35
+    }
+   ]
+  },
+  "2026-W32": {
+   "bodies": [
+    {
+     "id": "t_gov_trust",
+     "mass": {
+      "value": 1
+     },
+     "resonance": {
+      "state": "single",
+      "plot": "fight_the_monster",
+      "draft": true
+     },
+     "distance": {
+      "value": 0.275,
+      "components": {
+       "resonance": 1,
+       "aud": 0,
+       "duration": 0.75
+      }
+     },
+     "entropy": {
+      "volatility": 0.047,
+      "points": 3
+     },
+     "motion": {
+      "dTone": -0.1,
+      "dSalience": 1,
+      "isNew": false
+     },
+     "inertia": {
+      "weeksPresent": 3,
+      "weeksTotal": 4
+     },
+     "gravity": {
+      "inDegree": 5,
+      "outDegree": 0,
+      "inForce": 2.512,
+      "outForce": 0
+     },
+     "residual": {
+      "actual": -0.1,
+      "predicted": 0.025,
+      "value": -0.125
+     },
+     "force": {
+      "value": 0.165
+     },
+     "phaseRisk": "high",
+     "verdicts": [
+      {
+       "id": "attractor",
+       "text": "атрактор: стягує звʼязки поля (5 вхідних)",
+       "method": "модель"
+      },
+      {
+       "id": "metanarrative_candidate",
+       "text": "кандидат у метанаратив: резонанс з архетипом, мала дистанція, вага росте",
+       "method": "модель"
+      },
+      {
+       "id": "unexplained_motion",
+       "text": "рух не пояснено видимими звʼязками: можливий прихований драйвер",
+       "method": "модель"
+      }
+     ]
+    },
+    {
+     "id": "t_anticorr",
+     "mass": {
+      "value": 1
+     },
+     "resonance": {
+      "state": "contested",
+      "plot": "betrayal_by_own",
+      "secondary": "fight_the_monster",
+      "draft": true
+     },
+     "distance": {
+      "value": 0.35,
+      "components": {
+       "resonance": 1,
+       "aud": 0,
+       "duration": 0.5
+      }
+     },
+     "entropy": {
+      "volatility": 0.025,
+      "points": 2
+     },
+     "motion": {
+      "dTone": -0.05,
+      "dSalience": 1,
+      "isNew": false
+     },
+     "inertia": {
+      "weeksPresent": 2,
+      "weeksTotal": 4
+     },
+     "gravity": {
+      "inDegree": 1,
+      "outDegree": 1,
+      "inForce": 1,
+      "outForce": 0.756
+     },
+     "residual": {
+      "actual": -0.05,
+      "predicted": -0.025,
+      "value": -0.025
+     },
+     "force": {
+      "value": 0.102
+     },
+     "phaseRisk": "high",
+     "verdicts": [
+      {
+       "id": "metanarrative_candidate",
+       "text": "кандидат у метанаратив: резонанс з архетипом, мала дистанція, вага росте",
+       "method": "модель"
+      }
+     ]
+    },
+    {
+     "id": "t_appointment",
+     "mass": {
+      "value": 0.8
+     },
+     "resonance": {
+      "state": "contested",
+      "plot": "fight_the_monster",
+      "secondary": "betrayal_by_own",
+      "draft": true
+     },
+     "distance": {
+      "value": 0.225,
+      "components": {
+       "resonance": 1,
+       "aud": 1,
+       "duration": 0.25
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 4
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 2,
+      "inForce": 0,
+      "outForce": 1.766
+     },
+     "force": {
+      "value": 0.198
+     },
+     "phaseRisk": "moderate"
+    },
+    {
+     "id": "t_tck",
+     "mass": {
+      "value": 0.8
+     },
+     "resonance": {
+      "state": "single",
+      "plot": "loss_unpaid_debt",
+      "draft": true
+     },
+     "distance": {
+      "value": 0.1,
+      "components": {
+       "resonance": 1,
+       "aud": 1,
+       "duration": 1
+      }
+     },
+     "entropy": {
+      "volatility": 0.041,
+      "points": 4
+     },
+     "motion": {
+      "dTone": -0.1,
+      "dSalience": 1,
+      "isNew": false
+     },
+     "inertia": {
+      "weeksPresent": 4,
+      "weeksTotal": 4
+     },
+     "gravity": {
+      "inDegree": 1,
+      "outDegree": 1,
+      "inForce": 0.8,
+      "outForce": 0.49
+     },
+     "residual": {
+      "actual": -0.1,
+      "predicted": -0.05,
+      "value": -0.05
+     },
+     "force": {
+      "value": 1
+     },
+     "phaseRisk": "high",
+     "verdicts": [
+      {
+       "id": "metanarrative_candidate",
+       "text": "кандидат у метанаратив: резонанс з архетипом, мала дистанція, вага росте",
+       "method": "модель"
+      }
+     ]
+    },
+    {
+     "id": "t_rift",
+     "mass": {
+      "value": 0.8
+     },
+     "resonance": {
+      "state": "single",
+      "plot": "sacrifice",
+      "draft": true
+     },
+     "distance": {
+      "value": 0.225,
+      "components": {
+       "resonance": 1,
+       "aud": 1,
+       "duration": 0.25
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 4
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 1,
+      "inForce": 0,
+      "outForce": 0.8
+     },
+     "force": {
+      "value": 0.198
+     },
+     "phaseRisk": "moderate"
+    },
+    {
+     "id": "t_airdefence",
+     "mass": {
+      "value": 0.6
+     },
+     "resonance": {
+      "state": "single",
+      "plot": "fight_the_monster",
+      "draft": true
+     },
+     "distance": {
+      "value": 0.225,
+      "components": {
+       "resonance": 1,
+       "aud": 1,
+       "duration": 0.25
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 4
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 1,
+      "inForce": 0,
+      "outForce": 0.255
+     },
+     "force": {
+      "value": 0.148
+     },
+     "phaseRisk": "moderate"
+    },
+    {
+     "id": "t_memory",
+     "mass": {
+      "value": 0.6
+     },
+     "resonance": {
+      "state": "cut",
+      "plot": null,
+      "draft": true
+     },
+     "distance": {
+      "value": 0.675,
+      "components": {
+       "resonance": 0.5,
+       "aud": 0,
+       "duration": 0.25
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 4
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 0,
+      "inForce": 0,
+      "outForce": 0
+     },
+     "force": {
+      "value": 0.004
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_volunteer",
+     "mass": {
+      "value": 0.6
+     },
+     "resonance": {
+      "state": "cut",
+      "plot": null,
+      "draft": true
+     },
+     "distance": {
+      "value": 0.675,
+      "components": {
+       "resonance": 0.5,
+       "aud": 0,
+       "duration": 0.25
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 4
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 1,
+      "inForce": 0,
+      "outForce": 0.281
+     },
+     "force": {
+      "value": 0.004
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_gratitude",
+     "mass": {
+      "value": 0.6
+     },
+     "resonance": {
+      "state": "cut",
+      "plot": null,
+      "draft": true
+     },
+     "distance": {
+      "value": 0.6,
+      "components": {
+       "resonance": 0.5,
+       "aud": 0,
+       "duration": 0.5
+      }
+     },
+     "entropy": {
+      "volatility": 0,
+      "points": 2
+     },
+     "motion": {
+      "dTone": 0,
+      "dSalience": 0,
+      "isNew": false
+     },
+     "inertia": {
+      "weeksPresent": 2,
+      "weeksTotal": 4
+     },
+     "gravity": {
+      "inDegree": 1,
+      "outDegree": 0,
+      "inForce": 0.281,
+      "outForce": 0
+     },
+     "residual": {
+      "actual": 0,
+      "predicted": 0,
+      "value": 0
+     },
+     "force": {
+      "value": 0.005
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_case_225",
+     "mass": {
+      "value": 0.4
+     },
+     "resonance": {
+      "state": "contested",
+      "plot": "sacrifice",
+      "secondary": "betrayal_by_own",
+      "draft": true
+     },
+     "distance": {
+      "value": 0.35,
+      "components": {
+       "resonance": 1,
+       "aud": 0,
+       "duration": 0.5
+      }
+     },
+     "entropy": {
+      "volatility": 0.025,
+      "points": 2
+     },
+     "motion": {
+      "dTone": 0.05,
+      "dSalience": -1,
+      "isNew": false
+     },
+     "inertia": {
+      "weeksPresent": 2,
+      "weeksTotal": 4
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 1,
+      "inForce": 0,
+      "outForce": 0.245
+     },
+     "residual": {
+      "actual": 0.05,
+      "predicted": -0.012,
+      "value": 0.062
+     },
+     "force": {
+      "value": 0.041
+     },
+     "phaseRisk": "moderate"
+    }
+   ],
+   "pairs": [
+    {
+     "from": "t_anticorr",
+     "to": "t_gov_trust",
+     "force": 0.756,
+     "distance": 0.45
+    },
+    {
+     "from": "t_appointment",
+     "to": "t_gov_trust",
+     "force": 0.766,
+     "distance": 0.4
+    },
+    {
+     "from": "t_appointment",
+     "to": "t_anticorr",
+     "force": 1,
+     "distance": 0.35
+    },
+    {
+     "from": "t_tck",
+     "to": "t_gov_trust",
+     "force": 0.49,
+     "distance": 0.5
+    },
+    {
+     "from": "t_rift",
+     "to": "t_tck",
+     "force": 0.8,
+     "distance": 0.35
+    },
+    {
+     "from": "t_airdefence",
+     "to": "t_gov_trust",
+     "force": 0.255,
+     "distance": 0.6
+    },
+    {
+     "from": "t_volunteer",
+     "to": "t_gratitude",
+     "force": 0.281,
+     "distance": 0.35
+    },
+    {
+     "from": "t_case_225",
+     "to": "t_gov_trust",
+     "force": 0.245,
+     "distance": 0.5
+    }
+   ]
+  },
+  "2026-W33": {
+   "bodies": [
+    {
+     "id": "t_tck",
+     "mass": {
+      "value": 1
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.7,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 1
+      }
+     },
+     "entropy": {
+      "volatility": 0.093,
+      "points": 5
+     },
+     "motion": {
+      "dTone": -0.15,
+      "dSalience": 1,
+      "isNew": false
+     },
+     "inertia": {
+      "weeksPresent": 5,
+      "weeksTotal": 5
+     },
+     "gravity": {
+      "inDegree": 2,
+      "outDegree": 0,
+      "inForce": 1.134,
+      "outForce": 0
+     },
+     "residual": {
+      "actual": -0.15,
+      "predicted": -0.011,
+      "value": -0.139
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none",
+     "verdicts": [
+      {
+       "id": "unexplained_motion",
+       "text": "рух не пояснено видимими звʼязками: можливий прихований драйвер",
+       "method": "модель"
+      }
+     ]
+    },
+    {
+     "id": "t_rehab",
+     "mass": {
+      "value": 1
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.94,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.2
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 5
+     },
+     "gravity": {
+      "inDegree": 1,
+      "outDegree": 1,
+      "inForce": 0.383,
+      "outForce": 1
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_legitimacy",
+     "mass": {
+      "value": 0.8
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.88,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.4
+      }
+     },
+     "entropy": {
+      "volatility": 0.05,
+      "points": 2
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 2,
+      "weeksTotal": 5
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 1,
+      "inForce": 0,
+      "outForce": 0.8
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_burnout",
+     "mass": {
+      "value": 0.8
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.94,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.2
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 5
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 1,
+      "inForce": 0,
+      "outForce": 0.766
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_anticorr",
+     "mass": {
+      "value": 0.8
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.82,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.6
+      }
+     },
+     "entropy": {
+      "volatility": 0.024,
+      "points": 3
+     },
+     "motion": {
+      "dTone": 0,
+      "dSalience": -1,
+      "isNew": false
+     },
+     "inertia": {
+      "weeksPresent": 3,
+      "weeksTotal": 5
+     },
+     "gravity": {
+      "inDegree": 1,
+      "outDegree": 1,
+      "inForce": 0.8,
+      "outForce": 0.6
+     },
+     "residual": {
+      "actual": 0,
+      "predicted": -0.023,
+      "value": 0.023
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_memory_ethics",
+     "mass": {
+      "value": 0.6
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.94,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.2
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 5
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 1,
+      "inForce": 0,
+      "outForce": 0.033
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_camp_scandal",
+     "mass": {
+      "value": 0.6
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.74,
+      "components": {
+       "resonance": 0,
+       "aud": 1,
+       "duration": 0.2
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 5
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 0,
+      "inForce": 0,
+      "outForce": 0
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_gov_trust",
+     "mass": {
+      "value": 0.6
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.76,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.8
+      }
+     },
+     "entropy": {
+      "volatility": 0.071,
+      "points": 4
+     },
+     "motion": {
+      "dTone": 0.2,
+      "dSalience": -2,
+      "isNew": false
+     },
+     "inertia": {
+      "weeksPresent": 4,
+      "weeksTotal": 5
+     },
+     "gravity": {
+      "inDegree": 1,
+      "outDegree": 0,
+      "inForce": 0.6,
+      "outForce": 0
+     },
+     "residual": {
+      "actual": 0.2,
+      "predicted": 0.041,
+      "value": 0.159
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none",
+     "verdicts": [
+      {
+       "id": "unexplained_motion",
+       "text": "рух не пояснено видимими звʼязками: можливий прихований драйвер",
+       "method": "модель"
+      }
+     ]
+    },
+    {
+     "id": "t_rift",
+     "mass": {
+      "value": 0.6
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.68,
+      "components": {
+       "resonance": 0,
+       "aud": 1,
+       "duration": 0.4
+      }
+     },
+     "entropy": {
+      "volatility": 0,
+      "points": 2
+     },
+     "motion": {
+      "dTone": 0,
+      "dSalience": -1,
+      "isNew": false
+     },
+     "inertia": {
+      "weeksPresent": 2,
+      "weeksTotal": 5
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 1,
+      "inForce": 0,
+      "outForce": 0.368
+     },
+     "residual": {
+      "actual": 0,
+      "predicted": -0.012,
+      "value": 0.012
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_heritage",
+     "mass": {
+      "value": 0.6
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.94,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.2
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 5
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 0,
+      "inForce": 0,
+      "outForce": 0
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_memory",
+     "mass": {
+      "value": 0.8
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.88,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.4
+      }
+     },
+     "entropy": {
+      "volatility": 0,
+      "points": 2
+     },
+     "motion": {
+      "dTone": 0,
+      "dSalience": 1,
+      "isNew": false
+     },
+     "inertia": {
+      "weeksPresent": 2,
+      "weeksTotal": 5
+     },
+     "gravity": {
+      "inDegree": 2,
+      "outDegree": 0,
+      "inForce": 1.033,
+      "outForce": 0
+     },
+     "residual": {
+      "actual": 0,
+      "predicted": 0,
+      "value": 0
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_energy",
+     "mass": {
+      "value": 0.4
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.74,
+      "components": {
+       "resonance": 0,
+       "aud": 1,
+       "duration": 0.2
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 5
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 0,
+      "inForce": 0,
+      "outForce": 0
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_diplomacy",
+     "mass": {
+      "value": 0.4
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.94,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.2
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 5
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 0,
+      "inForce": 0,
+      "outForce": 0
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_tech_update",
+     "mass": {
+      "value": 0.4
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.82,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.6
+      }
+     },
+     "entropy": {
+      "volatility": 0.047,
+      "points": 3
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 3,
+      "weeksTotal": 5
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 0,
+      "inForce": 0,
+      "outForce": 0
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_humanity",
+     "mass": {
+      "value": 0.4
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.94,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.2
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 5
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 1,
+      "inForce": 0,
+      "outForce": 0.383
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_hc_change",
+     "mass": {
+      "value": 0.2
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.82,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.6
+      }
+     },
+     "entropy": {
+      "volatility": 0.268,
+      "points": 3
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 3,
+      "weeksTotal": 5
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 0,
+      "inForce": 0,
+      "outForce": 0
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none",
+     "verdicts": [
+      {
+       "id": "high_entropy",
+       "text": "висока ентропія: тон нестабільний по 3 тижнях",
+       "method": "виміряно"
+      }
+     ]
+    }
+   ],
+   "pairs": [
+    {
+     "from": "t_rehab",
+     "to": "t_memory",
+     "force": 1,
+     "distance": 0.35
+    },
+    {
+     "from": "t_legitimacy",
+     "to": "t_anticorr",
+     "force": 0.8,
+     "distance": 0.35
+    },
+    {
+     "from": "t_burnout",
+     "to": "t_tck",
+     "force": 0.766,
+     "distance": 0.4
+    },
+    {
+     "from": "t_anticorr",
+     "to": "t_gov_trust",
+     "force": 0.6,
+     "distance": 0.35
+    },
+    {
+     "from": "t_memory_ethics",
+     "to": "t_memory",
+     "force": 0.033,
+     "distance": 1.5
+    },
+    {
+     "from": "t_rift",
+     "to": "t_tck",
+     "force": 0.368,
+     "distance": 0.5
+    },
+    {
+     "from": "t_humanity",
+     "to": "t_rehab",
+     "force": 0.383,
+     "distance": 0.4
+    }
+   ]
+  },
+  "2026-W34": {
+   "bodies": [
+    {
+     "id": "t_anticorr",
+     "mass": {
+      "value": 1
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.6,
+      "components": {
+       "resonance": 0,
+       "aud": 1,
+       "duration": 0.667
+      }
+     },
+     "entropy": {
+      "volatility": 0.075,
+      "points": 4
+     },
+     "motion": {
+      "dTone": -0.15,
+      "dSalience": 1,
+      "isNew": false
+     },
+     "inertia": {
+      "weeksPresent": 4,
+      "weeksTotal": 6
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 1,
+      "inForce": 0,
+      "outForce": 1
+     },
+     "residual": {
+      "actual": -0.15,
+      "predicted": -0.002,
+      "value": -0.148
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none",
+     "verdicts": [
+      {
+       "id": "unexplained_motion",
+       "text": "рух не пояснено видимими звʼязками: можливий прихований драйвер",
+       "method": "модель"
+      }
+     ]
+    },
+    {
+     "id": "t_gov_trust",
+     "mass": {
+      "value": 1
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.75,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.833
+      }
+     },
+     "entropy": {
+      "volatility": 0.063,
+      "points": 5
+     },
+     "motion": {
+      "dTone": -0.1,
+      "dSalience": 2,
+      "isNew": false
+     },
+     "inertia": {
+      "weeksPresent": 5,
+      "weeksTotal": 6
+     },
+     "gravity": {
+      "inDegree": 2,
+      "outDegree": 0,
+      "inForce": 1.228,
+      "outForce": 0
+     },
+     "residual": {
+      "actual": -0.1,
+      "predicted": -0.013,
+      "value": -0.087
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none",
+     "verdicts": [
+      {
+       "id": "unexplained_motion",
+       "text": "рух не пояснено видимими звʼязками: можливий прихований драйвер",
+       "method": "модель"
+      }
+     ]
+    },
+    {
+     "id": "t_tck",
+     "mass": {
+      "value": 0.8
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.7,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 1
+      }
+     },
+     "entropy": {
+      "volatility": 0.106,
+      "points": 6
+     },
+     "motion": {
+      "dTone": 0,
+      "dSalience": -1,
+      "isNew": false
+     },
+     "inertia": {
+      "weeksPresent": 6,
+      "weeksTotal": 6
+     },
+     "gravity": {
+      "inDegree": 2,
+      "outDegree": 0,
+      "inForce": 0.516,
+      "outForce": 0
+     },
+     "residual": {
+      "actual": 0,
+      "predicted": -0.001,
+      "value": 0.001
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_elections",
+     "mass": {
+      "value": 0.8
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.75,
+      "components": {
+       "resonance": 0,
+       "aud": 1,
+       "duration": 0.167
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 6
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 1,
+      "inForce": 0,
+      "outForce": 0.228
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_youth_recruit",
+     "mass": {
+      "value": 0.6
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.75,
+      "components": {
+       "resonance": 0,
+       "aud": 1,
+       "duration": 0.167
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 6
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 0,
+      "inForce": 0,
+      "outForce": 0
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_rift",
+     "mass": {
+      "value": 0.6
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.85,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.5
+      }
+     },
+     "entropy": {
+      "volatility": 0,
+      "points": 3
+     },
+     "halfLife": {
+      "weeks": 4.819,
+      "points": 3
+     },
+     "motion": {
+      "dTone": 0,
+      "dSalience": 0,
+      "isNew": false
+     },
+     "inertia": {
+      "weeksPresent": 3,
+      "weeksTotal": 6
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 1,
+      "inForce": 0,
+      "outForce": 0.307
+     },
+     "residual": {
+      "actual": 0,
+      "predicted": -0.05,
+      "value": 0.05
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_cmd_crisis",
+     "mass": {
+      "value": 0.6
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.95,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.167
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 6
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 0,
+      "inForce": 0,
+      "outForce": 0
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_hc_change",
+     "mass": {
+      "value": 0.6
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.8,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.667
+      }
+     },
+     "entropy": {
+      "volatility": 0.277,
+      "points": 4
+     },
+     "motion": {
+      "dTone": 0.65,
+      "dSalience": 2,
+      "isNew": false
+     },
+     "inertia": {
+      "weeksPresent": 4,
+      "weeksTotal": 6
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 0,
+      "inForce": 0,
+      "outForce": 0
+     },
+     "residual": {
+      "actual": 0.65,
+      "predicted": 0,
+      "value": 0.65
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none",
+     "verdicts": [
+      {
+       "id": "high_entropy",
+       "text": "висока ентропія: тон нестабільний по 4 тижнях",
+       "method": "виміряно"
+      },
+      {
+       "id": "unexplained_motion",
+       "text": "рух не пояснено видимими звʼязками: можливий прихований драйвер",
+       "method": "модель"
+      }
+     ]
+    },
+    {
+     "id": "t_decolonization",
+     "mass": {
+      "value": 0.4
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.95,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.167
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 6
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 0,
+      "inForce": 0,
+      "outForce": 0
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_eu_sabotage",
+     "mass": {
+      "value": 0.4
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.95,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.167
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 6
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 0,
+      "inForce": 0,
+      "outForce": 0
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_peace_capitulation",
+     "mass": {
+      "value": 0.4
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.95,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.167
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 6
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 0,
+      "inForce": 0,
+      "outForce": 0
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_burnout",
+     "mass": {
+      "value": 0.2
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.9,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.333
+      }
+     },
+     "entropy": {
+      "volatility": 0.025,
+      "points": 2
+     },
+     "motion": {
+      "dTone": 0.05,
+      "dSalience": -3,
+      "isNew": false
+     },
+     "inertia": {
+      "weeksPresent": 2,
+      "weeksTotal": 6
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 1,
+      "inForce": 0,
+      "outForce": 0.209
+     },
+     "residual": {
+      "actual": 0.05,
+      "predicted": 0.025,
+      "value": 0.025
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    }
+   ],
+   "pairs": [
+    {
+     "from": "t_anticorr",
+     "to": "t_gov_trust",
+     "force": 1,
+     "distance": 0.4
+    },
+    {
+     "from": "t_elections",
+     "to": "t_gov_trust",
+     "force": 0.228,
+     "distance": 0.75
+    },
+    {
+     "from": "t_rift",
+     "to": "t_tck",
+     "force": 0.307,
+     "distance": 0.5
+    },
+    {
+     "from": "t_burnout",
+     "to": "t_tck",
+     "force": 0.209,
+     "distance": 0.35
+    }
+   ]
+  },
+  "2026-W35": {
+   "bodies": [
+    {
+     "id": "t_anticorr",
+     "mass": {
+      "value": 1
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.586,
+      "components": {
+       "resonance": 0,
+       "aud": 1,
+       "duration": 0.714
+      }
+     },
+     "entropy": {
+      "volatility": 0.073,
+      "points": 5
+     },
+     "motion": {
+      "dTone": 0.05,
+      "dSalience": 0,
+      "isNew": false
+     },
+     "inertia": {
+      "weeksPresent": 5,
+      "weeksTotal": 7
+     },
+     "gravity": {
+      "inDegree": 1,
+      "outDegree": 0,
+      "inForce": 0.588,
+      "outForce": 0
+     },
+     "residual": {
+      "actual": 0.05,
+      "predicted": 0.025,
+      "value": 0.025
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_tck",
+     "mass": {
+      "value": 1
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.5,
+      "components": {
+       "resonance": 0,
+       "aud": 1,
+       "duration": 1
+      }
+     },
+     "entropy": {
+      "volatility": 0.11,
+      "points": 7
+     },
+     "motion": {
+      "dTone": 0,
+      "dSalience": 1,
+      "isNew": false
+     },
+     "inertia": {
+      "weeksPresent": 7,
+      "weeksTotal": 7
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 1,
+      "inForce": 0,
+      "outForce": 0.356
+     },
+     "residual": {
+      "actual": 0,
+      "predicted": 0.025,
+      "value": -0.025
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_identity",
+     "mass": {
+      "value": 1
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.957,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.143
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 7
+     },
+     "gravity": {
+      "inDegree": 1,
+      "outDegree": 0,
+      "inForce": 1,
+      "outForce": 0
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_volunteer",
+     "mass": {
+      "value": 1
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.914,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.286
+      }
+     },
+     "entropy": {
+      "volatility": 0.1,
+      "points": 2
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 2,
+      "weeksTotal": 7
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 1,
+      "inForce": 0,
+      "outForce": 1
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_rift",
+     "mass": {
+      "value": 0.8
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.829,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.571
+      }
+     },
+     "entropy": {
+      "volatility": 0.022,
+      "points": 4
+     },
+     "motion": {
+      "dTone": -0.05,
+      "dSalience": 1,
+      "isNew": false
+     },
+     "inertia": {
+      "weeksPresent": 4,
+      "weeksTotal": 7
+     },
+     "gravity": {
+      "inDegree": 1,
+      "outDegree": 0,
+      "inForce": 0.356,
+      "outForce": 0
+     },
+     "residual": {
+      "actual": -0.05,
+      "predicted": -0.05,
+      "value": 0
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_legitimacy",
+     "mass": {
+      "value": 0.8
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.871,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.429
+      }
+     },
+     "entropy": {
+      "volatility": 0.047,
+      "points": 3
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 3,
+      "weeksTotal": 7
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 1,
+      "inForce": 0,
+      "outForce": 0.588
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_symbols",
+     "mass": {
+      "value": 0.8
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.957,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.143
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 7
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 0,
+      "inForce": 0,
+      "outForce": 0
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_law_pressure",
+     "mass": {
+      "value": 0.6
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.957,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.143
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 7
+     },
+     "gravity": {
+      "inDegree": 1,
+      "outDegree": 0,
+      "inForce": 0.135,
+      "outForce": 0
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_memory",
+     "mass": {
+      "value": 0.6
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.871,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.429
+      }
+     },
+     "entropy": {
+      "volatility": 0,
+      "points": 3
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 3,
+      "weeksTotal": 7
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 0,
+      "inForce": 0,
+      "outForce": 0
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_resilience",
+     "mass": {
+      "value": 0.6
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.957,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.143
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 7
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 0,
+      "inForce": 0,
+      "outForce": 0
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_cities",
+     "mass": {
+      "value": 0.6
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.957,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.143
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 7
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 0,
+      "inForce": 0,
+      "outForce": 0
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_budget_populism",
+     "mass": {
+      "value": 0.4
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.957,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.143
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 7
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 0,
+      "inForce": 0,
+      "outForce": 0
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_vet_welfare",
+     "mass": {
+      "value": 0.4
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.957,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.143
+      }
+     },
+     "motion": {
+      "dTone": null,
+      "dSalience": null,
+      "isNew": true
+     },
+     "inertia": {
+      "weeksPresent": 1,
+      "weeksTotal": 7
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 1,
+      "inForce": 0,
+      "outForce": 0.135
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    },
+    {
+     "id": "t_decolonization",
+     "mass": {
+      "value": 0.4
+     },
+     "resonance": {
+      "state": "none",
+      "plot": null,
+      "draft": false
+     },
+     "distance": {
+      "value": 0.914,
+      "components": {
+       "resonance": 0,
+       "aud": 0,
+       "duration": 0.286
+      }
+     },
+     "entropy": {
+      "volatility": 0,
+      "points": 2
+     },
+     "motion": {
+      "dTone": 0,
+      "dSalience": 0,
+      "isNew": false
+     },
+     "inertia": {
+      "weeksPresent": 2,
+      "weeksTotal": 7
+     },
+     "gravity": {
+      "inDegree": 0,
+      "outDegree": 0,
+      "inForce": 0,
+      "outForce": 0
+     },
+     "residual": {
+      "actual": 0,
+      "predicted": 0,
+      "value": 0
+     },
+     "force": {
+      "value": 0
+     },
+     "phaseRisk": "none"
+    }
+   ],
+   "pairs": [
+    {
+     "from": "t_tck",
+     "to": "t_rift",
+     "force": 0.356,
+     "distance": 0.45
+    },
+    {
+     "from": "t_volunteer",
+     "to": "t_identity",
+     "force": 1,
+     "distance": 0.3
+    },
+    {
+     "from": "t_legitimacy",
+     "to": "t_anticorr",
+     "force": 0.588,
+     "distance": 0.35
+    },
+    {
+     "from": "t_vet_welfare",
+     "to": "t_law_pressure",
+     "force": 0.135,
+     "distance": 0.4
+    }
+   ]
+  }
+ }
+}

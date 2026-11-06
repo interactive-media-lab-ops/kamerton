@@ -1,0 +1,514 @@
+{
+ "_note": "Породжується scripts/build-depth.mjs з corpus/depth. Руками не редагується: правки вносяться в корпус.",
+ "lenses": {
+  "plots": [
+   {
+    "id": "loss_unpaid_debt",
+    "label": "Втрата і несплачений борг"
+   },
+   {
+    "id": "betrayal_by_own",
+    "label": "Зрада своїми"
+   },
+   {
+    "id": "sacrifice",
+    "label": "Жертвопринесення (хтось платить за всіх)"
+   },
+   {
+    "id": "fight_the_monster",
+    "label": "Боротьба з чудовиськом/системою"
+   },
+   {
+    "id": "return_that_fails",
+    "label": "Повернення додому, яке не стається"
+   },
+   {
+    "id": "voice_from_below",
+    "label": "Голос знизу проти влади"
+   }
+  ],
+  "roles": [
+   {
+    "id": "hero",
+    "label": "Герой / Зраджений герой"
+   },
+   {
+    "id": "victim",
+    "label": "Жертва / Несправедлива жертва"
+   },
+   {
+    "id": "shadow",
+    "label": "Тінь (винуватець, «вони»)"
+   },
+   {
+    "id": "system",
+    "label": "Бездушна система (колективний антагоніст)"
+   },
+   {
+    "id": "sage",
+    "label": "Мудрець / Голос правди"
+   },
+   {
+    "id": "trickster",
+    "label": "Трикстер (той, хто ламає офіційну рамку, часто через сарказм)"
+   }
+  ],
+  "psychotypes": [
+   {
+    "id": "anxious_mobilised",
+    "label": "Тривожно-мобілізований"
+   },
+   {
+    "id": "rational_sceptic",
+    "label": "Раціонально-скептичний"
+   },
+   {
+    "id": "exhausted_apathetic",
+    "label": "Виснажений/апатичний"
+   },
+   {
+    "id": "aggressive_protest",
+    "label": "Агресивно-протестний"
+   },
+   {
+    "id": "loyal_trusting",
+    "label": "Лояльно-довірливий"
+   }
+  ]
+ },
+ "markups": [
+  {
+   "id": "dl_w32_case_225_425",
+   "case_id": "case_225_425",
+   "week": "2026-W32",
+   "status": "draft_for_alignment",
+   "plot": {
+    "primary": {
+     "id": "sacrifice"
+    },
+    "secondary": {
+     "id": "betrayal_by_own"
+    }
+   },
+   "roles": {
+    "items": [
+     {
+      "role_id": "victim",
+      "who": "особовий склад 225/425"
+     },
+     {
+      "role_id": "shadow",
+      "who": "командування полків"
+     }
+    ]
+   },
+   "psychotypes": {
+    "items": [
+     {
+      "id": "aggressive_protest"
+     },
+     {
+      "id": "rational_sceptic"
+     },
+     {
+      "id": "exhausted_apathetic"
+     }
+    ]
+   },
+   "how_to_speak": [
+    {
+     "psychotype_id": "rational_sceptic",
+     "text": "назвати стадію розслідування і дату наступного кроку"
+    },
+    {
+     "psychotype_id": "aggressive_protest",
+     "text": "визнати втрату іменовано, до пояснень про обставини"
+    }
+   ],
+   "what_to_avoid": [
+    "відповідати рівнем системи на іменовану претензію: цей зсув поле читає як ухилення",
+    "пояснювати втрату бойовою необхідністю раніше, ніж названо відповідального"
+   ]
+  },
+  {
+   "id": "dl_w32_case_lviv_tck",
+   "case_id": "case_lviv_tck",
+   "week": "2026-W32",
+   "status": "draft_for_alignment",
+   "plot": {
+    "primary": {
+     "id": "loss_unpaid_debt"
+    }
+   },
+   "roles": {
+    "items": [
+     {
+      "role_id": "victim",
+      "who": "цивільний учасник"
+     },
+     {
+      "role_id": "system",
+      "who": "ТЦК"
+     }
+    ]
+   },
+   "psychotypes": {
+    "items": [
+     {
+      "id": "aggressive_protest"
+     },
+     {
+      "id": "exhausted_apathetic"
+     }
+    ]
+   },
+   "how_to_speak": [
+    {
+     "psychotype_id": "aggressive_protest",
+     "text": "визнати чотири тижні без відповіді і назвати строк, коли вона буде"
+    },
+    {
+     "psychotype_id": "exhausted_apathetic",
+     "text": "один короткий факт про наслідок, без повернення до хронології"
+    }
+   ],
+   "what_to_avoid": [
+    "тлумачити тишу як закриття питання: борг не сплачений, він перестав озвучуватись",
+    "пояснювати дії учасника: на ролі жертви це читається як виправдання кривдника"
+   ]
+  },
+  {
+   "id": "dl_w32_case_szch_order",
+   "case_id": "case_szch_order",
+   "week": "2026-W32",
+   "status": "draft_for_alignment",
+   "plot": {
+    "cut": true,
+    "reason": "реакції поля немає: розпорядження не отримало видимого продовження в дискурсі тижня"
+   },
+   "roles": {
+    "cut": true,
+    "reason": "аудиторія ролей не призначила"
+   },
+   "psychotypes": {
+    "cut": true,
+    "reason": "реакції, яку можна розшарувати на кластери, немає"
+   },
+   "how_to_speak": [],
+   "what_to_avoid": []
+  },
+  {
+   "id": "dl_w32_t_airdefence",
+   "topic_id": "t_airdefence",
+   "week": "2026-W32",
+   "status": "draft_for_alignment",
+   "plot": {
+    "primary": {
+     "id": "fight_the_monster"
+    }
+   },
+   "roles": {
+    "items": [
+     {
+      "role_id": "system",
+      "who": "керівництво програм"
+     }
+    ]
+   },
+   "psychotypes": {
+    "items": [
+     {
+      "id": "anxious_mobilised"
+     },
+     {
+      "id": "rational_sceptic"
+     }
+    ]
+   },
+   "how_to_speak": [
+    {
+     "psychotype_id": "anxious_mobilised",
+     "text": "структура і крок: що робити зараз, а не оцінка загрози"
+    },
+    {
+     "psychotype_id": "rational_sceptic",
+     "text": "визнати відставання програми числом і строком"
+    }
+   ],
+   "what_to_avoid": [
+    "пояснювати дефіцит виключно партнерами: поле вже читає це як провал управління",
+    "загальні слова про стійкість без жодної цифри"
+   ]
+  },
+  {
+   "id": "dl_w32_t_anticorr",
+   "topic_id": "t_anticorr",
+   "week": "2026-W32",
+   "status": "draft_for_alignment",
+   "plot": {
+    "primary": {
+     "id": "betrayal_by_own"
+    },
+    "secondary": {
+     "id": "fight_the_monster"
+    }
+   },
+   "roles": {
+    "items": [
+     {
+      "role_id": "shadow",
+      "who": "фігуранти справи"
+     },
+     {
+      "role_id": "system",
+      "who": "держуправління"
+     }
+    ]
+   },
+   "psychotypes": {
+    "items": [
+     {
+      "id": "rational_sceptic"
+     },
+     {
+      "id": "aggressive_protest"
+     }
+    ]
+   },
+   "how_to_speak": [
+    {
+     "psychotype_id": "rational_sceptic",
+     "text": "цифри і стадія справи: суми, строки, хто відсторонений"
+    },
+    {
+     "psychotype_id": "aggressive_protest",
+     "text": "назвати ім'я і посаду, а не орган"
+    }
+   ],
+   "what_to_avoid": [
+    "порівнювати з тим, як було раніше: це читається як виправдання",
+    "згадувати війну як причину складнощів у тій самій заяві"
+   ]
+  },
+  {
+   "id": "dl_w32_t_appointment",
+   "topic_id": "t_appointment",
+   "week": "2026-W32",
+   "status": "draft_for_alignment",
+   "plot": {
+    "primary": {
+     "id": "fight_the_monster"
+    },
+    "secondary": {
+     "id": "betrayal_by_own"
+    }
+   },
+   "roles": {
+    "items": [
+     {
+      "role_id": "system",
+      "who": "кадрова політика"
+     },
+     {
+      "role_id": "victim",
+      "who": "корпус професіоналів"
+     }
+    ]
+   },
+   "psychotypes": {
+    "items": [
+     {
+      "id": "rational_sceptic"
+     },
+     {
+      "id": "aggressive_protest"
+     }
+    ]
+   },
+   "how_to_speak": [
+    {
+     "psychotype_id": "rational_sceptic",
+     "text": "назвати критерій добору на цю посаду і хто його застосував"
+    },
+    {
+     "psychotype_id": "aggressive_protest",
+     "text": "визнати, що питання до критеріїв законне, до пояснення самого призначення"
+    }
+   ],
+   "what_to_avoid": [
+    "захищати персону: поле сперечається не про неї, і захист підтвердить сюжет",
+    "мовчати до наступного призначення: доказ уже зарахований"
+   ]
+  },
+  {
+   "id": "dl_w32_t_gov_trust",
+   "topic_id": "t_gov_trust",
+   "week": "2026-W32",
+   "status": "draft_for_alignment",
+   "plot": {
+    "primary": {
+     "id": "fight_the_monster"
+    }
+   },
+   "roles": {
+    "items": [
+     {
+      "role_id": "system",
+      "who": "вище керівництво"
+     }
+    ]
+   },
+   "psychotypes": {
+    "items": [
+     {
+      "id": "aggressive_protest"
+     },
+     {
+      "id": "exhausted_apathetic"
+     }
+    ]
+   },
+   "how_to_speak": [
+    {
+     "psychotype_id": "aggressive_protest",
+     "text": "одне рішення з іменем відповідального замість переліку намірів"
+    },
+    {
+     "psychotype_id": "exhausted_apathetic",
+     "text": "показати вже зроблене за тиждень, без обіцянок на майбутнє"
+    }
+   ],
+   "what_to_avoid": [
+    "звертатись до всієї вертикалі одразу: розмита мішень від цього тільки міцнішає",
+    "заклики до згуртування: на цьому кластері вони читаються як шум"
+   ]
+  },
+  {
+   "id": "dl_w32_t_gratitude",
+   "topic_id": "t_gratitude",
+   "week": "2026-W32",
+   "status": "draft_for_alignment",
+   "plot": {
+    "cut": true,
+    "reason": "у довіднику v1 немає позиції для конструктивного наративу"
+   },
+   "roles": {
+    "cut": true,
+    "reason": "аудиторія ролей не призначає: немає ні антагоніста, ні того, кого захищають"
+   },
+   "psychotypes": {
+    "cut": true,
+    "reason": "кластери довідника описують реакцію на загрозу, а не тривке ставлення"
+   },
+   "how_to_speak": [],
+   "what_to_avoid": []
+  },
+  {
+   "id": "dl_w32_t_memory",
+   "topic_id": "t_memory",
+   "week": "2026-W32",
+   "status": "draft_for_alignment",
+   "plot": {
+    "cut": true,
+    "reason": "у довіднику v1 немає позиції для конструктивного наративу"
+   },
+   "roles": {
+    "items": [
+     {
+      "role_id": "hero",
+      "who": "побратими"
+     }
+    ]
+   },
+   "psychotypes": {
+    "cut": true,
+    "reason": "кластери довідника описують реакцію на загрозу, а не на спільну цінність"
+   },
+   "how_to_speak": [
+    {
+     "text": "не входити в тему інституційним голосом: тут говорять свідки, а не сторони"
+    }
+   ],
+   "what_to_avoid": [
+    "використовувати памʼять як аргумент у суперечці про довіру до керівництва"
+   ]
+  },
+  {
+   "id": "dl_w32_t_rift",
+   "topic_id": "t_rift",
+   "week": "2026-W32",
+   "status": "draft_for_alignment",
+   "plot": {
+    "primary": {
+     "id": "sacrifice"
+    }
+   },
+   "roles": {
+    "items": [
+     {
+      "role_id": "victim",
+      "who": "ті, хто на фронті"
+     },
+     {
+      "role_id": "shadow",
+      "who": "тил"
+     }
+    ]
+   },
+   "psychotypes": {
+    "items": [
+     {
+      "id": "aggressive_protest"
+     },
+     {
+      "id": "exhausted_apathetic"
+     }
+    ]
+   },
+   "how_to_speak": [
+    {
+     "psychotype_id": "aggressive_protest",
+     "text": "говорити про рівність примусу конкретними правилами, а не про єдність"
+    },
+    {
+     "psychotype_id": "exhausted_apathetic",
+     "text": "побутова користь замість символіки: що саме змінилось для того, хто служить"
+    }
+   ],
+   "what_to_avoid": [
+    "риторика «ми всі воюємо»: вона стирає саме ту нерівність, яку поле і фіксує",
+    "звертатись до тилу і фронту однаковим текстом"
+   ]
+  },
+  {
+   "id": "dl_w32_t_volunteer",
+   "topic_id": "t_volunteer",
+   "week": "2026-W32",
+   "status": "draft_for_alignment",
+   "plot": {
+    "cut": true,
+    "reason": "у довіднику v1 немає позиції для конструктивного наративу"
+   },
+   "roles": {
+    "items": [
+     {
+      "role_id": "hero",
+      "who": "волонтери"
+     }
+    ]
+   },
+   "psychotypes": {
+    "cut": true,
+    "reason": "кластери довідника описують реакцію на загрозу, а не форму участі"
+   },
+   "how_to_speak": [
+    {
+     "text": "показати конкретний канал участі раніше, ніж канал знайдеться сам"
+    }
+   ],
+   "what_to_avoid": [
+    "дякувати замість того, щоб дати дію: вдячність тут уже є, її надлишок знецінює"
+   ]
+  }
+ ]
+}

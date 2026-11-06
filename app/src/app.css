@@ -1,0 +1,2310 @@
+/* КАМЕРТОН · тільки розкладка десктопної моделі "карта це світ, інтерфейс це скло над ним".
+   Жодного власного кольору, радіуса, шрифта чи розміру тексту:
+   все, що видно оком, приходить з токенів Астролябії (var(--a-*)) і класів a-*.
+
+   Каркас: сітка на всю висоту вікна.
+     рядок 1  шапка
+     рядок 2  BLUF
+     рядок 3  сцена карти, забирає всю решту
+   Оверлеї (доки, легенда, перемикач шарів, вікна) живуть усередині сцени,
+   тому карта ніколи не тікає під шапку, а безпечна зона рахується від сцени. */
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--a-bg);
+  overflow: hidden;
+}
+
+#root { height: 100vh; }
+
+.k-app {
+  height: 100vh;
+  background: var(--a-bg);
+}
+
+/* ---------- заглушка для малих екранів ---------- */
+.k-gate {
+  display: none;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  padding: var(--a-s6);
+  text-align: center;
+}
+
+.k-gate__box { max-width: 420px; }
+
+/* ---------- каркас ---------- */
+.k-desk {
+  position: relative;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  overflow: hidden;
+}
+
+@media (max-width: 1099px) {
+  .k-gate { display: flex; }
+  .k-desk { display: none; }
+}
+
+/* ---------- рама: три колонки, карта завжди у своїй ----------
+   Панелі не плавають над картою і нічого не перекривають за побудовою:
+   вони займають власні колонки сітки, а карта міряє себе по своїй.
+   Тому механізму «карта посувається під панелі» більше немає. */
+.k-stage {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: var(--k-left-col) minmax(0, 1fr) var(--k-right-col);
+  gap: var(--a-s2);
+  padding: var(--a-s3);
+  /* Обидві бічні колонки за замовчуванням не існують: місце береться тільки
+     тим, кому є що показати в цьому шарі. */
+  --k-left-col: 0px;
+  --k-right-col: 0px;
+  --k-rail-w: 40px;
+  --k-left-w: 300px;
+  --k-right-w: 340px;
+}
+
+/* Панелі знову забирають собі місце, а не лягають поверх карти: читач має бачити
+   поле цілим, коли відкрив досьє. Стрибок при цьому не повертається, бо карта
+   тепер переїжджає на нову ширину твіном, як і при зміні тижня, а не телепортом.
+   Рух зорі й далі означає рух даних; рух панелі означає рух панелі, і воно видно.
+
+   Ширини колонок задаються чотирма незалежними модифікаторами, а не переліком
+   усіх сполучень. Причина не в стислості: перелік сполучень уже пропустив один
+   стан, і в шарі КОМПАС права колонка тримала 340 пікселів навіть після
+   закриття реєстру, тобто третина екрана лишалась порожньою. Тепер кожен бік
+   відповідає сам за себе, і забутого сполучення просто не існує. */
+.k-stage--lrail { --k-left-col: var(--k-rail-w); }
+.k-stage--left { --k-left-col: var(--k-left-w); }
+.k-stage--rrail { --k-right-col: var(--k-rail-w); }
+.k-stage--right { --k-right-col: var(--k-right-w); }
+
+.k-col {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.k-col--right:empty, .k-stage:not(.k-stage--right) .k-col--right { overflow: hidden; }
+
+/* Колонка карти віддає нижній рядок під HUD, тому легенда і перемикач шарів
+   теж нічого не накривають: у карти власний рядок сітки. */
+.k-col--map {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: var(--a-s2);
+}
+
+/* Три осередки: ліве добро / перемикач шарів / порожній противаг. Порожня
+   третя колонка не декорація — саме вона робить центр центром.
+   Доти HUD був плоским флексом, і перемикач центрувався `margin-inline:auto`,
+   тобто по середині ЗАЛИШКУ після легенди й тумблера. «ШАР КАРТИ» через це
+   стояв правіше центру карти, і зсув ще й гуляв: тумблер живе лише в шарі
+   ТЕМИ, тож на інших шарах група перестрибувала. */
+.k-hud {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: flex-end;
+  gap: var(--a-s3);
+}
+
+.k-hud__left {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--a-s3);
+  min-width: 0;
+}
+
+.k-hud__mid { justify-self: center; }
+
+/* Винятку для середніх екранів більше немає: панель ніколи не лягає поверх карти,
+   бо накрите поле читач сприймає як зникле, а не як прикрите. Коли місця обмаль,
+   карта звужується, а розкладка сама вирішує, чиї підписи згорнути в крапки:
+   це видима і оборотна втрата, на відміну від панелі, що просто щось затулила.
+   На зовсім вузьких екранах працює заглушка .k-gate. */
+@media (max-width: 1180px) {
+  .k-stage { --k-left-w: 260px; --k-right-w: 300px; }
+}
+
+/* ---------- шар 0: карта ---------- */
+.k-map-slot {
+  position: relative;
+  min-height: 0;
+}
+
+.k-map {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.k-map__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Тултіп несе повну назву теми, бо на полі більшість підписів тепер в один рядок.
+   Обрізати його трьома крапками означало б, що повної назви немає ніде на екрані. */
+.k-tip {
+  position: absolute;
+  transform: translate(-50%, -220%);
+  pointer-events: none;
+  white-space: normal;
+  max-width: 360px;
+  line-height: 1.35;
+  padding: var(--a-s1) var(--a-s2);
+  background: var(--a-bg-raised);
+  border: 1px solid var(--a-line);
+  box-shadow: inset 0 0 0 1px rgba(99, 230, 200, 0.14);
+  color: var(--a-text);
+  font-size: var(--a-fs-xs);
+  z-index: 12;
+}
+
+.k-tip__out { color: var(--a-text-dim); }
+
+/* ---------- шапка ---------- */
+/* Герой-цифра забрала собі помітну частину рядка, тому шапка тепер має право
+   переноситись, а не витісняти чіпи за край екрана. */
+.k-top {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--a-s3) var(--a-s4);
+  padding: var(--a-s2) var(--a-s3);
+  border-bottom: 1px solid var(--a-line-dim);
+  min-width: 0;
+}
+
+.k-top__spacer { flex: 1; }
+
+/* логотип: подвійне неонове світіння і повільне дихання */
+/* Назва стоїть в парі з герой-цифрою, тому й важить візуально так само: тонше
+   накреслення при більшому кеглі дає ту саму висоту знака, але не сперечається
+   з числом за увагу. Числу лишається glow, назві світіння тільки контурне. */
+.k-logo {
+  font-size: 44px;
+  font-weight: 300;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  color: var(--a-cyan);
+  white-space: nowrap;
+  text-shadow:
+    0 0 6px rgba(99, 230, 200, 0.55),
+    0 0 22px rgba(99, 230, 200, 0.28);
+  animation: k-breath 4s var(--a-ease) infinite;
+}
+
+@media (max-width: 1366px) {
+  .k-logo { font-size: 34px; }
+}
+
+@keyframes k-breath {
+  0%, 100% {
+    text-shadow:
+      0 0 6px rgba(99, 230, 200, 0.85),
+      0 0 18px rgba(99, 230, 200, 0.45);
+  }
+  50% {
+    text-shadow:
+      0 0 10px rgba(99, 230, 200, 1),
+      0 0 28px rgba(99, 230, 200, 0.7);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .k-logo { animation: none; }
+}
+
+/* ---------- камертон-індекс: єдина герой-цифра ---------- */
+/* Без рамки і без сусідів по кеглю: у застосунку рівно одне число має право
+   на такий розмір і таке світіння. Решта цифр живе у зрізі й у картках. */
+.k-hero {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--a-s4);
+  position: relative;
+}
+
+.k-hero__main {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 0 var(--a-s2) 0 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  color: inherit;
+  font-family: var(--a-mono);
+  text-align: left;
+}
+
+.k-hero__label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--a-text-dim);
+  white-space: nowrap;
+}
+
+.k-hero__num {
+  font-family: var(--a-mono);
+  font-size: 76px;
+  font-weight: 300;
+  line-height: 0.92;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+  letter-spacing: -0.02em;
+  /* те саме двошарове світіння, що в зір на карті: різке близьке і мʼяке далеке */
+  text-shadow:
+    0 0 8px var(--k-hero-glow),
+    0 0 34px color-mix(in srgb, var(--k-hero-glow) 55%, transparent);
+  animation: k-hero-breath 5s var(--a-ease) infinite;
+}
+
+.k-hero__main:hover .k-hero__num { filter: brightness(1.2); }
+
+@keyframes k-hero-breath {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.9; }
+}
+
+.k-hero__scale {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-width: 130px;
+  height: 3px;
+  margin-top: 6px;
+  background: linear-gradient(90deg, var(--a-destr), var(--a-text-dim) 50%, var(--a-constr));
+  opacity: 0.75;
+}
+
+.k-hero__tick, .k-hero__ghost {
+  position: absolute;
+  top: -3px;
+  width: 2px;
+  height: 9px;
+  transform: translateX(-1px);
+}
+.k-hero__ghost { background: var(--a-text-mut); opacity: 0.4; }
+
+.k-hero__side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  padding-bottom: 4px;
+  font-size: var(--a-fs-xs);
+}
+
+.k-hero__delta { font-size: var(--a-fs-s); letter-spacing: 0.04em; }
+.k-hero__delta.is-up { color: var(--a-constr); }
+.k-hero__delta.is-down { color: var(--a-destr); }
+.k-hero__delta.is-flat { color: var(--a-text-dim); }
+.k-hero__sigma { color: var(--a-text-dim); white-space: nowrap; }
+.k-hero__sigma b { color: var(--a-brass); font-weight: 400; }
+
+.k-hero__spark { stroke: var(--a-cyan); fill: var(--a-cyan); opacity: 0.7; }
+
+.k-hero__method {
+  position: absolute;
+  top: calc(100% + var(--a-s2));
+  left: 0;
+  z-index: 40;
+  width: 520px;
+  max-width: 80vw;
+  max-height: 60vh;
+  overflow: auto;
+  padding: var(--a-s3);
+  background: var(--a-bg-raised);
+  border: 1px solid var(--a-line);
+}
+
+.k-hero__formula {
+  color: var(--a-cyan);
+  font-size: var(--a-fs-s);
+  margin-bottom: var(--a-s2);
+}
+
+.k-hero__table { width: 100%; border-collapse: collapse; font-size: var(--a-fs-xs); margin-top: var(--a-s2); }
+.k-hero__table th { text-align: left; color: var(--a-text-dim); font-weight: 400; padding-bottom: 4px; }
+.k-hero__table td { padding: 3px 0; border-top: 1px solid var(--a-line-dim); }
+.k-hero__table td:nth-child(2), .k-hero__table th:nth-child(2),
+.k-hero__table td:nth-child(3), .k-hero__table th:nth-child(3) { text-align: right; width: 64px; }
+.k-hero__table tfoot td { color: var(--a-text-mut); border-top: 1px solid var(--a-line); }
+
+@media (prefers-reduced-motion: reduce) {
+  .k-hero__num { animation: none; }
+}
+
+@media (max-width: 1366px) {
+  .k-hero__num { font-size: 56px; }
+  .k-hero__scale { min-width: 96px; }
+}
+
+.k-weeks {
+  display: flex;
+  gap: var(--a-s1);
+  flex: none;
+}
+
+.k-weeks .a-btn {
+  flex-direction: column;
+  gap: 2px;
+  line-height: 1.2;
+  padding-left: var(--a-s3);
+  padding-right: var(--a-s3);
+}
+
+/* чіпи шапки однакової висоти з кнопками тижнів і без переносів */
+.k-epi {
+  display: flex;
+  align-items: center;
+  gap: var(--a-s3);
+  padding: 0 var(--a-s3);
+  height: 44px;
+  box-sizing: border-box;
+  flex: none;
+}
+
+/* двоповерховий чіп шапки: підпис і значення */
+.k-chip2 {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  white-space: nowrap;
+}
+
+.k-chip2__cap {
+  font-size: 9px;
+  letter-spacing: var(--a-track);
+  text-transform: uppercase;
+  color: var(--a-text-dim);
+}
+
+.k-chip2__val {
+  display: flex;
+  align-items: baseline;
+  gap: var(--a-s1);
+  font-size: var(--a-fs-xs);
+  color: var(--a-text-mut);
+}
+
+.k-epi__cell {
+  display: flex;
+  align-items: baseline;
+  gap: var(--a-s1);
+  font-size: var(--a-fs-xs);
+  color: var(--a-text-dim);
+  letter-spacing: var(--a-track);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.k-epi__num {
+  font-size: var(--a-fs-s);
+  font-weight: 700;
+  color: var(--a-text);
+}
+
+.k-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 3px;
+  font-size: var(--a-fs-l);
+  font-weight: 700;
+}
+
+.k-chip__dot { color: var(--a-text-dim); }
+
+/* ---------- плашка режиму: елемент шапки ---------- */
+.k-mode {
+  flex: none;
+  pointer-events: none;
+}
+
+/* Це readout, а не контрол: role="status" без обробника і з pointer-events:none.
+   Рамка і фон з дизайн-системи робили з нього точного двійника ghost-кнопки, ще
+   й у одному ряду з живою «?». Знімаємо саме афорданс кнопки, лишаючи великі
+   літери і колір як сигнал режиму. Пісочниці це не стосується: помаранчева
+   плашка МОДЕЛЮВАННЯ має кричати, бо попереджає про модельований стан. */
+.k-mode .a-mode--chronicle {
+  border: 0;
+  background: none;
+  padding: 6px 0;
+}
+
+/* ---------- BLUF-смуга ---------- */
+.k-bluf { padding: var(--a-s2) var(--a-s3) 0; }
+
+.k-bluf__panel {
+  padding-top: var(--a-s3);
+  padding-bottom: var(--a-s3);
+}
+
+.k-bluf__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: var(--a-s4);
+  align-items: stretch;
+}
+
+/* кожна клітинка має свій колір лівої рамки: загроза, можливість, рішення */
+.k-bluf__cell {
+  padding-left: var(--a-s3);
+  border-left: 3px solid var(--a-line);
+  min-width: 0;
+}
+
+.k-bluf__cell--threat { border-left-color: var(--a-destr); }
+.k-bluf__cell--opp { border-left-color: var(--a-constr); }
+.k-bluf__cell--decision { border-left-color: var(--a-warn); }
+
+.k-bluf__head {
+  font-size: var(--a-fs-xs);
+  letter-spacing: var(--a-track);
+  text-transform: uppercase;
+  color: var(--a-text-mut);
+}
+
+.k-bluf__text {
+  font-size: var(--a-fs-bluf);
+  line-height: 1.5;
+  color: var(--a-text);
+  margin: var(--a-s1) 0 0;
+}
+
+/* клітинка рішення: число велике, решта дрібно */
+.k-bluf__decision {
+  display: flex;
+  align-items: baseline;
+  gap: var(--a-s2);
+  margin: var(--a-s1) 0 0;
+}
+
+.k-bluf__count {
+  font-size: var(--a-fs-xl);
+  font-weight: 700;
+  color: var(--a-warn);
+  line-height: 1;
+}
+
+.k-bluf--sandbox .k-bluf__panel { border-bottom: 2px solid var(--a-brass); }
+
+/* ---------- згорнутий BLUF: один тонкий рядок ---------- */
+.k-bluf--slim { padding: 0 var(--a-s3); }
+
+.k-bluf__slim {
+  display: flex;
+  align-items: center;
+  gap: var(--a-s2);
+  height: 28px;
+  padding: 0 var(--a-s2);
+  border-bottom: 1px solid var(--a-line-dim);
+  background: linear-gradient(180deg, rgba(99, 230, 200, 0.04), transparent);
+}
+
+.k-bluf__slim-mark {
+  width: 3px;
+  height: 14px;
+  flex: 0 0 auto;
+  background: var(--a-destr);
+}
+
+.k-bluf--sandbox .k-bluf__slim-mark { background: var(--a-brass); }
+
+.k-bluf__slim-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: var(--a-fs-xs);
+  color: var(--a-text-mut);
+}
+
+.k-bluf__slim-btn {
+  flex: 0 0 auto;
+  background: none;
+  border: 0;
+  padding: 0;
+  font-family: var(--a-mono);
+  font-size: 9px;
+  letter-spacing: var(--a-track);
+  color: var(--a-text-dim);
+  cursor: pointer;
+}
+
+.k-bluf__slim-btn:hover { color: var(--a-cyan); }
+
+/* ---------- доки: тепер це вміст колонок, а не плаваючі панелі ---------- */
+.k-dock {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Панель приїжджає зі свого краю, і тільки потім проступає текст: спершу
+   зрозуміло, що зʼявилось і звідки, аж тоді є що читати. Ліва їде зліва,
+   права зі свого боку: панель, яка перелетіла б через усю карту, читалась би
+   як переїзд, а не як поява. */
+.k-dock--left { animation: k-dock-left 280ms var(--a-ease); }
+.k-dock--right { animation: k-dock-right 280ms var(--a-ease); }
+
+@keyframes k-dock-left {
+  from { opacity: 0; transform: translateX(-22px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes k-dock-right {
+  from { opacity: 0; transform: translateX(22px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* згортання: та сама дорога назад, панель їде у свій край разом з колонкою */
+.k-dock--left.k-dock--out { animation: k-dock-left 260ms var(--a-ease) reverse forwards; }
+.k-dock--right.k-dock--out { animation: k-dock-right 260ms var(--a-ease) reverse forwards; }
+.k-dock--out .k-dock__body { animation: none; }
+
+.k-win--out { animation: k-win-in 200ms var(--a-ease) reverse forwards; }
+.k-win--out .k-win__body { animation: none; }
+
+.k-objcard--out { animation: k-objcard-in 220ms var(--a-ease) reverse forwards; }
+.k-objcard--out .k-objcard__body { animation: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .k-dock--out,
+  .k-win--out,
+  .k-objcard--out { animation: none; opacity: 0; }
+}
+
+@keyframes k-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* вміст проступає після того, як панель стала на місце */
+.k-dock--left .k-dock__body,
+.k-dock--right .k-dock__body,
+.k-objcard__body,
+.k-win__body {
+  animation: k-body-in 240ms var(--a-ease) 220ms both;
+}
+
+@keyframes k-body-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* картка обʼєкта приїжджає звідти ж, звідки її відкрили: з лівого дока */
+.k-objcard { animation: k-objcard-in 280ms var(--a-ease); }
+
+@keyframes k-objcard-in {
+  from { opacity: 0; transform: translate(calc(-50% - 22px), -50%); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .k-dock--left,
+  .k-dock--right,
+  .k-objcard,
+  .k-dock--left .k-dock__body,
+  .k-dock--right .k-dock__body,
+  .k-objcard__body,
+  .k-win__body { animation: none; }
+}
+
+.k-dock--collapsed {
+  width: auto;
+  max-width: none;
+  bottom: auto;
+}
+
+.k-dock__body {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  flex: 1;
+  min-height: 0;
+  padding-right: var(--a-s2);
+}
+
+.k-dock__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--a-s2);
+  margin-bottom: var(--a-s3);
+}
+
+.k-dock > .a-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
+}
+
+/* трек теми в досьє */
+.k-track {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ---------- легенда: компактна панель, що розгортається вгору ---------- */
+.k-legend {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--a-s1);
+}
+
+.k-leg__box {
+  position: absolute;
+  bottom: calc(100% + var(--a-s2));
+  left: 0;
+  width: 360px;
+  z-index: 8;
+  animation: k-reveal-in 160ms var(--a-ease);
+}
+
+.k-leg__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--a-s2);
+}
+
+.k-leg__row {
+  display: flex;
+  align-items: center;
+  gap: var(--a-s2);
+}
+
+.k-leg__row--hint {
+  border-top: 1px solid var(--a-line-dim);
+  padding-top: var(--a-s2);
+}
+
+.k-leg__glyph { flex: 0 0 auto; }
+
+.k-leg__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--a-s1);
+  background: none;
+  border: 1px solid var(--a-line);
+  padding: 2px var(--a-s2);
+  font-family: var(--a-mono);
+  font-size: var(--a-fs-xs);
+  letter-spacing: var(--a-track);
+  color: var(--a-text-dim);
+  cursor: pointer;
+}
+
+.k-leg__btn:hover { color: var(--a-cyan); border-color: var(--a-cyan); }
+
+/* ---------- згорнутий ЗРІЗ: вузька вертикальна плашка на всю колонку ---------- */
+.k-rail {
+  width: 100%;
+  min-height: 132px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  letter-spacing: var(--a-track);
+  font-family: var(--a-mono);
+  font-size: var(--a-fs-xs);
+  font-weight: 700;
+  color: var(--a-text-mut);
+  background: var(--a-glass-bg);
+  -webkit-backdrop-filter: blur(var(--a-glass-blur)) saturate(var(--a-glass-sat));
+  backdrop-filter: blur(var(--a-glass-blur)) saturate(var(--a-glass-sat));
+  border: 1px solid var(--a-line);
+  cursor: pointer;
+  transition: color var(--a-t-state) var(--a-ease),
+    border-color var(--a-t-state) var(--a-ease);
+}
+
+.k-rail:hover {
+  color: var(--a-cyan);
+  border-color: var(--a-cyan);
+}
+
+/* чіп рахунку в режимі моделювання */
+.k-chip__model {
+  color: var(--a-warn);
+  font-weight: 700;
+}
+
+/* ---------- перемикач шарів: єдина навігація ---------- */
+.k-layers {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--a-s1);
+}
+
+.k-layers__row { display: flex; gap: var(--a-s1); }
+
+.k-layers__cap {
+  letter-spacing: var(--a-track);
+  text-transform: uppercase;
+}
+
+.k-hint {
+  pointer-events: none;
+  max-width: 340px;
+  margin-left: auto;
+  text-align: right;
+}
+
+/* ---------- плаваючі вікна ---------- */
+.k-win {
+  position: absolute;
+  /* висота вікна прибита до вьюпорта: нижній край ніколи не йде за екран */
+  max-height: min(62vh, calc(100% - 2 * var(--a-s3)));
+  display: flex;
+  /* коротке спливання з глибини: вікно приходить із того ж шару, що й карта */
+  animation: k-win-in 200ms var(--a-ease);
+}
+
+@keyframes k-win-in {
+  from { transform: scale(0.96); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .k-win { animation: none; }
+}
+
+.k-win > .a-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  width: 100%;
+}
+
+.k-win__head {
+  display: flex;
+  align-items: center;
+  gap: var(--a-s2);
+  margin-bottom: var(--a-s3);
+  cursor: move;
+  touch-action: none;
+}
+
+.k-win__body {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  min-height: 0;
+  padding-right: var(--a-s2);
+}
+
+/* ---------- ІНТРО ЯК У ФІЛЬМІ ----------
+   Кадр нуль: голе небо під розфокусом. Різкість приходить рівно тоді, коли
+   камера проходить крізь назву, тому фокус і проліт це одна подія. */
+.k-app--cin .k-map__canvas {
+  filter: blur(7px) brightness(0.45);
+  transition: filter 1400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.k-app--cin-sharp .k-map__canvas { filter: none; }
+
+/* до прольоту інтерфейсу не існує взагалі */
+.k-app--cin .k-top,
+.k-app--cin .k-bluf,
+.k-app--cin .k-col--left,
+.k-app--cin .k-col--right,
+.k-app--cin .k-hud,
+.k-app--cin .k-mode { opacity: 0; pointer-events: none; }
+
+.k-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.k-intro__center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--a-s3);
+  animation: k-intro-in 600ms var(--a-ease) both;
+}
+
+@keyframes k-intro-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Проліт: назва проходить повз глядача наскрізь. Прискорення до кінця і
+   зникнення лише в останній чверті, інакше вона встигає спинитись у кадрі
+   і розчинитись на місці, замість того щоб піти за спину. */
+.k-intro--fly .k-intro__center {
+  animation: k-intro-fly 1400ms cubic-bezier(0.55, 0, 0.85, 0.35) forwards;
+}
+
+@keyframes k-intro-fly {
+  0% { transform: scale(1); opacity: 1; }
+  70% { opacity: 1; }
+  100% { transform: scale(26); opacity: 0; }
+}
+
+/* підпис під назвою летить разом, але зникає раніше: він дрібний і в кадрі
+   на великому масштабі перетворився б на смугу */
+.k-intro--fly .k-intro__sub {
+  animation: k-intro-sub-out 500ms var(--a-ease) forwards;
+}
+
+@keyframes k-intro-sub-out {
+  to { opacity: 0; }
+}
+
+/* грубий тайтл: вага 800, помірний трекінг, чистий колір без світіння */
+.k-intro__word {
+  font-family: var(--a-mono);
+  font-size: clamp(34px, 6.2vw, 74px);
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-indent: 0.16em;
+  color: var(--a-text);
+}
+
+.k-intro__sub {
+  font-family: var(--a-mono);
+  font-size: var(--a-fs-s);
+  letter-spacing: var(--a-track);
+  color: var(--a-text-mut);
+}
+
+.k-intro__skip {
+  position: absolute;
+  bottom: var(--a-s6);
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  animation: k-intro-skip 400ms var(--a-ease) 800ms forwards;
+}
+
+@keyframes k-intro-skip { to { opacity: 0.45; } }
+
+.k-intro--calm .k-intro__center,
+.k-intro--calm .k-intro__skip { animation: none; opacity: 1; }
+
+/* панелі повертаються стагером 140ms і тільки після прольоту */
+.k-app--ui .k-top { animation: k-enter-fade 280ms var(--a-ease) both; }
+.k-app--ui .k-bluf { animation: k-enter-fade 280ms var(--a-ease) 140ms both; }
+.k-app--ui .k-col--left { animation: k-enter-left 280ms var(--a-ease) 280ms both; }
+.k-app--ui .k-hud { animation: k-enter-fade 280ms var(--a-ease) 420ms both; }
+
+@keyframes k-enter-fade {
+  from { opacity: 0; }
+}
+@keyframes k-enter-left {
+  from { opacity: 0; transform: translateX(-8px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .k-app--cin .k-map__canvas { filter: none; transition: none; }
+  .k-intro--fly .k-intro__center { animation: none; opacity: 0; }
+  .k-app--ui .k-top,
+  .k-app--ui .k-bluf,
+  .k-app--ui .k-col--left,
+  .k-app--ui .k-hud { animation: none; }
+}
+
+/* ---------- ABOUT ---------- */
+.k-about {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--a-s6);
+}
+
+.k-about__veil {
+  position: absolute;
+  inset: 0;
+  background: rgba(2, 8, 7, 0.72);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+
+.k-about__box {
+  position: relative;
+  width: min(560px, 100%);
+  max-height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  animation: k-win-in 220ms var(--a-ease);
+}
+
+.k-about__title {
+  font-size: var(--a-fs-num);
+  font-weight: 700;
+  letter-spacing: var(--a-track);
+  color: var(--a-cyan);
+  text-shadow:
+    0 0 6px rgba(99, 230, 200, 0.85),
+    0 0 18px rgba(99, 230, 200, 0.45);
+}
+
+.k-logo--btn {
+  background: none;
+  border: 0;
+  padding: 0;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .k-about__box { animation: none; }
+}
+
+/* кнопка-стрілка «повний текст» */
+.k-more {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--a-s1);
+  background: none;
+  border: 0;
+  padding: 0;
+  font-family: var(--a-mono);
+  font-size: var(--a-fs-xs);
+  letter-spacing: var(--a-track);
+  color: var(--a-text-dim);
+  cursor: pointer;
+}
+
+.k-more:hover { color: var(--a-cyan); }
+
+.k-more__arrow { transition: transform var(--a-t-state) var(--a-ease); }
+.k-more__arrow--up { transform: rotate(180deg); }
+
+/* ---------- рядок з історією на наведення ---------- */
+.k-reveal {
+  border-top: 1px solid var(--a-line-dim);
+  padding-top: var(--a-s2);
+}
+
+.k-reveal__head { cursor: pointer; }
+
+.k-reveal__row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--a-s2);
+}
+
+.k-reveal__text {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--a-fs-s);
+  line-height: 1.5;
+  color: var(--a-text);
+}
+
+.k-reveal--open .k-reveal__text { color: var(--a-cyan); }
+
+.k-reveal__side {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: baseline;
+  gap: var(--a-s2);
+}
+
+.k-reveal__tech {
+  font-size: 9px;
+  letter-spacing: var(--a-track);
+  opacity: 0.7;
+}
+
+.k-reveal__body {
+  margin-top: var(--a-s2);
+  padding-left: var(--a-s2);
+  animation: k-reveal-in 160ms var(--a-ease);
+}
+
+@keyframes k-reveal-in {
+  from { opacity: 0; transform: translateY(-3px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .k-reveal__body { animation: none; }
+}
+
+/* вертикальний мінітаймлайн історії */
+.k-timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 var(--a-s3);
+  border-left: 1px solid var(--a-line);
+  display: flex;
+  flex-direction: column;
+  gap: var(--a-s2);
+}
+
+.k-timeline__step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.k-timeline__step::before {
+  content: '';
+  position: absolute;
+  left: calc(-1 * var(--a-s3) - 3px);
+  top: 6px;
+  width: 5px;
+  height: 5px;
+  background: var(--a-cyan);
+  opacity: 0.7;
+}
+
+.k-timeline__label {
+  font-size: var(--a-fs-xs);
+  letter-spacing: var(--a-track);
+  text-transform: uppercase;
+  color: var(--a-text-dim);
+}
+
+.k-timeline__value {
+  font-size: var(--a-fs-s);
+  line-height: 1.5;
+  color: var(--a-text-mut);
+}
+
+/* ---------- поповер тега: будь-який тег пояснює себе ---------- */
+.k-app .a-tag {
+  cursor: pointer;
+  border-bottom-style: dotted;
+}
+
+.k-tagpop {
+  position: fixed;
+  z-index: 60;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--a-s2);
+  padding: var(--a-s3);
+  background: var(--a-bg-raised);
+  border: 1px solid var(--a-line);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(99, 230, 200, 0.12);
+  animation: k-win-in 140ms var(--a-ease);
+}
+
+.k-tagpop__term .a-tag { cursor: default; }
+
+/* верх поповера це контекст, низ словник: тому різна вага і різний колір */
+.k-tagpop__ctx {
+  font-size: var(--a-fs-s);
+  line-height: 1.55;
+  color: var(--a-text);
+}
+
+.k-tagpop__rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.k-tagpop__rows b { color: var(--a-cyan); font-weight: 700; }
+
+.k-tagpop__def {
+  margin: 0;
+  padding-top: var(--a-s2);
+  border-top: 1px solid var(--a-line-dim);
+  font-size: var(--a-fs-xs);
+  line-height: 1.5;
+  color: var(--a-text-dim);
+}
+
+/* клікабельне посилання на першоджерело */
+[data-info='san'] {
+  cursor: pointer;
+  border-bottom: 1px dotted currentColor;
+}
+
+/* ---------- картка обʼєкта ---------- */
+.k-objcard {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 40;
+  width: 460px;
+  max-height: calc(100% - 2 * var(--a-s6));
+  display: flex;
+}
+
+.k-objcard > .a-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  width: 100%;
+}
+
+.k-objcard__body {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  min-height: 0;
+  padding-right: var(--a-s2);
+}
+
+/* ---------- дрібні стани ---------- */
+.k-pick {
+  cursor: pointer;
+  border-left: 2px solid transparent;
+  padding-left: var(--a-s2);
+  transition: border-color var(--a-t-state) var(--a-ease);
+}
+
+.k-pick:hover { border-left-color: var(--a-line); }
+.k-pick.is-on { border-left-color: var(--a-cyan); }
+
+.k-focus {
+  box-shadow: inset 2px 0 0 var(--a-cyan);
+  padding-left: var(--a-s2);
+}
+
+.k-verdict {
+  font-size: var(--a-fs-xs);
+  font-weight: 700;
+  letter-spacing: var(--a-track);
+}
+
+.k-verdict--hit { color: var(--a-constr); }
+.k-verdict--miss { color: var(--a-destr); }
+.k-verdict--partial { color: var(--a-cyan); }
+.k-verdict--open { color: var(--a-warn); }
+
+/* ---------- плашка першого входу ---------- */
+.k-onboard {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.k-onboard__box { max-width: 520px; }
+
+/* ---------- примітиви ---------- */
+.k-stack { display: flex; flex-direction: column; gap: var(--a-s3); }
+.k-stack--tight { gap: var(--a-s2); }
+
+/* ---------- щільні рядки досьє ----------
+   Мітка ліворуч тьмяна, значення праворуч табличними цифрами. Довідкові
+   секції читаються як таблиця, а не як абзаци: очі йдуть по одній колонці. */
+.k-rows {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: var(--a-s2);
+  row-gap: 2px;
+  margin: 0;
+  align-items: baseline;
+}
+
+.k-rows dt {
+  font-size: var(--a-fs-xs);
+  line-height: 1.5;
+  color: var(--a-text-dim);
+  white-space: nowrap;
+}
+
+.k-rows dd {
+  margin: 0;
+  text-align: right;
+  font-size: var(--a-fs-s);
+  line-height: 1.5;
+  color: var(--a-text-mut);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.k-rows dd b { color: var(--a-text); font-weight: 700; }
+.k-rows dd .a-delta, .k-rows dd .a-tag { vertical-align: baseline; }
+
+/* Щільний режим: відступи вдвічі менші, розділювачі тонші. */
+.k-dense .k-stack { gap: var(--a-s2); }
+.k-dense .k-stack--tight { gap: var(--a-s1); }
+.k-dense .k-divider {
+  margin-top: var(--a-s2);
+  padding-top: var(--a-s2);
+  border-top-color: var(--a-line-dim);
+  opacity: 1;
+}
+.k-dense .k-dock__head { margin-bottom: var(--a-s2); }
+.k-row { display: flex; align-items: center; gap: var(--a-s2); flex-wrap: wrap; }
+.k-row--split { justify-content: space-between; }
+.k-divider { border-top: 1px solid var(--a-line-dim); margin-top: var(--a-s3); padding-top: var(--a-s3); }
+
+/* C2: проза на два пункти більша за інтерфейсний кегль і без розрядки.
+   .k-note лишається технічною міткою, тому і кегль, і моноширинність при ній. */
+.k-lead { font-size: var(--a-fs-prose); line-height: 1.65; color: var(--a-text); letter-spacing: 0; }
+.k-note { font-size: var(--a-fs-xs); line-height: 1.6; color: var(--a-text-dim); font-family: var(--a-mono); }
+.k-sub { font-size: var(--a-fs-prose-s); line-height: 1.65; color: var(--a-text-mut); letter-spacing: 0; }
+.k-label {
+  font-size: var(--a-fs-xs);
+  letter-spacing: var(--a-track);
+  text-transform: uppercase;
+  color: var(--a-text-mut);
+}
+
+.k-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--a-s3);
+}
+
+.k-pair__cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--a-s1);
+  min-width: 0;
+}
+
+.k-pair__num {
+  font-size: var(--a-fs-l);
+  font-weight: 700;
+  color: var(--a-cyan);
+}
+
+/* Застарілий якір лишається на екрані, але сам про себе каже, що вибув. */
+.k-faded {
+  opacity: 0.45;
+}
+
+.k-flag {
+  font-size: var(--a-fs-xs);
+  letter-spacing: var(--a-track);
+  text-transform: uppercase;
+  color: var(--a-destr);
+  border-left: 2px solid var(--a-destr);
+  padding-left: var(--a-s2);
+}
+
+
+/* ================= C9 · РЕЖИМ ПРОЕКТОРА =================
+   Вмикається класом .projector на корені, стан живе в localStorage.
+   Зал і проектор зʼїдають контраст і дрібний кегль, тому режим піднімає розмір,
+   підсилює контраст і прибирає все, що на проекції перетворюється на кашу:
+   скло, розмиття і сканлайни. Це не окремий скін: ті самі токени, інші значення. */
+.projector {
+  --a-fs-xs: 13px;
+  --a-fs-s: 15px;
+  --a-fs-m: 17px;
+  --a-fs-bluf: 18px;
+  --a-fs-l: 20px;
+  --a-fs-xl: 26px;
+  --a-fs-num: 34px;
+  --a-fs-prose: 19px;
+  --a-fs-prose-s: 18px;
+  --a-fs-map: 13px;
+  --a-fs-map-sub: 12px;
+  --a-glass-blur: 0px;
+  --a-glass-sat: 1;
+}
+
+/* вищий контраст: текст ближчий до чистого, приглушені відтінки підтягуються */
+.projector .k-sub { color: var(--a-text); }
+.projector .k-note { color: var(--a-text-mut); }
+
+/* скло на проекції не читається: підкладка стає щільною */
+.projector .a-panel,
+.projector .k-glass {
+  background: var(--a-bg-raised);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+/* сканлайни і розмиття на проекторі дають муар */
+.projector .k-scan::before,
+.projector .a-panel::before { content: none; }
+.projector .k-blur { filter: none; }
+
+/* ---------- C1 · блок ДАНІ ----------
+   Другий ряд шапки, згорнутий за замовчуванням. Тут живе все, що не потрібне
+   для першого висновку: лічильники тверджень, плашка режиму, глосарій,
+   проектор, маршрут читання. Шапка від цього тримає рівно чотири зони. */
+.k-data {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--a-s3);
+  padding: var(--a-s2) var(--a-s3);
+  border-bottom: 1px solid var(--a-line-dim);
+}
+
+/* ---------- C10 · чесність малих N ---------- */
+/* Бейдж стоїть впритул до чисел Brier, а не в примітці: інакше графік
+   читається як усталений результат, хоча під ним одна розвʼязка. */
+.k-pilot {
+  display: inline-block;
+  font-family: var(--a-mono);
+  font-size: var(--a-fs-xs);
+  letter-spacing: var(--a-track);
+  text-transform: uppercase;
+  color: var(--a-warn, #F0B45C);
+  border: 1px solid currentColor;
+  padding: 2px var(--a-s2);
+  margin-block: var(--a-s1);
+}
+
+/* Замість числа консенсусу, поки оцінок замало. Кегль навмисно менший за
+   .k-mk__big: це лічильник збору, а не результат. */
+.k-mk__collect {
+  font-family: var(--a-mono);
+  font-size: var(--a-fs-s);
+  color: var(--a-text-dim);
+}
+
+/* ---------- E4 · футер зрізу ---------- */
+.k-foot {
+  padding: var(--a-s1) var(--a-s3) var(--a-s2);
+  border-top: 1px solid var(--a-line-dim);
+  text-align: right;
+}
+
+/* ---------- E3 · offscreen-доступ до карти ----------
+   Саме offscreen, а не display:none: прихований через display вузол недоступний
+   ні фокусу, ні скрінрідеру, тобто рівно те, чого ми уникаємо. При фокусі
+   кнопка вʼїжджає в кадр, щоб зрячий клавіатурний користувач бачив, де він. */
+.k-a11y {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.k-a11y button {
+  font: inherit;
+  color: var(--a-text);
+  background: var(--a-bg-raised);
+  border: 1px solid var(--a-cyan);
+  padding: var(--a-s1) var(--a-s2);
+}
+
+.k-a11y:focus-within {
+  position: absolute;
+  left: var(--a-s3);
+  bottom: var(--a-s3);
+  z-index: 30;
+  width: auto;
+  height: auto;
+  max-width: 380px;
+  overflow: visible;
+  clip-path: none;
+  white-space: normal;
+  background: var(--a-bg-raised);
+  border: 1px solid var(--a-line);
+  padding: var(--a-s2);
+}
+
+/* ---------- D7 · наступні 14 днів ---------- */
+.k-next {
+  border-left: 2px solid var(--a-line);
+  padding-left: var(--a-s2);
+  margin-block: var(--a-s2);
+}
+
+.k-next__p {
+  font-family: var(--a-mono);
+  font-size: var(--a-fs-l);
+  font-variant-numeric: tabular-nums;
+  color: var(--a-cyan);
+}
+
+/* ---------- G5 · баланс аудиторій ----------
+   Напрямок і валентність розведені: символ напрямку завжди нейтральний,
+   колір лишається тільки на значенні і тільки коли зміна перевищила поріг.
+   Яскравий червоний має право бути рівно один на блок. */
+.k-bal__delta {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--a-s1);
+  font-family: var(--a-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.k-bal__dir { color: var(--a-text-dim); }
+.k-bal__num { color: var(--a-text-mut); }
+.k-bal__num.is-worse { color: var(--a-destr); opacity: 0.75; }
+.k-bal__num.is-better { color: var(--a-constr); opacity: 0.85; }
+/* єдиний гучний рядок блоку */
+.k-bal__num.is-loud { opacity: 1; font-weight: 700; }
+
+.k-bal__val {
+  font-family: var(--a-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--a-text);
+}
+
+/* біполярний мінібар: конструктив ліворуч, деструктив праворуч */
+.k-bal__bar {
+  position: relative;
+  display: flex;
+  height: 6px;
+  margin-block: var(--a-s1);
+  background: var(--a-bg-sunken, rgba(0, 0, 0, 0.25));
+}
+
+.k-bal__pos { background: var(--a-constr); opacity: 0.7; }
+.k-bal__neg { background: var(--a-destr); opacity: 0.7; }
+
+/* тік позиції минулого тижня: рух видно без другого числа */
+.k-bal__ghost {
+  position: absolute;
+  top: -2px;
+  bottom: -2px;
+  width: 1px;
+  background: var(--a-text);
+  opacity: 0.55;
+}
+
+/* ---------- G1 · коуч-мітки ----------
+   Завіса приглушує, але не ховає: мітки пояснюють те, що під ними, тому воно
+   мусить лишатись видимим. Модалка так не вміла і саме тому пішла. */
+.k-coach { position: fixed; inset: 0; z-index: 50; }
+
+.k-coach__veil {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.k-coach__lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.k-coach__mark {
+  position: absolute;
+  width: 260px;
+  padding: var(--a-s2) var(--a-s3);
+  background: var(--a-bg-raised);
+  border: 1px solid var(--a-cyan);
+  color: var(--a-text);
+  font-size: var(--a-fs-prose-s);
+  line-height: 1.45;
+  pointer-events: none;
+}
+
+/* Праворуч унизу, а не по центру: по центру кнопка накривала перемикач шарів,
+   тобто закривала рівно те, що коуч-мітки і мали б показувати. */
+.k-coach__done {
+  position: absolute;
+  right: var(--a-s6);
+  bottom: var(--a-s6);
+}
+
+/* ---------- D1 · програвач сценарію ---------- */
+.k-play__launch { display: flex; gap: var(--a-s2); }
+
+/* Смуга внизу: не накриває карту, а стоїть під нею окремим шаром. */
+.k-play {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 45;
+  background: var(--a-bg-raised);
+  border-top: 1px solid var(--a-cyan);
+  padding: var(--a-s2) var(--a-s3);
+}
+
+.k-play__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--a-s3);
+  flex-wrap: wrap;
+}
+
+.k-play__pos {
+  font-family: var(--a-mono);
+  font-size: var(--a-fs-xs);
+  letter-spacing: var(--a-track);
+  text-transform: uppercase;
+  color: var(--a-text-dim);
+  white-space: nowrap;
+}
+
+.k-play__caption {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--a-fs-prose);
+  color: var(--a-text);
+}
+
+/* Прогрес кроками, а не часом: видно, скільки лишилось екранів. */
+.k-play__ticks { display: flex; gap: 3px; margin-top: var(--a-s2); }
+.k-play__ticks i { flex: 1; height: 2px; background: var(--a-line); }
+.k-play__ticks i.is-done { background: var(--a-cyan); }
+
+.k-play__final {
+  display: flex;
+  gap: var(--a-s4);
+  list-style: none;
+  margin: var(--a-s3) 0 0;
+  padding: 0;
+}
+
+.k-play__final li { flex: 1; border-left: 2px solid var(--a-cyan); padding-left: var(--a-s2); }
+.k-play__final b { font-family: var(--a-mono); font-size: var(--a-fs-l); color: var(--a-cyan); }
+.k-play__calm { margin-top: var(--a-s1); }
+
+/* ---------- D5 · тумблер ХРОНІКА / ПРОГНОЗ ----------
+   Сам тумблер знято з HUD (рішення Роми): карта завжди показує хроніку.
+   Правило лишається живим — стан forecastMode і проводка привидів у GalaxyMap
+   на місці, тож коли кнопці знайдеться місце, стиль уже є. */
+.k-mode-toggle { display: flex; gap: var(--a-s1); }
+
+/* ---------- D4 · підсумок каскаду ---------- */
+.k-cascade {
+  border-left: 2px solid var(--a-warn, #F0B45C);
+  padding-left: var(--a-s2);
+  margin-block: var(--a-s2);
+}
+
+.k-cascade__row { display: flex; gap: var(--a-s2); align-items: baseline; flex-wrap: wrap; }
+.k-cascade__row b { font-family: var(--a-mono); font-variant-numeric: tabular-nums; }
+
+.k-cascade__steps {
+  margin: var(--a-s1) 0;
+  padding-left: var(--a-s4);
+  font-size: var(--a-fs-prose-s);
+}
+.k-cascade__steps li { margin-bottom: 2px; }
+
+/* ================= F3 · режим ПРЕЦЕДЕНТИ =================
+   Центральна робоча область поверх приглушеної карти. Не плаваюче вікно і не
+   четвертий шар навігації: режим фокуса, як у C5. */
+.k-prec { position: fixed; inset: 0; z-index: 60; display: flex; }
+
+.k-prec__veil {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.k-prec__panel {
+  position: relative;
+  margin: auto;
+  width: min(1180px, 94vw);
+  max-height: 92vh;
+  overflow: auto;
+  background: var(--a-bg-raised);
+  border: 1px solid var(--a-line);
+  padding: var(--a-s3) var(--a-s4);
+}
+
+.k-prec__head { display: flex; align-items: baseline; gap: var(--a-s3); flex-wrap: wrap; }
+.k-prec__case { font-size: var(--a-fs-l); color: var(--a-text); }
+.k-prec__spacer { flex: 1; }
+
+/* Статус картки не ховається ніколи (правило 11 Спеки F). */
+.k-prec__banner {
+  margin-top: var(--a-s2);
+  padding: var(--a-s1) var(--a-s2);
+  border: 1px solid var(--a-warn, #F0B45C);
+  color: var(--a-warn, #F0B45C);
+  font-family: var(--a-mono);
+  font-size: var(--a-fs-xs);
+  letter-spacing: var(--a-track);
+}
+
+/* Ланцюжок механізму: що саме порівнюємо. */
+.k-prec__chain {
+  display: flex;
+  align-items: center;
+  gap: var(--a-s2);
+  flex-wrap: wrap;
+  margin: var(--a-s3) 0;
+}
+
+.k-prec__cap {
+  border: 1px solid var(--a-line);
+  padding: 3px var(--a-s2);
+  font-size: var(--a-fs-xs);
+  color: var(--a-text-mut);
+}
+
+.k-prec__arrow { color: var(--a-text-dim); }
+
+.k-prec__body { display: grid; grid-template-columns: 1fr 340px; gap: var(--a-s4); }
+
+@media (max-width: 1180px) {
+  .k-prec__body { grid-template-columns: 1fr 300px; }
+}
+
+/* Чотири фазові колонки: вирівнювання за структурою, не за календарем. */
+.k-prec__cols,
+.k-prec__track {
+  display: grid;
+  grid-template-columns: 190px repeat(4, 1fr);
+  align-items: center;
+  gap: var(--a-s2);
+}
+
+.k-prec__col {
+  font-family: var(--a-mono);
+  font-size: var(--a-fs-xs);
+  letter-spacing: var(--a-track);
+  color: var(--a-text-dim);
+  text-align: center;
+}
+
+.k-prec__track { padding: var(--a-s2) 0; border-top: 1px solid var(--a-line-dim); cursor: pointer; }
+.k-prec__track-label { font-size: var(--a-fs-xs); color: var(--a-text-mut); }
+.k-prec__track-label em { display: block; font-style: normal; }
+
+.k-prec__cell { position: relative; text-align: center; }
+.k-prec__cell i {
+  display: inline-block;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  border: 1px solid var(--a-text-dim);
+}
+.k-prec__cell i.is-on { background: currentColor; }
+.k-prec__cell em {
+  display: block;
+  font-family: var(--a-mono);
+  font-style: normal;
+  font-size: 10px;
+  color: var(--a-text-dim);
+}
+
+/* Яскравих треків рівно два: поточний і вибраний. Решта dim, але видимі. */
+.k-prec__track--now { color: var(--a-brass, #C9A227); }
+.k-prec__track--selected { color: var(--a-cyan); }
+.k-prec__track--dim { color: var(--a-text-dim); opacity: 0.55; }
+
+/* Віяло: продовження осі вправо з колонки РЕЗУЛЬТАТ. */
+.k-prec__fan { margin-top: var(--a-s3); padding-left: 190px; }
+.k-prec__branch { display: flex; align-items: center; gap: var(--a-s2); margin-bottom: var(--a-s1); }
+.k-prec__branch i { display: block; width: 46px; background: var(--a-destr); }
+.k-prec__branch span { font-size: var(--a-fs-prose-s); }
+
+.k-prec__side { border-left: 1px solid var(--a-line-dim); padding-left: var(--a-s3); }
+.k-prec__list { margin: var(--a-s1) 0 var(--a-s3); padding-left: var(--a-s4); font-size: var(--a-fs-prose-s); }
+.k-prec__list li { margin-bottom: var(--a-s1); }
+
+/* Єдине місце в продукті з навмисно розірваною рамкою. */
+/* Єдине місце в продукті з навмисно розірваною рамкою: після дисципліни C4
+   зламана рамка читається як сигнал сама по собі. */
+.k-prec__break {
+  border: 1px dashed var(--a-warn, #F0B45C);
+  border-right-color: transparent;
+  padding: var(--a-s2);
+  margin-bottom: var(--a-s3);
+}
+/* Заголовок-розкривач застереження: та сама сітка, що в історіях, щоб два
+   розкривачі поруч не читались як два різних елемента. */
+.k-prec__breakhead {
+  display: grid;
+  grid-template-columns: 1.2em 1fr auto;
+  align-items: baseline;
+  gap: var(--a-s2);
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+.k-prec__breakhead:hover .k-label { color: var(--a-warn, #F0B45C); }
+.k-prec__break.is-open .k-prec__list { margin-bottom: 0; }
+
+.k-prec__diff { margin-top: var(--a-s2); }
+.k-prec__diffrow { display: grid; gap: 2px; margin-bottom: var(--a-s2); }
+.k-prec__same {
+  font: inherit;
+  font-size: var(--a-fs-xs);
+  color: var(--a-text-dim);
+  background: none;
+  border: 1px solid var(--a-line);
+  padding: 3px var(--a-s2);
+  cursor: pointer;
+}
+
+/* Вхідна анімація одна, коротка, далі повний спокій. */
+.k-prec__panel { animation: k-prec-in 320ms var(--a-ease); }
+.k-prec.is-settled .k-prec__panel { animation: none; }
+@keyframes k-prec-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .k-prec__panel { animation: none; }
+}
+
+/* Входи в режим. Кнопка неактивна лишається видимою: відсутність прецедентів
+   це теж відповідь, а зникла кнопка читалась би як «тут такого не буває». */
+.k-casetabs { justify-content: space-between; align-items: center; margin-top: var(--a-s2); }
+.k-casetabs__go,
+.k-prec-signal__go {
+  font: inherit;
+  font-size: var(--a-fs-xs);
+  letter-spacing: 0.08em;
+  color: var(--a-brass);
+  background: transparent;
+  border: 1px solid var(--a-line);
+  padding: 2px 8px;
+  cursor: pointer;
+}
+.k-casetabs__go:disabled {
+  color: var(--a-text-dim);
+  border-color: transparent;
+  cursor: default;
+}
+.k-casetabs__go:not(:disabled):hover,
+.k-prec-signal__go:hover { border-color: var(--a-brass); }
+.k-prec-signal { margin-top: var(--a-s1); }
+
+/* Повний спокій під режимом ПРЕЦЕДЕНТИ: у ньому порівнюють, а не дивляться на
+   рух. Дихання логотипа лишається в звичайному стані екрана, тут гаситься. */
+.k-app--still .k-logo,
+.k-app--still .k-hero__num { animation: none; }
+
+/* Ліва частина коротша за праву: перелік умов зламу довший за поле фаз.
+   Поле липне до верху і лишається на очах при прокрутці правої колонки,
+   інакше читач гортає причини, втративши з поля зору те, до чого вони. */
+.k-prec__body { align-items: start; }
+.k-prec__field { position: sticky; top: 0; }
+
+/* Вихід у куті панелі, поза потоком шапки. */
+.k-prec__close {
+  position: absolute;
+  top: var(--a-s2);
+  right: var(--a-s2);
+  font: inherit;
+  color: var(--a-text-mut);
+  background: transparent;
+  border: 1px solid transparent;
+  padding: 2px 8px;
+  cursor: pointer;
+}
+.k-prec__close:hover { color: var(--a-text); border-color: var(--a-line); }
+.k-prec__head { padding-right: 48px; }
+
+/* Маркери під віссю часу. */
+.k-prec__watch { margin-top: var(--a-s4); }
+
+/* Смуга часу показу: суцільна шкала, а не поділки за кроками. Показ став
+   неперервним, і дискретні риски суперечили б тому, що на ній відбувається. */
+.k-play__ticks { position: relative; height: 2px; background: var(--a-line-dim); }
+.k-play__fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: var(--a-cyan);
+  opacity: 0.7;
+}
+.k-play__date { font-family: var(--a-mono); color: var(--a-text); }
+
+/* Поки йде показ, нижня навігація відступає рівно на висоту смуги: інакше
+   останні пікселі перемикача шарів опиняються під нею. */
+.k-app--play .k-hud { margin-bottom: 76px; }
+
+/* ---- F3 · подача історії першою ----
+   Наказ після приймання: спочатку подія людською мовою, потім стадії.
+   Тому історія набирається прозовим кеглем, а не службовим моношрифтом:
+   це текст для читання, а не поле таблиці. */
+.k-prec__stories {
+  display: grid;
+  gap: var(--a-s3);
+  margin-top: var(--a-s3);
+}
+
+.k-prec__story {
+  border-left: 2px solid var(--a-line);
+}
+.k-prec__story:hover { border-left-color: var(--a-text-mut); }
+.k-prec__story.is-sel { border-left-color: var(--a-brass); }
+
+/* ЗАГОЛОВОК-РОЗКРИВАЧ. Сітка з трьох колонок: галочка, назва, підсумок.
+   Підсумок притиснутий праворуч і не переносить назву — саме він і є тим
+   рядком, за яким читач вирішує, чи розкривати повний текст. */
+.k-prec__storyhead {
+  display: grid;
+  grid-template-columns: 1.2em 1fr auto;
+  align-items: baseline;
+  gap: var(--a-s2);
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  padding: var(--a-s2) var(--a-s3);
+  cursor: pointer;
+}
+.k-prec__storyhead:hover .k-prec__headline { color: var(--a-cyan); }
+.k-prec__caret { color: var(--a-text-mut); font-size: var(--a-fs-xs); }
+.k-prec__gist {
+  font-family: var(--a-mono);
+  font-size: var(--a-fs-xs);
+  letter-spacing: 0.04em;
+  color: var(--a-text-mut);
+  white-space: nowrap;
+}
+.k-prec__story.is-open .k-prec__gist { color: var(--a-text-dim); }
+
+.k-prec__storybody { padding: 0 var(--a-s3) var(--a-s3); }
+
+.k-prec__storieshead { margin-top: var(--a-s4); }
+
+.k-prec__headline {
+  font-size: var(--a-fs-l);
+  font-weight: 400;
+  color: var(--a-text);
+}
+
+.k-prec__what,
+.k-prec__led {
+  margin: 0 0 var(--a-s2);
+  font-size: var(--a-fs-prose);
+  line-height: 1.55;
+  color: var(--a-text);
+}
+.k-prec__what .k-label,
+.k-prec__led .k-label { display: block; margin-bottom: 2px; }
+
+.k-prec__origin { margin-top: var(--a-s2); }
+
+/* ---- F3 · відповідь першою ----
+   Верхній блок це єдине, що читач мусить прочитати обов'язково, тому він і
+   набраний як лід, а не як службовий рядок. */
+.k-prec__verdict { margin-top: var(--a-s3); max-width: 78ch; }
+.k-prec__lede {
+  margin: 0 0 var(--a-s3);
+  font-size: var(--a-fs-l);
+  line-height: 1.5;
+  color: var(--a-text);
+}
+.k-prec__lede b { color: var(--a-brass, #C9A227); font-weight: 400; }
+
+/* Легенда матриці: пояснення, а не дані, тому вужча за саму матрицю і стоїть
+   над її заголовками колонок. */
+.k-prec__legend { max-width: 72ch; margin: 0 0 var(--a-s3); line-height: 1.5; }
+.k-prec__legend b { color: var(--a-brass, #C9A227); font-weight: 400; }
+
+/* «Ми тут» стоїть у позиції «+N тиж» історичних треків і кольором треку ЗАРАЗ:
+   колонка мусить читатись як одна шкала. */
+.k-prec__here { color: currentColor; }
+.k-prec__cell.is-here i { box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 28%, transparent); }
+
+/* Розбір згорнутий: за ним приходять окремо і свідомо. */
+.k-prec__toggle {
+  margin-top: var(--a-s4);
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  font-size: var(--a-fs-xs);
+  letter-spacing: 0.08em;
+  color: var(--a-text-mut);
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--a-line-dim);
+  padding: var(--a-s2) 0 0;
+  cursor: pointer;
+}
+.k-prec__toggle:hover { color: var(--a-cyan); }
+.k-prec__analysis { margin-top: var(--a-s3); }
+.k-prec__scores { margin-bottom: var(--a-s2); }
+
+/* Чесний порожній стан замість чужого списку. */
+.k-prec__empty { padding: var(--a-s4) 0; max-width: 62ch; }
+.k-prec__empty p { margin: 0 0 var(--a-s2); }
+
+
+/* ------------------------------------------------------------------ */
+/* Глибинний шар · секція в досьє (розділ 16 спеки deep_layer)          */
+/* ------------------------------------------------------------------ */
+
+/* Решта досьє це дані, ця секція це підповерхня. Глибина передається
+   тональним провалом, кеглем і повітрям, а не рамкою і не декором:
+   жодних колон, лір і візерунків «під міфологію». */
+.k-depth-section {
+  position: relative;
+  margin-left: calc(var(--a-s2) * -1);
+  margin-right: calc(var(--a-s2) * -1);
+  padding: var(--a-s3, 20px) var(--a-s2) calc(var(--a-s3, 20px) * 1.4);
+  line-height: 1.7;
+  /* Провал, а не прямокутник: до країв тон повертається до панелі, тому
+     секція читається як заглиблення, а не як вставлена плашка. */
+  background:
+    linear-gradient(to bottom,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.3) 18%,
+      rgba(0, 0, 0, 0.3) 82%,
+      rgba(0, 0, 0, 0) 100%);
+  box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.35), inset 0 -1px 0 rgba(255, 255, 255, 0.03);
+}
+
+/* Підпис секції тонший і тихіший за решту підписів панелі: секція заглиблена,
+   а не виділена. */
+.k-depth__head {
+  display: block;
+  margin-bottom: var(--a-s2);
+  font-size: calc(var(--a-fs-xs) * 0.92);
+  letter-spacing: 0.22em;
+  opacity: 0.55;
+}
+
+.k-depth { margin-top: var(--a-s2); }
+.k-depth + .k-depth {
+  margin-top: var(--a-s3, 20px);
+  padding-top: var(--a-s2);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.k-depth__subject {
+  display: block;
+  margin-bottom: var(--a-s1);
+  font-family: var(--a-mono);
+  font-size: calc(var(--a-fs-xs) * 0.95);
+  letter-spacing: var(--a-track);
+  color: var(--a-text-dim);
+  opacity: 0.75;
+}
+
+/* ---- Сюжет: головний елемент секції ---- */
+
+.k-depth__plot { margin-bottom: calc(var(--a-s2) * 1.5); }
+
+.k-depth__plot-primary {
+  margin: 0;
+  font-size: calc(var(--a-fs-prose, 16px) * 1.32);
+  line-height: 1.28;
+  letter-spacing: -0.01em;
+  color: var(--a-text);
+}
+
+.k-depth__plot-second {
+  margin: var(--a-s1) 0 0;
+  font-size: var(--a-fs-xs);
+  line-height: 1.5;
+  color: var(--a-text-dim);
+}
+
+.k-depth__plot-cut {
+  margin: 0;
+  font-size: var(--a-fs-prose, inherit);
+  color: var(--a-text-dim);
+}
+
+/* Маркер конкуренції: дві точки в протифазі, ніби два сюжети перетягують
+   кейс. Єдина анімація секції. Період 3.6 с і мала амплітуда навмисно:
+   читатись має «тут ще можна вплинути», а не «тут щось блимає». */
+.k-depth__pulse {
+  display: inline-flex;
+  gap: 4px;
+  margin-right: 6px;
+  vertical-align: baseline;
+}
+
+.k-depth__pulse i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--a-warn, #F0B45C);
+  opacity: 0.35;
+  animation: k-depth-pulse 3.6s ease-in-out infinite;
+}
+
+.k-depth__pulse i:nth-child(2) { animation-delay: 1.8s; }
+
+@keyframes k-depth-pulse {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.85; }
+}
+
+/* Рух означає стан даних, а не прикрасу, тому за проханням системи він
+   зникає повністю, а маркер лишається читабельним. */
+@media (prefers-reduced-motion: reduce) {
+  .k-depth__pulse i { animation: none; opacity: 0.6; }
+}
+
+.k-depth__mark {
+  display: block;
+  margin-top: 2px;
+  padding-left: 20px;
+  font-family: var(--a-mono);
+  font-size: calc(var(--a-fs-xs) * 0.92);
+  letter-spacing: var(--a-track);
+  color: var(--a-warn, #F0B45C);
+  opacity: 0.8;
+}
+
+/* ---- Ролі і психотипи: службовий рівень ---- */
+
+.k-depth__line {
+  margin: 0;
+  padding: 5px 0;
+  display: grid;
+  grid-template-columns: minmax(5.5rem, auto) 1fr;
+  gap: var(--a-s1);
+  align-items: baseline;
+  line-height: 1.65;
+}
+
+.k-depth__key {
+  font-family: var(--a-mono);
+  font-size: calc(var(--a-fs-xs) * 0.92);
+  letter-spacing: var(--a-track);
+  color: var(--a-text-dim);
+  opacity: 0.75;
+  white-space: nowrap;
+}
+
+.k-depth__val {
+  font-size: var(--a-fs-xs);
+  color: var(--a-text-dim);
+}
+
+/* Зрізана лінза лишається видимою: це рішення розмітника, а не збій. */
+.k-depth__cut { opacity: 0.8; }
+.k-depth__share { white-space: nowrap; opacity: 0.75; }
+
+/* ---- Поле промовчало: тиша як контент ---- */
+
+/* Не сірий disabled-текст, а свідома пауза: рядок по центру, розріджений
+   трекінг, багато порожнього простору. Людина має відчути, що інструмент
+   чесний, а не що дані не завантажились. */
+.k-depth__silent {
+  margin: 0;
+  padding: calc(var(--a-s4, 32px) * 1.35) 0;
+  text-align: center;
+  font-family: var(--a-mono);
+  font-size: var(--a-fs-xs);
+  letter-spacing: 0.28em;
+  text-transform: lowercase;
+  color: var(--a-text-dim);
+  opacity: 0.6;
+}
+
+/* ---- Провідник у мову наслідків ---- */
+
+/* Глибинний шар пояснює «ось яка історія», мова наслідків каже «ось як
+   говорити». Це один розповідний блок з двох секцій, тому між ними тонка
+   вертикаль, а не звичайний роздільник. */
+.k-depth-section::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--a-s3, 20px) * -0.75);
+  width: 1px;
+  height: calc(var(--a-s3, 20px) * 1.6);
+  background: linear-gradient(
+    to bottom,
+    rgba(240, 180, 92, 0.75) 0%,
+    rgba(240, 180, 92, 0.35) 55%,
+    rgba(240, 180, 92, 0.08) 100%
+  );
+  opacity: 0.85;
+}
+
+.k-divider--linked { border-top-color: transparent; }
+
+/* ---- Рекомендації всередині мови наслідків ---- */
+
+.k-depth__speech { margin-bottom: var(--a-s2); }
+.k-depth__cluster { color: var(--a-text-dim); }
+.k-depth__key--warn { color: var(--a-warn, #F0B45C); opacity: 0.85; }
+
+/* ------------------------------------------------------------------ */
+/* Глибинний шар · motion-система                                       */
+/* ------------------------------------------------------------------ */
+
+/* Принцип: кожен рух передає зміст (глибина, ієрархія, причинність,
+   невизначеність), жоден рух не існує для краси. Рухаються тільки transform
+   і opacity: layout-анімації тут заборонені, бо смикають усе досьє.
+   Нескінченна анімація в секції рівно одна, це пульс конкуренції сюжетів. */
+:root {
+  --k-depth-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --k-depth-in: 380ms;
+  --k-depth-delay: 250ms;
+  --k-depth-stagger: 100ms;
+}
+
+/* 1. Вхід секції це занурення: решта досьє вже на екрані, підповерхня
+   проступає з-під неї трохи пізніше. */
+.k-depth-section {
+  animation: k-depth-emerge var(--k-depth-in) var(--k-depth-ease) var(--k-depth-delay) both;
+}
+
+@keyframes k-depth-emerge {
+  from { opacity: 0; transform: translateY(10px); background-color: rgba(0, 0, 0, 0); }
+  to { opacity: 1; transform: translateY(0); background-color: rgba(0, 0, 0, 0.22); }
+}
+
+/* 2. Каскад лінз: сюжет, ролі, психотипи. Це порядок читання, а не ефект. */
+.k-depth__reveal {
+  animation: k-depth-rise 320ms var(--k-depth-ease) both;
+  animation-delay: calc(var(--k-depth-delay) + 120ms + var(--step, 0) * var(--k-depth-stagger));
+}
+
+@keyframes k-depth-rise {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 3. Primary-сюжет збирається останнім штрихом: коротке фокусування після
+   появи, один раз при вході. Без нескінченного світіння. */
+.k-depth__plot-primary {
+  animation: k-depth-focus 520ms var(--k-depth-ease)
+    calc(var(--k-depth-delay) + 260ms) both;
+}
+
+@keyframes k-depth-focus {
+  from { opacity: 0.55; text-shadow: 0 0 10px rgba(255, 255, 255, 0.28); }
+  to { opacity: 1; text-shadow: 0 0 0 rgba(255, 255, 255, 0); }
+}
+
+/* 5. Провідник промальовується зверху вниз ПІСЛЯ появи обох секцій:
+   це буквально анімована причинність «історія -> як говорити». */
+.k-depth-section::after {
+  transform-origin: top;
+  animation: k-depth-draw 520ms var(--k-depth-ease)
+    calc(var(--k-depth-delay) + 420ms) both;
+}
+
+@keyframes k-depth-draw {
+  from { transform: scaleY(0); opacity: 0; }
+  to { transform: scaleY(1); opacity: 0.85; }
+}
+
+/* 6. Тиша заходить повільніше за все інше і без руху: рядок про мовчання
+   поля не має «виїжджати», він має проступити. */
+.k-depth__silent {
+  animation: k-depth-hush 700ms linear calc(var(--k-depth-delay) + 120ms) both;
+}
+
+@keyframes k-depth-hush {
+  from { opacity: 0; }
+  to { opacity: 0.6; }
+}
+
+/* 7. Перемикання кейсів: розчинення старої секції. Пауза-провал між нею і
+   зануренням нової живе в таймері компонента, а не тут. */
+.k-depth-section.is-leaving {
+  animation: k-depth-dissolve 150ms linear both;
+}
+
+@keyframes k-depth-dissolve {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(4px); }
+}
+
+/* 8. Прохання системи вимикає рух повністю. Лишаються миттєві стани: секція
+   на місці, лінзи видимі, провідник намальований, пульс не блимає. */
+@media (prefers-reduced-motion: reduce) {
+  .k-depth-section,
+  .k-depth-section.is-leaving,
+  .k-depth__reveal,
+  .k-depth__plot-primary,
+  .k-depth__silent,
+  .k-depth-section::after {
+    animation: none;
+  }
+  .k-depth__silent { opacity: 0.6; }
+  .k-depth-section::after { transform: scaleY(1); opacity: 0.85; }
+}
+
+/* Палітра шару СЮЖЕТИ жила тут шістьма змінними --a-plot-1..6 і видалена
+   разом із кольоровим кодуванням: на вкладці СЮЖЕТИ колір більше не кодує
+   нічого, сюжет несе форма і рух зорі. Токени вкладки живуть у plots.css. */
+
+/* ------------------------------------------------------------------ */
+/* Згорнутий паспорт даних у шапці досьє                                */
+/* ------------------------------------------------------------------ */
+
+/* Походження, тиждень, статус і звірка стоять між заголовком і висновком
+   одним службовим рядком. Кегль нижчий за найдрібніший службовий, тон
+   приглушений, рамки немає: це підпис, який можна відкрити, а не кнопка,
+   яка вимагає уваги. Кліком рядок розгортається в повний метаблок. */
+.k-meta__head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--a-s1);
+  width: 100%;
+  text-align: left;
+  font-family: var(--a-mono);
+  font-size: calc(var(--a-fs-xs) * 0.9);
+  line-height: 1.6;
+  color: var(--a-text-dim);
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* Наведення підсвічує рядок цілком: інакше незрозуміло, що дрібний підпис
+   узагалі можна відкрити. */
+.k-meta__head:hover { color: var(--a-text-mut); }
+/* Стрілка лишається на кеглі службової мітки, а не рядка: на 0.9 від нього
+   трикутник вироджується в крапку і перестає читатись як «можна відкрити». */
+.k-meta__caret { flex: 0 0 auto; font-size: var(--a-fs-xs); line-height: 1; }
+
+/* Той самий рух, що в інших розкривачах досьє: паспорт проступає, а не
+   стрибає, інакше висновок над ним смикається вниз. */
+.k-meta__body { animation: k-reveal-in 160ms var(--a-ease); }
+
+@media (prefers-reduced-motion: reduce) {
+  .k-meta__body { animation: none; }
+}
+
+/* Бейдж чернетки в досьє: той самий сигнал, що і на вкладці СЮЖЕТИ, тому і
+   тон той самий, бурштиновий. Дрібний, але не приглушений: його завдання
+   стояти перед очима, поки розмітка не пройшла узгодження. */
+.k-depth__draft,
+.k-syuzh__draft,
+.k-syuzh-leg .k-syuzh__draft {
+  font-family: var(--a-mono);
+  font-size: calc(var(--a-fs-xs) * 0.9);
+  letter-spacing: 0.14em;
+  color: var(--a-warn);
+  opacity: 0.9;
+  white-space: nowrap;
+}

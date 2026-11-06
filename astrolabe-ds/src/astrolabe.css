@@ -1,0 +1,185 @@
+@import url('../tokens/tokens.css');
+
+/* ============ БАЗА: космос + сканлайни ============ */
+/* Типографіка v2 (C2): за замовчуванням проза, тобто sans. Моноширинний лишається
+   там, де він щось означає: числа, координати, статуси, технічні мітки. Ці місця
+   оголошують --a-mono явно, тому інверсія бази їх не зачіпає. */
+.a-root{background:var(--a-bg);color:var(--a-text);font-family:var(--a-sans);font-size:var(--a-fs-m);line-height:1.6}
+.a-root *:focus-visible{outline:2px solid var(--a-cyan);outline-offset:2px}
+
+/* скролбари приладу: тонкі, без власного фону, підсвічуються під курсором */
+.a-root *{scrollbar-width:thin;scrollbar-color:var(--a-line) transparent}
+.a-root ::-webkit-scrollbar{width:6px;height:6px}
+.a-root ::-webkit-scrollbar-track{background:transparent}
+.a-root ::-webkit-scrollbar-thumb{background:var(--a-line)}
+.a-root ::-webkit-scrollbar-thumb:hover{background:var(--a-cyan)}
+.a-root ::-webkit-scrollbar-corner{background:transparent}
+
+/* ============ ПАНЕЛЬ: прямі кути, одна рамка ============ */
+/* C4: подвійна рамка лишається ознакою функціонального обʼєкта, а не обводкою
+   всього підряд. Базова панель тримає одну лінію і внутрішню тінь для глибини;
+   другий бірюзовий контур тепер вмикається класом .a-panel--framed. */
+.a-panel{
+  position:relative;background:var(--a-bg-raised);
+  border:1px solid var(--a-line);
+  box-shadow:inset 0 0 24px rgba(0,0,0,.45);
+  padding:var(--a-s4);
+}
+.a-panel--framed{box-shadow:inset 0 0 0 1px rgba(99,230,200,.10), inset 0 0 24px rgba(0,0,0,.45)}
+/* Сканлайни живуть тільки на тлі (C4). На панелі вони додавали текстуру там,
+   де вже є рамка, скло і вміст, і полотно починало шуміти рівно в тому місці,
+   де треба читати. Сам ефект не викинуто: він лишається фоном сцени. */
+.a-panel::before{content:none}
+.a-panel--sunken{background:var(--a-bg-sunken);box-shadow:inset 0 0 0 1px rgba(99,230,200,.06)}
+
+/* ---- v2.1 СКЛО: панель поверх живої карти ----
+   Крізь підкладку видно розблурений космос із підсиленою насиченістю:
+   зорі просвічують кольоровими плямами, подвійна рамка і сканлайни лишаються. */
+.a-panel--glass{
+  background:var(--a-glass-bg);
+  -webkit-backdrop-filter:blur(var(--a-glass-blur)) saturate(var(--a-glass-sat));
+  backdrop-filter:blur(var(--a-glass-blur)) saturate(var(--a-glass-sat));
+  box-shadow:inset 0 0 0 1px rgba(99,230,200,.14), inset 0 0 28px rgba(0,0,0,.5), 0 12px 40px rgba(0,0,0,.55);
+}
+/* Fallback: без backdrop-filter скло стає звичайною непрозорою панеллю */
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .a-panel--glass{background:var(--a-bg-raised)}
+}
+.a-panel--active{border-color:var(--a-line-bright);box-shadow:inset 0 0 0 1px rgba(99,230,200,.28),0 0 14px rgba(99,230,200,.12)}
+/* кутові позначки: тонкі бірюзові тіки замість латунних дужок */
+.a-bracket{position:absolute;width:10px;height:10px;border:1px solid var(--a-line-bright);pointer-events:none;opacity:.7}
+.a-bracket--tl{top:-1px;left:-1px;border-right:0;border-bottom:0}
+.a-bracket--br{bottom:-1px;right:-1px;border-left:0;border-top:0}
+
+/* таб-заголовок панелі: трапеція зі скошеним правим краєм, як планетарний таб */
+.a-tab{
+  display:inline-block;position:relative;top:-1px;left:-1px;
+  background:linear-gradient(180deg,#123227,#0C1F19);
+  border:1px solid var(--a-line);border-bottom-color:transparent;
+  color:var(--a-cyan);font-size:var(--a-fs-s);font-weight:700;letter-spacing:var(--a-track);
+  padding:5px 26px 5px 12px;
+  clip-path:polygon(0 0,calc(100% - var(--a-tab-skew)) 0,100% 100%,0 100%);
+}
+
+/* ============ ЗАГОЛОВОК СЕКЦІЇ: центрована смуга ============ */
+.a-sechead{
+  display:block;text-align:center;margin:var(--a-s6) 0 var(--a-s3);padding:5px 0;
+  font-size:var(--a-fs-xs);font-weight:700;letter-spacing:var(--a-track);text-transform:uppercase;color:var(--a-cyan);
+  border-top:1px solid var(--a-line);border-bottom:1px solid var(--a-line);
+  background:linear-gradient(180deg,rgba(99,230,200,.06),transparent);
+}
+.a-sechead__idx{color:var(--a-text-dim);margin-right:8px}
+.a-sechead__note{color:var(--a-text-dim);font-weight:400;letter-spacing:.03em;text-transform:none;margin-left:8px}
+.a-sechead::after{content:none}
+
+/* ============ ПЛАШКА РЕЖИМУ ============ */
+.a-mode{display:block;text-align:center;font-size:var(--a-fs-xs);font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:6px 28px;width:fit-content;margin:0 auto}
+.a-mode--chronicle{color:var(--a-cyan);border:1px solid var(--a-line);background:var(--a-bg-raised)}
+/* пісочниця: помаранчева трапеція, як банер паузи стратегії */
+.a-mode--sandbox{
+  color:#1A0E02;background:linear-gradient(180deg,#F0B45C,#D98D2B);border:0;
+  clip-path:polygon(14px 0,calc(100% - 14px) 0,100% 100%,0 100%);
+  text-shadow:0 1px 0 rgba(255,255,255,.25);
+}
+
+/* ============ ТЕГИ ============ */
+.a-tag{display:inline-block;font-size:var(--a-fs-xs);letter-spacing:.08em;padding:1px 7px;border:1px solid;vertical-align:middle;background:rgba(0,0,0,.25)}
+.a-tag--fact{border-color:var(--a-text);color:var(--a-text)}
+.a-tag--assessment{border-color:var(--a-warn);color:var(--a-warn)}
+.a-tag--hypothesis{border-style:dashed;border-color:var(--a-text-dim);color:var(--a-text-dim)}
+.a-tag--match{border-color:var(--a-constr);color:var(--a-constr)}
+.a-tag--conflict{border-style:dashed;border-color:var(--a-destr);color:var(--a-destr)}
+.a-tag--single{border-style:dashed;border-color:var(--a-text-dim);color:var(--a-text-dim)}
+
+.a-delta{display:inline-flex;align-items:center;gap:3px;font-size:var(--a-fs-xs);font-weight:700}
+.a-delta--good{color:var(--a-constr)}
+.a-delta--bad{color:var(--a-destr)}
+.a-delta--flat{color:var(--a-text-dim)}
+
+/* ============ STAT CARD ============ */
+.a-stat{display:flex;flex-direction:column;gap:var(--a-s1);min-width:0;position:relative}
+.a-stat__label{font-size:var(--a-fs-xs);letter-spacing:.08em;text-transform:uppercase;color:var(--a-text-mut)}
+.a-stat__num{font-size:var(--a-fs-num);font-weight:700;letter-spacing:-.02em;line-height:1.1;color:var(--a-cyan);text-shadow:0 0 10px rgba(99,230,200,.35)}
+.a-stat__num small{font-size:var(--a-fs-xs);font-weight:400;color:var(--a-text-dim);letter-spacing:0;text-shadow:none}
+.a-stat__foot{display:flex;align-items:center;gap:var(--a-s2);font-size:var(--a-fs-xs);color:var(--a-text-dim)}
+.a-stat__threshold{color:var(--a-destr)}
+
+/* ============ TOPIC ROW ============ */
+.a-topic{display:flex;gap:var(--a-s3);align-items:flex-start;padding:var(--a-s3) 0;border-top:1px solid var(--a-line-dim)}
+.a-topic:first-child{border-top:0}
+.a-topic__rank{flex:none;width:26px;height:26px;display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--a-line);box-shadow:inset 0 0 0 1px rgba(99,230,200,.14);
+  color:var(--a-cyan);font-size:var(--a-fs-s);font-weight:700;background:rgba(0,0,0,.3)}
+.a-topic__body{flex:1;min-width:0}
+.a-topic__name{font-size:var(--a-fs-m);font-weight:700;line-height:1.4}
+.a-topic__meta{display:flex;flex-wrap:wrap;gap:var(--a-s2);margin-top:var(--a-s1);font-size:var(--a-fs-xs);color:var(--a-text-dim);align-items:center}
+.a-topic--destructive .a-topic__name{color:#F0B6A4}
+.a-topic--constructive .a-topic__name{color:#BFEFC8}
+.a-topic--exited{opacity:.4}
+.a-trend{font-weight:700}
+.a-trend--up{color:var(--a-destr)} .a-trend--up.is-constr{color:var(--a-constr)}
+.a-trend--down{color:var(--a-text-dim)}
+.a-trend--new{color:var(--a-cyan)}
+.a-trend--flat{color:var(--a-text-dim)}
+
+/* ============ CASE CARD ============ */
+.a-case__stake{font-size:var(--a-fs-s);color:var(--a-text-mut);margin-top:var(--a-s1)}
+.a-case__meta{font-size:var(--a-fs-xs);color:var(--a-text-dim);margin-top:var(--a-s2)}
+.a-life{display:flex;gap:var(--a-s1);margin-top:var(--a-s2);font-size:var(--a-fs-xs);letter-spacing:.06em}
+.a-life__step{padding:2px 10px;border:1px solid var(--a-line-dim);color:var(--a-text-dim);background:rgba(0,0,0,.25);
+  clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%)}
+.a-life__step--current-open{border-color:var(--a-warn);color:var(--a-warn)}
+.a-life__step--current-answered{border-color:var(--a-cyan);color:var(--a-cyan)}
+.a-life__step--current-closed{border-color:var(--a-constr);color:var(--a-constr)}
+.a-life__step--current-festering{border-color:var(--a-destr);color:var(--a-destr)}
+
+/* ============ GAUGES ============ */
+.a-rope{position:relative;height:3px;background:linear-gradient(90deg,var(--a-destr),rgba(219,91,60,.15) 42%,rgba(143,227,154,.15) 58%,var(--a-constr))}
+.a-rope__mid{position:absolute;left:50%;top:-4px;bottom:-4px;width:1px;background:rgba(214,239,227,.4)}
+.a-rope__mk{position:absolute;top:-4px;width:11px;height:11px;margin-left:-5px;background:var(--a-cyan);
+  clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);transition:left var(--a-t-data) var(--a-ease);
+  box-shadow:0 0 10px rgba(99,230,200,.9)}
+.a-score{display:flex;border:1px solid var(--a-line);box-shadow:inset 0 0 0 1px rgba(99,230,200,.08)}
+.a-score__cell{flex:1;padding:var(--a-s3);text-align:center;font-size:var(--a-fs-xs);color:var(--a-text-mut)}
+.a-score__cell+.a-score__cell{border-left:1px solid var(--a-line)}
+.a-score__num{display:block;font-size:var(--a-fs-num);font-weight:700}
+.a-score__num--hit{color:var(--a-constr)}
+.a-score__num--miss{color:var(--a-destr)}
+.a-score__num--open{color:var(--a-warn)}
+
+/* ============ CONTROLS: темні кнопки з тонким бордером ============ */
+.a-btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 var(--a-s5);
+  font-family:var(--a-mono);font-size:var(--a-fs-s);font-weight:700;letter-spacing:.08em;cursor:pointer;
+  transition:all var(--a-t-state) var(--a-ease);border:1px solid;background:rgba(0,0,0,.3)}
+.a-btn--primary{border-color:var(--a-cyan);color:var(--a-cyan);box-shadow:inset 0 0 0 1px rgba(99,230,200,.15)}
+.a-btn--primary:hover{background:rgba(99,230,200,.14)}
+.a-btn--ghost{border-color:var(--a-line);color:var(--a-text-mut)}
+.a-btn--ghost:hover{border-color:var(--a-cyan);color:var(--a-cyan)}
+.a-btn:disabled{opacity:.4;cursor:not-allowed}
+.a-btn:active{transform:translateY(1px)}
+
+.a-lever{display:block;width:100%;min-height:44px;text-align:left;background:var(--a-bg-sunken);
+  border:1px solid var(--a-line);box-shadow:inset 0 0 0 1px rgba(99,230,200,.06);
+  color:var(--a-text);font-family:var(--a-mono);font-size:var(--a-fs-s);
+  padding:var(--a-s3) var(--a-s4);cursor:pointer;transition:all var(--a-t-state) var(--a-ease);line-height:1.5}
+.a-lever:hover{border-color:var(--a-cyan)}
+.a-lever.is-on{border-color:var(--a-cyan);box-shadow:inset 0 0 0 1px rgba(99,230,200,.28),0 0 12px rgba(99,230,200,.15)}
+.a-lever__key{color:var(--a-warn);font-weight:700}
+.a-lever__eff{display:none;margin-top:var(--a-s2);padding-top:var(--a-s2);border-top:1px dashed var(--a-line-dim);color:var(--a-text-mut);font-size:var(--a-fs-xs)}
+.a-lever.is-on .a-lever__eff{display:block}
+.a-lever__conf{color:var(--a-warn)}
+
+/* нижня навігація: скошені таби-паралелограми */
+.a-nav{display:flex;gap:2px;border-top:1px solid var(--a-line);background:var(--a-bg-raised);padding:4px 6px 0}
+.a-nav__item{flex:1;min-height:44px;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(180deg,#0E211B,#0A1713);border:1px solid var(--a-line);border-bottom:0;
+  color:var(--a-text-dim);font-family:var(--a-mono);font-size:var(--a-fs-xs);font-weight:700;letter-spacing:.08em;cursor:pointer;
+  clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%)}
+.a-nav__item.is-on{color:var(--a-cyan);background:linear-gradient(180deg,#16362C,#0E241D);box-shadow:inset 0 2px 0 var(--a-cyan)}
+
+/* ============ СТАНИ ДАНИХ ============ */
+.a-empty{padding:var(--a-s5);text-align:center;color:var(--a-text-dim);font-size:var(--a-fs-s);border:1px dashed var(--a-line-dim)}
+.a-partial{display:inline-block;font-size:var(--a-fs-xs);color:var(--a-warn);border:1px dashed var(--a-warn);padding:1px 7px;letter-spacing:.06em}
+
+/* ============ ФУТЕР ДОКТРИНИ ============ */
+.a-doctrine{border-top:1px solid var(--a-line-dim);padding-top:var(--a-s3);font-size:var(--a-fs-xs);color:var(--a-text-dim);line-height:1.8}

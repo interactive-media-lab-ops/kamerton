@@ -1,0 +1,281 @@
+/* КАМЕРТОН · шар КОМПАС: приладова дошка.
+
+   Токени тільки з Астролябії. Латунь це консенсус і акцент, бірюза це панель
+   і розкид, приглушений текст це модель. Червоного немає ніде: вердикт
+   кодується словом і позицією, а не тривожним кольором.
+   Рухаються тільки transform і opacity, тому переїзди не чіпають розкладку. */
+
+.k-ens-slot { position: absolute; inset: 0; overflow: auto; padding-right: var(--a-s2); }
+.k-ens__head {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: var(--a-s3); padding: var(--a-s2) 0 var(--a-s3);
+}
+.k-ens__stack { display: flex; flex-direction: column; gap: var(--a-s4); }
+.k-ens__export { display: flex; align-items: center; gap: var(--a-s3); padding: var(--a-s3) 0; }
+
+/* Легенда рендериться один раз під стеком, з карток вона прибрана повністю. */
+.k-ens__legend {
+  display: flex; flex-wrap: wrap; gap: var(--a-s2) var(--a-s4);
+  margin: var(--a-s4) 0 var(--a-s6); padding-top: var(--a-s3);
+  border-top: 1px solid var(--a-line-dim);
+}
+.k-ens__legend span { display: inline-flex; align-items: center; gap: 6px; }
+.k-lg { display: inline-block; width: 14px; height: 10px; }
+.k-lg--ens { width: 3px; height: 14px; background: var(--a-brass); }
+.k-lg--san { width: 10px; height: 10px; border: 1px solid var(--a-text-mut); transform: rotate(45deg); }
+.k-lg--med { width: 7px; height: 7px; border-radius: 50%; background: var(--a-text-dim); }
+.k-lg--spr { background: rgba(99, 230, 200, 0.18); border: 1px solid rgba(99, 230, 200, 0.4); }
+.k-lg--div { background: repeating-linear-gradient(45deg, var(--a-brass) 0 2px, transparent 2px 5px); }
+.k-lg--gh { width: 3px; height: 14px; background: repeating-linear-gradient(var(--a-text-mut) 0 3px, transparent 3px 6px); }
+
+/* ---------- картка-прилад ---------- */
+.k-mk {
+  position: relative;
+  padding: var(--a-s4);
+  transition: transform 150ms var(--a-ease), box-shadow 150ms var(--a-ease), filter 200ms var(--a-ease);
+  animation: k-mk-in 320ms var(--a-ease) both;
+  animation-delay: calc(var(--k-mk-i, 0) * 60ms);
+}
+@keyframes k-mk-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+.k-mk:hover { transform: translateY(-2px); box-shadow: 0 0 0 1px rgba(99, 230, 200, 0.25); }
+
+/* Ієрархія станів: гаряче на повний зріст, заморожене і розвʼязане приглушені. */
+.k-mk--hot { box-shadow: inset 0 0 0 1px rgba(232, 160, 60, 0.28); }
+.k-mk--locked { filter: saturate(0.6); }
+.k-mk--resolved { filter: saturate(0.75); }
+.k-mk--flash { animation: k-mk-flash 300ms var(--a-ease); }
+@keyframes k-mk-flash {
+  0%, 100% { box-shadow: none; }
+  40% { box-shadow: 0 0 0 2px var(--a-brass), 0 0 22px rgba(232, 160, 60, 0.45); }
+}
+
+.k-mk__q { margin: 0; font-size: var(--a-fs-l); font-weight: 700; line-height: 1.35; }
+
+.k-mk__chips { display: flex; flex-wrap: wrap; gap: var(--a-s2); margin-top: var(--a-s2); }
+.k-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 2px 9px; font-family: var(--a-mono); font-size: var(--a-fs-xs);
+  color: var(--a-text-mut); background: rgba(3, 11, 9, 0.5);
+  border: 1px solid var(--a-line-dim);
+  box-shadow: inset 0 0 0 1px rgba(44, 90, 79, 0.25);
+}
+button.k-chip { cursor: pointer; }
+button.k-chip:hover { color: var(--a-text); border-color: var(--a-line); }
+.k-chip.is-live { color: var(--a-brass); border-color: rgba(232, 160, 60, 0.45); }
+.k-chip.is-locked, .k-chip.is-done { color: var(--a-text-dim); }
+.k-chip.is-soon { color: var(--a-brass); }
+.k-chip.is-warn { color: var(--a-warn); border-color: rgba(232, 160, 60, 0.45); }
+.k-chip__pulse {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--a-brass);
+  animation: k-chip-breath 2s var(--a-ease) infinite;
+}
+@keyframes k-chip-breath { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
+
+/* ---------- геро-зона ---------- */
+.k-mk__hero {
+  position: relative;
+  display: flex; align-items: flex-end; gap: var(--a-s4);
+  margin: var(--a-s3) 0 var(--a-s2);
+}
+.k-mk__value { display: flex; flex-direction: column; }
+.k-mk__big {
+  font-size: 56px; font-weight: 300; line-height: 1; color: var(--a-brass);
+  font-variant-numeric: tabular-nums; letter-spacing: -0.02em;
+  text-shadow: 0 0 10px rgba(232, 160, 60, 0.35);
+}
+.k-mk__delta {
+  display: inline-flex; align-items: baseline; gap: 4px;
+  padding: 3px 9px; font-size: var(--a-fs-xs);
+  border: 1px solid var(--a-line-dim); background: rgba(3, 11, 9, 0.5);
+}
+/* Динаміка консенсусу, не добро і не зло: вгору бірюза, вниз приглушений. */
+.k-mk__delta.is-up { color: var(--a-cyan); border-color: rgba(99, 230, 200, 0.35); }
+.k-mk__delta.is-down { color: var(--a-text-mut); }
+.k-mk__spark { margin-left: auto; width: 120px; }
+
+/* Штамп вердикту: подвійна рамка, без червоного. */
+.k-mk__stamp {
+  position: absolute; right: 0; top: -6px;
+  padding: 4px 14px; transform: rotate(-4deg);
+  font-family: var(--a-mono); font-size: var(--a-fs-s); font-weight: 700;
+  letter-spacing: 0.14em; color: var(--a-text-mut);
+  border: 1px solid var(--a-text-dim);
+  box-shadow: inset 0 0 0 3px var(--a-bg), inset 0 0 0 4px var(--a-text-dim);
+}
+.k-mk__stamp.is-yes {
+  color: var(--a-constr); border-color: var(--a-constr);
+  box-shadow: inset 0 0 0 3px var(--a-bg), inset 0 0 0 4px var(--a-constr);
+}
+
+/* ---------- прилад ---------- */
+.k-ins { position: relative; width: 100%; }
+.k-ins--full { height: 64px; margin-top: var(--a-s2); }
+.k-ins--compact { height: 40px; margin-top: var(--a-s2); }
+.k-ins--mini { height: 22px; }
+.k-ins--spark { height: 36px; }
+.k-ins.is-live { cursor: ew-resize; touch-action: none; }
+.k-ins svg { display: block; overflow: visible; }
+.k-ins__tick, .k-ins__san-lb, .k-ins__mine-lb {
+  font-family: var(--a-mono); font-size: 9px; fill: var(--a-text-dim);
+}
+.k-ins__mine-lb { fill: var(--a-cyan); }
+
+/* Маркери переїжджають трансформом: жодних layout-анімацій. */
+.k-ins__mark, .k-ins__ghost { transition: transform 400ms var(--a-ease); }
+.k-ins__needle { filter: drop-shadow(0 0 6px rgba(232, 160, 60, 0.55)); }
+.k-ins__diverge { animation: k-div-pulse 2.5s var(--a-ease) infinite; }
+@keyframes k-div-pulse { 0%, 100% { opacity: 0.45; } 50% { opacity: 0.95; } }
+
+.k-ins__diverge-lb, .k-ins__ghost-lb {
+  position: absolute; top: -2px; transform: translateX(-50%);
+  padding: 1px 7px; font-family: var(--a-mono); font-size: var(--a-fs-xs);
+  color: var(--a-brass); background: var(--a-bg-raised);
+  border: 1px solid rgba(232, 160, 60, 0.45); white-space: nowrap;
+}
+.k-ins__ghost-lb {
+  color: var(--a-cyan); border-color: rgba(99, 230, 200, 0.45);
+  top: auto; bottom: -2px;
+}
+
+.k-mk__nosan { margin-top: var(--a-s1); }
+
+/* ---------- підвал ---------- */
+.k-mk__verdict { margin-top: var(--a-s3); padding-top: var(--a-s2); border-top: 1px solid var(--a-line-dim); }
+.k-mk__blocked {
+  margin-top: var(--a-s3); padding: var(--a-s2);
+  border: 1px dashed var(--a-line); color: var(--a-text-mut); font-size: var(--a-fs-xs);
+}
+.k-mk__info { margin-top: var(--a-s3); }
+.k-mk__note { margin-top: var(--a-s1); }
+
+.k-mk__bet { display: flex; flex-wrap: wrap; align-items: center; gap: var(--a-s3); margin-top: var(--a-s3); }
+.k-mk__fuel { display: flex; align-items: center; gap: var(--a-s2); }
+.k-mk__fuel b { font-variant-numeric: tabular-nums; min-width: 26px; text-align: center; }
+.k-step {
+  width: 22px; height: 22px; cursor: pointer;
+  background: none; border: 1px solid var(--a-line); color: var(--a-text);
+  font-family: var(--a-mono); line-height: 1;
+}
+.k-step:hover { border-color: var(--a-cyan); color: var(--a-cyan); }
+.k-fuel { display: block; width: 90px; height: 4px; background: var(--a-line-dim); }
+.k-fuel i { display: block; height: 100%; background: var(--a-cyan); transition: width 200ms var(--a-ease); }
+
+/* ---------- реєстр ---------- */
+.k-reg__score { padding: var(--a-s3); }
+.k-reg__hits { display: flex; gap: var(--a-s4); margin: var(--a-s2) 0; font-size: var(--a-fs-l); }
+.k-reg__hit { color: var(--a-constr); }
+.k-reg__miss { color: var(--a-text-mut); }
+.k-reg__bar {
+  display: grid; grid-template-columns: 84px 1fr 40px;
+  align-items: center; gap: var(--a-s2); margin-top: 5px;
+}
+.k-reg__bar span:first-child { font-size: var(--a-fs-xs); color: var(--a-text-mut); }
+.k-reg__bar b { font-size: var(--a-fs-xs); font-variant-numeric: tabular-nums; text-align: right; }
+.k-reg__track { height: 8px; background: var(--a-line-dim); }
+.k-reg__fill { display: block; height: 100%; background: var(--a-text-dim); transition: width 400ms var(--a-ease); }
+.k-reg__bar.is-best .k-reg__fill { background: var(--a-brass); }
+.k-reg__bar.is-best b { color: var(--a-brass); }
+.k-reg__row { padding: var(--a-s2) 0; border-top: 1px solid var(--a-line-dim); }
+.k-reg__q { font-size: var(--a-fs-s); line-height: 1.35; }
+.k-reg__lb { display: grid; grid-template-columns: 1fr 60px 44px; align-items: center; gap: var(--a-s2); padding: 3px 0; }
+.k-reg__lb .k-reg__track { height: 5px; }
+.k-reg__foot { margin-top: var(--a-s3); }
+
+.k-bluf__ens {
+  display: block; width: 100%; margin-top: var(--a-s2); padding: var(--a-s2) var(--a-s3);
+  text-align: left; cursor: pointer;
+  background: rgba(232, 160, 60, 0.08);
+  border: 1px solid rgba(232, 160, 60, 0.35);
+  color: var(--a-text); font-family: var(--a-mono); font-size: var(--a-fs-xs);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .k-mk, .k-mk--flash, .k-chip__pulse, .k-ins__diverge { animation: none; }
+  .k-mk, .k-ins__mark, .k-ins__ghost, .k-fuel i, .k-reg__fill { transition: none; }
+}
+
+/* ---------- D6 · шкала розходження ----------
+   Модель ліворуч, панель праворуч, консенсус третім маркером, зона незгоди
+   заштрихована. Вмикається самою карткою при розходженні від порогу. */
+.k-div {
+  margin-block: var(--a-s3);
+  padding: var(--a-s2);
+  border: 1px solid var(--a-warn, #F0B45C);
+}
+
+.k-div__head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--a-s2);
+  flex-wrap: wrap;
+  margin-bottom: var(--a-s2);
+}
+
+.k-div__track {
+  position: relative;
+  height: 18px;
+  background: linear-gradient(90deg, var(--a-destr), var(--a-text-dim) 50%, var(--a-constr));
+  opacity: 0.9;
+}
+
+.k-div__gap {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(240, 180, 92, 0.55) 0 3px,
+    transparent 3px 7px
+  );
+  border-inline: 1px solid rgba(240, 180, 92, 0.9);
+}
+
+.k-div__mark {
+  position: absolute;
+  top: -3px;
+  width: 2px;
+  height: 24px;
+  transform: translateX(-1px);
+}
+
+.k-div__mark--san { background: var(--a-cyan); }
+.k-div__mark--hum { background: var(--a-brass, #C9A227); }
+.k-div__mark--ens { background: var(--a-text); height: 30px; top: -6px; }
+.k-div__mark--fact { background: #fff; width: 3px; height: 30px; top: -6px; }
+
+.k-div__legend {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--a-s2);
+  margin-top: var(--a-s2);
+  font-family: var(--a-mono);
+  font-size: var(--a-fs-xs);
+}
+
+.k-div__key--san { color: var(--a-cyan); }
+.k-div__key--hum { color: var(--a-brass, #C9A227); }
+.k-div__key--ens { color: var(--a-text); }
+
+/* ---------- G4 · стрічка рахунку в Компасі ---------- */
+.k-ens__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--a-s3);
+  flex-wrap: wrap;
+  padding: var(--a-s2) 0 var(--a-s3);
+  border-bottom: 1px solid var(--a-line-dim);
+  margin-bottom: var(--a-s3);
+}
+
+.k-ens__score {
+  display: flex;
+  align-items: baseline;
+  gap: var(--a-s2);
+  flex-wrap: wrap;
+  font-family: var(--a-mono);
+}
+
+/* Шухляди реєстру більше немає: після наказу по прийманню РЕЄСТР зʼявляється
+   тим самим доком і з тієї самої плашки, що і ЗРІЗ, тільки з правого боку.
+   Окремий паттерн з завісою на весь екран існував заради одного шару. */

@@ -1,0 +1,780 @@
+{
+  "schema_version": "1.4",
+  "stamp": "2026-11-06",
+  "weeks": {
+    "2026-W32": {
+      "markets": {
+        "m_2026_w32_01": {
+          "aggregate": {
+            "p_ensemble": 0.57,
+            "p_ensemble_raw": 0.571382,
+            "p_ensemble_pct": 57,
+            "p_humans_median": 0.55,
+            "spread_p10_p90": [
+              0.445,
+              0.676
+            ],
+            "divergence_flag": false,
+            "divergence_pp": 0,
+            "n_bets": 3,
+            "n_estimates": 4,
+            "preliminary": false,
+            "san_weight": 0.3,
+            "l_humans": 0.106118,
+            "l_pool": 0.221147
+          },
+          "history": [
+            {
+              "date": "2026-08-04",
+              "p_ensemble": 0.48,
+              "p_san": 0.62,
+              "p_humans_median": 0.5
+            },
+            {
+              "date": "2026-08-06",
+              "p_ensemble": 0.52,
+              "p_san": 0.62,
+              "p_humans_median": 0.52
+            },
+            {
+              "date": "2026-08-08",
+              "p_ensemble": 0.55,
+              "p_san": 0.62,
+              "p_humans_median": 0.55
+            },
+            {
+              "date": "2026-08-12",
+              "p_ensemble": 0.57,
+              "p_san": 0.62,
+              "p_humans_median": 0.55
+            },
+            {
+              "date": "2026-08-13",
+              "p_ensemble": 0.57,
+              "p_san": 0.62,
+              "p_humans_median": 0.55
+            },
+            {
+              "date": "2026-08-16",
+              "p_ensemble": 0.57,
+              "p_san": 0.62,
+              "p_humans_median": 0.55
+            }
+          ]
+        },
+        "m_2026_w32_02": {
+          "aggregate": {
+            "p_ensemble": 0.5,
+            "p_ensemble_raw": 0.496138,
+            "p_ensemble_pct": 50,
+            "p_humans_median": 0.65,
+            "spread_p10_p90": [
+              0.32,
+              0.685
+            ],
+            "divergence_flag": true,
+            "divergence_pp": 45,
+            "n_bets": 3,
+            "n_estimates": 4,
+            "preliminary": false,
+            "san_weight": 0.3,
+            "l_humans": 0.577152,
+            "l_pool": -0.011882
+          },
+          "history": [
+            {
+              "date": "2026-08-04",
+              "p_ensemble": 0.62,
+              "p_san": 0.35,
+              "p_humans_median": 0.66
+            },
+            {
+              "date": "2026-08-06",
+              "p_ensemble": 0.58,
+              "p_san": 0.28,
+              "p_humans_median": 0.65
+            },
+            {
+              "date": "2026-08-08",
+              "p_ensemble": 0.53,
+              "p_san": 0.2,
+              "p_humans_median": 0.65
+            },
+            {
+              "date": "2026-08-12",
+              "p_ensemble": 0.5,
+              "p_san": 0.2,
+              "p_humans_median": 0.65
+            },
+            {
+              "date": "2026-08-13",
+              "p_ensemble": 0.5,
+              "p_san": 0.2,
+              "p_humans_median": 0.65
+            },
+            {
+              "date": "2026-08-16",
+              "p_ensemble": 0.5,
+              "p_san": 0.2,
+              "p_humans_median": 0.65
+            }
+          ]
+        },
+        "m_2026_w32_03": {
+          "aggregate": {
+            "p_ensemble": 0.43,
+            "p_ensemble_raw": 0.432974,
+            "p_ensemble_pct": 43,
+            "p_humans_median": 0.45,
+            "spread_p10_p90": [
+              0.37,
+              0.49
+            ],
+            "divergence_flag": false,
+            "divergence_pp": 0,
+            "n_bets": 3,
+            "n_estimates": 3,
+            "preliminary": false,
+            "san_weight": 0,
+            "l_humans": -0.207483,
+            "l_pool": -0.207483
+          },
+          "history": [
+            {
+              "date": "2026-08-06",
+              "p_ensemble": 0.38,
+              "p_san": null,
+              "p_humans_median": 0.4
+            },
+            {
+              "date": "2026-08-08",
+              "p_ensemble": 0.41,
+              "p_san": null,
+              "p_humans_median": 0.43
+            },
+            {
+              "date": "2026-08-12",
+              "p_ensemble": 0.43,
+              "p_san": null,
+              "p_humans_median": 0.45
+            },
+            {
+              "date": "2026-08-13",
+              "p_ensemble": 0.43,
+              "p_san": null,
+              "p_humans_median": 0.45
+            },
+            {
+              "date": "2026-08-16",
+              "p_ensemble": 0.43,
+              "p_san": null,
+              "p_humans_median": 0.45
+            }
+          ]
+        },
+        "m_2026_w31_04": {
+          "aggregate": {
+            "p_ensemble": 0.63,
+            "p_ensemble_raw": 0.632679,
+            "p_ensemble_pct": 63,
+            "p_humans_median": 0.55,
+            "spread_p10_p90": [
+              0.48,
+              0.67
+            ],
+            "divergence_flag": false,
+            "divergence_pp": 0,
+            "n_bets": 3,
+            "n_estimates": 4,
+            "preliminary": false,
+            "san_weight": 0.3,
+            "l_humans": 0.234373,
+            "l_pool": 0.41825
+          },
+          "history": [
+            {
+              "date": "2026-07-30",
+              "p_ensemble": 0.66,
+              "p_san": 0.7,
+              "p_humans_median": 0.58
+            },
+            {
+              "date": "2026-08-02",
+              "p_ensemble": 0.64,
+              "p_san": 0.7,
+              "p_humans_median": 0.56
+            },
+            {
+              "date": "2026-08-05",
+              "p_ensemble": 0.63,
+              "p_san": 0.7,
+              "p_humans_median": 0.55
+            },
+            {
+              "date": "2026-08-12",
+              "p_ensemble": 0.63,
+              "p_san": 0.7,
+              "p_humans_median": 0.55
+            },
+            {
+              "date": "2026-08-13",
+              "p_ensemble": 0.63,
+              "p_san": 0.7,
+              "p_humans_median": 0.55
+            },
+            {
+              "date": "2026-08-16",
+              "p_ensemble": 0.63,
+              "p_san": 0.7,
+              "p_humans_median": 0.55
+            }
+          ]
+        },
+        "m_2026_w32_05": {
+          "aggregate": {
+            "p_ensemble": 0.31,
+            "p_ensemble_raw": 0.313319,
+            "p_ensemble_pct": 31,
+            "p_humans_median": 0.38,
+            "spread_p10_p90": [
+              0.315,
+              0.429
+            ],
+            "divergence_flag": false,
+            "divergence_pp": 0,
+            "n_bets": 3,
+            "n_estimates": 4,
+            "preliminary": false,
+            "san_weight": 0.3,
+            "l_humans": -0.596946,
+            "l_pool": -0.603574
+          },
+          "history": [
+            {
+              "date": "2026-08-06",
+              "p_ensemble": 0.34,
+              "p_san": 0.35,
+              "p_humans_median": 0.38
+            },
+            {
+              "date": "2026-08-09",
+              "p_ensemble": 0.33,
+              "p_san": 0.35,
+              "p_humans_median": 0.38
+            },
+            {
+              "date": "2026-08-12",
+              "p_ensemble": 0.32,
+              "p_san": 0.35,
+              "p_humans_median": 0.38
+            },
+            {
+              "date": "2026-08-13",
+              "p_ensemble": 0.31,
+              "p_san": 0.35,
+              "p_humans_median": 0.38
+            },
+            {
+              "date": "2026-08-16",
+              "p_ensemble": 0.31,
+              "p_san": 0.35,
+              "p_humans_median": 0.38
+            }
+          ]
+        }
+      },
+      "quarter_score": {
+        "resolved_total": 1,
+        "hits": 0,
+        "misses": 1,
+        "brier_ensemble": 0.4003,
+        "brier_san_solo": 0.49,
+        "brier_humans_solo": 0.3025
+      }
+    },
+    "2026-W33": {
+      "markets": {
+        "m_2026_w32_01": {
+          "aggregate": {
+            "p_ensemble": 0.57,
+            "p_ensemble_raw": 0.571382,
+            "p_ensemble_pct": 57,
+            "p_humans_median": 0.55,
+            "spread_p10_p90": [
+              0.445,
+              0.676
+            ],
+            "divergence_flag": false,
+            "divergence_pp": 0,
+            "n_bets": 3,
+            "n_estimates": 4,
+            "preliminary": false,
+            "san_weight": 0.3,
+            "l_humans": 0.106118,
+            "l_pool": 0.221147
+          },
+          "history": [
+            {
+              "date": "2026-08-17",
+              "p_ensemble": 0.57,
+              "p_san": 0.62,
+              "p_humans_median": 0.55
+            }
+          ]
+        },
+        "m_2026_w32_02": {
+          "aggregate": {
+            "p_ensemble": 0.5,
+            "p_ensemble_raw": 0.496138,
+            "p_ensemble_pct": 50,
+            "p_humans_median": 0.65,
+            "spread_p10_p90": [
+              0.32,
+              0.685
+            ],
+            "divergence_flag": true,
+            "divergence_pp": 45,
+            "n_bets": 3,
+            "n_estimates": 4,
+            "preliminary": false,
+            "san_weight": 0.3,
+            "l_humans": 0.577152,
+            "l_pool": -0.011882
+          },
+          "history": [
+            {
+              "date": "2026-08-17",
+              "p_ensemble": 0.5,
+              "p_san": 0.2,
+              "p_humans_median": 0.65
+            }
+          ]
+        },
+        "m_2026_w32_03": {
+          "aggregate": {
+            "p_ensemble": 0.43,
+            "p_ensemble_raw": 0.432974,
+            "p_ensemble_pct": 43,
+            "p_humans_median": 0.45,
+            "spread_p10_p90": [
+              0.37,
+              0.49
+            ],
+            "divergence_flag": false,
+            "divergence_pp": 0,
+            "n_bets": 3,
+            "n_estimates": 3,
+            "preliminary": false,
+            "san_weight": 0,
+            "l_humans": -0.207483,
+            "l_pool": -0.207483
+          },
+          "history": [
+            {
+              "date": "2026-08-17",
+              "p_ensemble": 0.43,
+              "p_san": null,
+              "p_humans_median": 0.45
+            }
+          ]
+        },
+        "m_2026_w32_05": {
+          "aggregate": {
+            "p_ensemble": 0.31,
+            "p_ensemble_raw": 0.313319,
+            "p_ensemble_pct": 31,
+            "p_humans_median": 0.38,
+            "spread_p10_p90": [
+              0.315,
+              0.429
+            ],
+            "divergence_flag": false,
+            "divergence_pp": 0,
+            "n_bets": 3,
+            "n_estimates": 4,
+            "preliminary": false,
+            "san_weight": 0.3,
+            "l_humans": -0.596946,
+            "l_pool": -0.603574
+          },
+          "history": [
+            {
+              "date": "2026-08-17",
+              "p_ensemble": 0.31,
+              "p_san": 0.35,
+              "p_humans_median": 0.38
+            }
+          ]
+        },
+        "m_2026_w33_01": {
+          "aggregate": {
+            "p_ensemble": 0.22,
+            "p_ensemble_raw": 0.217374,
+            "p_ensemble_pct": 22,
+            "p_humans_median": 0.275,
+            "spread_p10_p90": [
+              0.22,
+              0.36
+            ],
+            "divergence_flag": false,
+            "divergence_pp": 0,
+            "n_bets": 4,
+            "n_estimates": 5,
+            "preliminary": false,
+            "san_weight": 0.3,
+            "l_humans": -1.002964,
+            "l_pool": -0.985413
+          },
+          "history": [
+            {
+              "date": "2026-08-17",
+              "p_ensemble": 0.22,
+              "p_san": 0.28,
+              "p_humans_median": 0.275
+            }
+          ]
+        },
+        "m_2026_w33_02": {
+          "aggregate": {
+            "p_ensemble": 0.69,
+            "p_ensemble_raw": 0.69407,
+            "p_ensemble_pct": 69,
+            "p_humans_median": 0.62,
+            "spread_p10_p90": [
+              0.536,
+              0.688
+            ],
+            "divergence_flag": false,
+            "divergence_pp": 0,
+            "n_bets": 3,
+            "n_estimates": 4,
+            "preliminary": false,
+            "san_weight": 0.3,
+            "l_humans": 0.615969,
+            "l_pool": 0.630167
+          },
+          "history": [
+            {
+              "date": "2026-08-17",
+              "p_ensemble": 0.69,
+              "p_san": 0.66,
+              "p_humans_median": 0.62
+            }
+          ]
+        }
+      },
+      "quarter_score": {
+        "resolved_total": 0,
+        "hits": 0,
+        "misses": 0,
+        "brier_ensemble": null,
+        "brier_san_solo": null,
+        "brier_humans_solo": null
+      }
+    },
+    "2026-W34": {
+      "markets": {
+        "m_2026_w32_01": {
+          "aggregate": {
+            "p_ensemble": 0.57,
+            "p_ensemble_raw": 0.571382,
+            "p_ensemble_pct": 57,
+            "p_humans_median": 0.55,
+            "spread_p10_p90": [
+              0.445,
+              0.676
+            ],
+            "divergence_flag": false,
+            "divergence_pp": 0,
+            "n_bets": 3,
+            "n_estimates": 4,
+            "preliminary": false,
+            "san_weight": 0.3,
+            "l_humans": 0.106118,
+            "l_pool": 0.221147
+          },
+          "history": [
+            {
+              "date": "2026-09-02",
+              "p_ensemble": 0.57,
+              "p_san": 0.62,
+              "p_humans_median": 0.55
+            }
+          ]
+        },
+        "m_2026_w32_02": {
+          "aggregate": {
+            "p_ensemble": 0.5,
+            "p_ensemble_raw": 0.496138,
+            "p_ensemble_pct": 50,
+            "p_humans_median": 0.65,
+            "spread_p10_p90": [
+              0.32,
+              0.685
+            ],
+            "divergence_flag": true,
+            "divergence_pp": 45,
+            "n_bets": 3,
+            "n_estimates": 4,
+            "preliminary": false,
+            "san_weight": 0.3,
+            "l_humans": 0.577152,
+            "l_pool": -0.011882
+          },
+          "history": [
+            {
+              "date": "2026-09-02",
+              "p_ensemble": 0.5,
+              "p_san": 0.2,
+              "p_humans_median": 0.65
+            }
+          ]
+        },
+        "m_2026_w32_03": {
+          "aggregate": {
+            "p_ensemble": 0.43,
+            "p_ensemble_raw": 0.432974,
+            "p_ensemble_pct": 43,
+            "p_humans_median": 0.45,
+            "spread_p10_p90": [
+              0.37,
+              0.49
+            ],
+            "divergence_flag": false,
+            "divergence_pp": 0,
+            "n_bets": 3,
+            "n_estimates": 3,
+            "preliminary": false,
+            "san_weight": 0,
+            "l_humans": -0.207483,
+            "l_pool": -0.207483
+          },
+          "history": [
+            {
+              "date": "2026-09-02",
+              "p_ensemble": 0.43,
+              "p_san": null,
+              "p_humans_median": 0.45
+            }
+          ]
+        },
+        "m_2026_w32_05": {
+          "aggregate": {
+            "p_ensemble": 0.31,
+            "p_ensemble_raw": 0.313319,
+            "p_ensemble_pct": 31,
+            "p_humans_median": 0.38,
+            "spread_p10_p90": [
+              0.315,
+              0.429
+            ],
+            "divergence_flag": false,
+            "divergence_pp": 0,
+            "n_bets": 3,
+            "n_estimates": 4,
+            "preliminary": false,
+            "san_weight": 0.3,
+            "l_humans": -0.596946,
+            "l_pool": -0.603574
+          },
+          "history": [
+            {
+              "date": "2026-09-02",
+              "p_ensemble": 0.31,
+              "p_san": 0.35,
+              "p_humans_median": 0.38
+            }
+          ]
+        },
+        "m_2026_w33_01": {
+          "aggregate": {
+            "p_ensemble": 0.22,
+            "p_ensemble_raw": 0.217374,
+            "p_ensemble_pct": 22,
+            "p_humans_median": 0.275,
+            "spread_p10_p90": [
+              0.22,
+              0.36
+            ],
+            "divergence_flag": false,
+            "divergence_pp": 0,
+            "n_bets": 4,
+            "n_estimates": 5,
+            "preliminary": false,
+            "san_weight": 0.3,
+            "l_humans": -1.002964,
+            "l_pool": -0.985413
+          },
+          "history": [
+            {
+              "date": "2026-09-02",
+              "p_ensemble": 0.22,
+              "p_san": 0.28,
+              "p_humans_median": 0.275
+            }
+          ]
+        },
+        "m_2026_w33_02": {
+          "aggregate": {
+            "p_ensemble": 0.69,
+            "p_ensemble_raw": 0.69407,
+            "p_ensemble_pct": 69,
+            "p_humans_median": 0.62,
+            "spread_p10_p90": [
+              0.536,
+              0.688
+            ],
+            "divergence_flag": false,
+            "divergence_pp": 0,
+            "n_bets": 3,
+            "n_estimates": 4,
+            "preliminary": false,
+            "san_weight": 0.3,
+            "l_humans": 0.615969,
+            "l_pool": 0.630167
+          },
+          "history": [
+            {
+              "date": "2026-09-02",
+              "p_ensemble": 0.69,
+              "p_san": 0.66,
+              "p_humans_median": 0.62
+            }
+          ]
+        }
+      },
+      "quarter_score": {
+        "resolved_total": 2,
+        "hits": 0,
+        "misses": 2,
+        "brier_ensemble": 0.3678,
+        "brier_san_solo": 0.5378,
+        "brier_humans_solo": 0.2535
+      }
+    },
+    "2026-W35": {
+      "markets": {
+        "m_2026_w32_01": {
+          "aggregate": {
+            "p_ensemble": 0.57,
+            "p_ensemble_raw": 0.571382,
+            "p_ensemble_pct": 57,
+            "p_humans_median": 0.55,
+            "spread_p10_p90": [
+              0.445,
+              0.676
+            ],
+            "divergence_flag": false,
+            "divergence_pp": 0,
+            "n_bets": 3,
+            "n_estimates": 4,
+            "preliminary": false,
+            "san_weight": 0.3,
+            "l_humans": 0.106118,
+            "l_pool": 0.221147
+          },
+          "history": [
+            {
+              "date": "2026-09-02",
+              "p_ensemble": 0.57,
+              "p_san": 0.62,
+              "p_humans_median": 0.55
+            }
+          ]
+        },
+        "m_2026_w32_03": {
+          "aggregate": {
+            "p_ensemble": 0.43,
+            "p_ensemble_raw": 0.432974,
+            "p_ensemble_pct": 43,
+            "p_humans_median": 0.45,
+            "spread_p10_p90": [
+              0.37,
+              0.49
+            ],
+            "divergence_flag": false,
+            "divergence_pp": 0,
+            "n_bets": 3,
+            "n_estimates": 3,
+            "preliminary": false,
+            "san_weight": 0,
+            "l_humans": -0.207483,
+            "l_pool": -0.207483
+          },
+          "history": [
+            {
+              "date": "2026-09-02",
+              "p_ensemble": 0.43,
+              "p_san": null,
+              "p_humans_median": 0.45
+            }
+          ]
+        },
+        "m_2026_w32_05": {
+          "aggregate": {
+            "p_ensemble": 0.31,
+            "p_ensemble_raw": 0.313319,
+            "p_ensemble_pct": 31,
+            "p_humans_median": 0.38,
+            "spread_p10_p90": [
+              0.315,
+              0.429
+            ],
+            "divergence_flag": false,
+            "divergence_pp": 0,
+            "n_bets": 3,
+            "n_estimates": 4,
+            "preliminary": false,
+            "san_weight": 0.3,
+            "l_humans": -0.596946,
+            "l_pool": -0.603574
+          },
+          "history": [
+            {
+              "date": "2026-09-02",
+              "p_ensemble": 0.31,
+              "p_san": 0.35,
+              "p_humans_median": 0.38
+            }
+          ]
+        },
+        "m_2026_w33_01": {
+          "aggregate": {
+            "p_ensemble": 0.22,
+            "p_ensemble_raw": 0.217374,
+            "p_ensemble_pct": 22,
+            "p_humans_median": 0.275,
+            "spread_p10_p90": [
+              0.22,
+              0.36
+            ],
+            "divergence_flag": false,
+            "divergence_pp": 0,
+            "n_bets": 4,
+            "n_estimates": 5,
+            "preliminary": false,
+            "san_weight": 0.3,
+            "l_humans": -1.002964,
+            "l_pool": -0.985413
+          },
+          "history": [
+            {
+              "date": "2026-09-02",
+              "p_ensemble": 0.22,
+              "p_san": 0.28,
+              "p_humans_median": 0.275
+            }
+          ]
+        }
+      },
+      "quarter_score": {
+        "resolved_total": 0,
+        "hits": 0,
+        "misses": 0,
+        "brier_ensemble": null,
+        "brier_san_solo": null,
+        "brier_humans_solo": null
+      }
+    }
+  }
+}

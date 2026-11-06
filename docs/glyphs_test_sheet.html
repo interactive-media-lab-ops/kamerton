@@ -1,0 +1,152 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>КАМЕРТОН · тест-аркуш гліфів акторів v2</title>
+<style>
+  :root {
+    --bg: #0A1713;
+    --raised: #0E1F1A;
+    --line: #1E3B33;
+    --text: #DDEDE7;
+    --dim: #6E8B83;
+    --cyan: #63E6C8;
+    --constr: #7FD8A0;
+    --destr: #E88B72;
+    --brass: #C9A227;
+    --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+  }
+  body {
+    margin: 0; padding: 28px 32px; background: var(--bg); color: var(--text);
+    font-family: var(--sans); font-size: 15px; line-height: 1.6;
+  }
+  h1 { font-size: 20px; letter-spacing: .12em; text-transform: uppercase; color: var(--cyan); margin: 0 0 4px; }
+  .note { color: var(--dim); font-size: 13px; max-width: 70ch; }
+  table { border-collapse: collapse; margin-top: 26px; }
+  th, td { border: 1px solid var(--line); padding: 12px 16px; text-align: center; vertical-align: middle; }
+  th { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--dim); font-weight: 400; }
+  th.row { text-align: left; color: var(--text); font-size: 12px; }
+  .cell { display: flex; gap: 18px; align-items: center; justify-content: center; }
+  .hexwrap { position: relative; display: inline-flex; align-items: center; justify-content: center; }
+  .cap { font-family: var(--mono); font-size: 10px; color: var(--dim); display: block; margin-top: 6px; }
+  .legend { margin-top: 26px; font-size: 13px; color: var(--dim); }
+  .legend b { color: var(--text); font-weight: 400; }
+</style>
+
+<h1>Гліфи акторів v2 · тест-аркуш</h1>
+<p class="note">
+  G6. Чотири типи сутності, stroke-only, тільки токени скіну. Портретів немає;
+  піктограми людей допустимі, обличчя ні. Тест приймання: людина без легенди
+  правильно називає всі чотири типи.
+</p>
+<p class="note">
+  Кожен гліф у трьох розмірах (r = 14 / 20 / 28) і у двох станах: dim (спокій)
+  і bright (фокус або гучний актор). Шестикутник це та сама маска, що на карті.
+</p>
+
+<table id="sheet"></table>
+
+<div class="legend">
+  <p><b>інституція</b> будівля: фронтон над трьома колонами, замкнений контур із основою.</p>
+  <p><b>аудиторія</b> три силуети людей у ряд: контур голови плюс дуга плечей, без рис обличчя.</p>
+  <p><b>організована група</b> ланка: три вузли, зʼєднані лініями.</p>
+  <p><b>підсилювач</b> рупор із двома дугами випромінювання.</p>
+</div>
+
+<script>
+const TYPES = [
+  ['institution', 'інституція'],
+  ['audience', 'аудиторія'],
+  ['group', 'організована група'],
+  ['amplifier', 'підсилювач'],
+];
+const SIZES = [14, 20, 28];
+
+function hexPath(r) {
+  let d = '';
+  for (let i = 0; i < 6; i++) {
+    const a = (Math.PI / 3) * i - Math.PI / 6;
+    const x = Math.cos(a) * r, y = Math.sin(a) * r;
+    d += (i ? 'L' : 'M') + x.toFixed(2) + ',' + y.toFixed(2);
+  }
+  return d + 'Z';
+}
+
+// Гліфи в локальних координатах з центром у 0,0. Ті самі пропорції підуть у canvas.
+const GLYPH = {
+  // Будівля: фронтон-трикутник над трьома колонами, знизу суцільна основа.
+  institution(r) {
+    const w = r * 0.66, top = -r * 0.46, eave = -r * 0.16, bot = r * 0.42;
+    let d = `M${-w},${eave} L0,${top} L${w},${eave} Z`;
+    d += ` M${-w * 1.12},${bot} L${w * 1.12},${bot}`;
+    for (const k of [-1, 0, 1]) {
+      d += ` M${k * w * 0.62},${eave} L${k * w * 0.62},${bot}`;
+    }
+    return d;
+  },
+  // Три фігури людей у ряд: коло-голова + дуга-плечі.
+  audience(r) {
+    const step = r * 0.52, head = r * 0.15, y = -r * 0.06;
+    let d = '';
+    for (const k of [-1, 0, 1]) {
+      const cx = k * step;
+      d += ` M${cx + head},${y} A${head},${head} 0 1,0 ${cx - head},${y} A${head},${head} 0 1,0 ${cx + head},${y}`;
+      const sw = r * 0.26;
+      d += ` M${cx - sw},${y + r * 0.44} A${sw},${sw * 0.9} 0 0,1 ${cx + sw},${y + r * 0.44}`;
+    }
+    return d.trim();
+  },
+  // Ланка: три вузли, зʼєднані лініями. Вузли малюються окремо як заливка.
+  group(r) {
+    const d = r * 0.44;
+    const p = [[0, -d], [-d * 0.94, d * 0.6], [d * 0.94, d * 0.6]];
+    return `M${p[0]}L${p[1]}L${p[2]}Z`;
+  },
+  // Рупор із двома дугами випромінювання.
+  amplifier(r) {
+    const x0 = -r * 0.58, x1 = -r * 0.05, h = r * 0.42;
+    let d = `M${x0},${-h * 0.42} L${x1},${-h} L${x1},${h} L${x0},${h * 0.42} Z`;
+    d += ` M${x0},${-h * 0.42} L${x0 - r * 0.16},${-h * 0.42} L${x0 - r * 0.16},${h * 0.42} L${x0},${h * 0.42}`;
+    for (let i = 1; i <= 2; i++) {
+      const rr = r * (0.24 + i * 0.2);
+      d += ` M${x1 + rr * 0.5},${-rr * 0.72} A${rr},${rr} 0 0,1 ${x1 + rr * 0.5},${rr * 0.72}`;
+    }
+    return d;
+  },
+};
+
+function glyphSvg(type, r, bright) {
+  const box = r * 2.6;
+  const stroke = bright ? 'var(--cyan)' : 'var(--dim)';
+  const op = bright ? 1 : 0.75;
+  const lw = Math.max(1.1, r * 0.075);
+  let extra = '';
+  if (type === 'group') {
+    const d = r * 0.44;
+    [[0, -d], [-d * 0.94, d * 0.6], [d * 0.94, d * 0.6]].forEach(([x, y]) => {
+      extra += `<circle cx="${x}" cy="${y}" r="${r * 0.15}" fill="${stroke}" opacity="${op}"/>`;
+    });
+  }
+  return `<svg width="${box}" height="${box}" viewBox="${-box / 2} ${-box / 2} ${box} ${box}">
+    <path d="${hexPath(r)}" fill="none" stroke="var(--line)" stroke-width="1"/>
+    <path d="${GLYPH[type](r)}" fill="none" stroke="${stroke}" stroke-width="${lw}"
+          stroke-linecap="round" stroke-linejoin="round" opacity="${op}"/>
+    ${extra}
+  </svg>`;
+}
+
+const t = document.getElementById('sheet');
+let html = '<tr><th class="row">тип</th>';
+SIZES.forEach(s => { html += `<th>r = ${s}</th>`; });
+html += '</tr>';
+TYPES.forEach(([key, label]) => {
+  html += `<tr><th class="row">${label}</th>`;
+  SIZES.forEach(s => {
+    html += `<td><div class="cell">
+      <span class="hexwrap">${glyphSvg(key, s, false)}<span class="cap">dim</span></span>
+      <span class="hexwrap">${glyphSvg(key, s, true)}<span class="cap">bright</span></span>
+    </div></td>`;
+  });
+  html += '</tr>';
+});
+t.innerHTML = html;
+</script>

@@ -1,0 +1,343 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "meta": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": {}
+    },
+    "weeks": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^\\d{4}-W\\d{1,2}$"
+          },
+          "period": {
+            "type": "object",
+            "properties": {
+              "from": {
+                "type": "string",
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+              },
+              "to": {
+                "type": "string",
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+              }
+            },
+            "required": [
+              "from",
+              "to"
+            ]
+          },
+          "hidden": {
+            "type": "boolean"
+          },
+          "topics": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]*$"
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "aud": {
+                  "type": "string"
+                },
+                "trend": {
+                  "type": "string",
+                  "enum": [
+                    "new",
+                    "up",
+                    "flat",
+                    "down",
+                    "out"
+                  ]
+                },
+                "tone": {
+                  "type": "string"
+                },
+                "tone_score": {
+                  "type": "number",
+                  "minimum": -1,
+                  "maximum": 1
+                },
+                "salience": {
+                  "type": "number"
+                },
+                "verification": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status"
+                  ],
+                  "additionalProperties": {}
+                },
+                "links": {
+                  "type": "array",
+                  "items": {}
+                }
+              },
+              "required": [
+                "id",
+                "name"
+              ],
+              "additionalProperties": {}
+            }
+          },
+          "actors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "stance": {
+                  "type": "number",
+                  "minimum": -1,
+                  "maximum": 1
+                },
+                "activity": {
+                  "type": "number",
+                  "minimum": 1,
+                  "maximum": 5
+                },
+                "note": {
+                  "type": "string"
+                },
+                "links": {
+                  "type": "array",
+                  "items": {}
+                }
+              },
+              "required": [
+                "id"
+              ],
+              "additionalProperties": {}
+            }
+          },
+          "cases": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]*$"
+                },
+                "title": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "opened": {
+                  "type": "string",
+                  "pattern": "^\\d{4}-W\\d{1,2}$"
+                },
+                "next_check": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^\\d{4}-W\\d{1,2}$"
+                    },
+                    {
+                      "type": "string",
+                      "const": ""
+                    }
+                  ]
+                },
+                "status": {
+                  "type": "string"
+                },
+                "host_topic": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]*$"
+                }
+              },
+              "required": [
+                "id",
+                "title"
+              ],
+              "additionalProperties": {}
+            }
+          },
+          "method_notes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "type": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "text"
+              ]
+            }
+          },
+          "claims": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]*$"
+                },
+                "text": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "fact",
+                    "assessment",
+                    "hypothesis"
+                  ]
+                },
+                "sources": {
+                  "default": [],
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "date": {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                }
+              },
+              "required": [
+                "id",
+                "text",
+                "status"
+              ]
+            }
+          },
+          "forecasts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]*$"
+                },
+                "text": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "criterion": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "deadline": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "open",
+                    "hit",
+                    "miss",
+                    "partial_hit",
+                    "void"
+                  ]
+                },
+                "opened": {
+                  "type": "string"
+                },
+                "resolution_note": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "text",
+                "criterion",
+                "deadline",
+                "status"
+              ],
+              "additionalProperties": {}
+            }
+          },
+          "scenarios": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]*$"
+                },
+                "lever_id": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]*$"
+                },
+                "effects": {
+                  "default": [],
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "target": {
+                        "type": "string"
+                      },
+                      "delta": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "target",
+                      "delta"
+                    ]
+                  }
+                },
+                "model_version": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "lever_id",
+                "model_version"
+              ]
+            }
+          }
+        },
+        "required": [
+          "id",
+          "period"
+        ],
+        "additionalProperties": {}
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "meta",
+    "weeks"
+  ],
+  "additionalProperties": {}
+}

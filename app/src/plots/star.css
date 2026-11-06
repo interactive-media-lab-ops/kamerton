@@ -1,0 +1,146 @@
+/* КАМЕРТОН · вкладка СЮЖЕТИ · морфології зір: цикли руху
+
+   Файл вкладки розділений на три за зонами відповідальності, а не заради
+   охайності: морфології, сцена поля і зум-сцена правляться незалежно одна від
+   одної, і тримати їх в одному файлі означало правити три різні речі в одному
+   місці. Спільні токени і дисципліна руху живуть у scene.css. */
+
+/* ------------------------------------------------------------------ */
+/* 2. Морфології: рух                                                   */
+/* ------------------------------------------------------------------ */
+
+/* Геометрія морфологій живе в PlotStar.jsx, бо вона рахується від радіуса.
+   Тут тільки цикли. Періоди 4-12 с навмисно: рух має бути повільніший за
+   дихання, ніщо не крутиться, не стрибає і не bounce-иться.
+
+   Базовий стан кожного рухомого елемента (inline transform/opacity у розмітці)
+   це його найвиразніший кадр. Анімація перекриває базовий стан, поки грає, і
+   повертає його, коли система просить спокою. */
+
+.k-syu { overflow: visible; display: block; }
+
+/* 3.1 Витікання з розриву кільця: народжується, падає, гасне, не повертається. */
+/* Яскравість тримається більшу частину шляху і гасне тільки в кінці. Рівне
+   згасання від старту лишало видимими дві-три краплі з шести, і течія на карті
+   читалась як пара крапок, а не як потік. */
+@keyframes k-syu-drip {
+  0% { transform: translateY(0); opacity: 0.9; }
+  55% { opacity: 0.85; }
+  100% { transform: translateY(var(--fall)); opacity: 0; }
+}
+.k-syu__drip {
+  animation: k-syu-drip calc(6s * var(--syu-speed, 1)) linear infinite;
+  animation-delay: calc(var(--delay, 0s) * var(--syu-speed, 1));
+}
+
+/* 3.2 Відкол свого: фрагмент дрейфує від ядра і назад, синусоїда, період 10 с. */
+@keyframes k-syu-shard {
+  from { transform: translate(0, 0); }
+  to { transform: translate(var(--dx), var(--dy)); }
+}
+.k-syu__shard {
+  animation: k-syu-shard calc(5s * var(--syu-speed, 1)) ease-in-out infinite alternate;
+}
+
+/* 3.3 Центр віддає себе назовні: течія від ядра до 3.4r і згасання. */
+@keyframes k-syu-ray {
+  0% { transform: translate(0, 0); opacity: 0.95; }
+  60% { opacity: 0.9; }
+  100% { transform: translate(var(--dx), var(--dy)); opacity: 0; }
+}
+.k-syu__ray {
+  animation: k-syu-ray calc(4s * var(--syu-speed, 1)) linear infinite;
+  animation-delay: calc(var(--delay, 0s) * var(--syu-speed, 1));
+}
+
+/* Ядро «дихає» в такт відтоку: стискається на 12%, період 5 с. Шість відсотків
+   на ядрі 11px це рух у півпікселя, тобто заявлений, але невидимий. */
+@keyframes k-syu-giving {
+  from { transform: scale(1); }
+  to { transform: scale(0.88); }
+}
+.k-syu__giving {
+  transform-origin: center;
+  animation: k-syu-giving calc(2.5s * var(--syu-speed, 1)) ease-in-out infinite alternate;
+}
+
+/* 3.4 Лещата: дуги ходять від 2.89r до 2.01r, період 4 с. Хід 0.88r замість
+   0.4r, бо стиск тут читається саме рухом: на короткому ході дуги дрижали. */
+@keyframes k-syu-vice {
+  from { transform: scale(1.18); }
+  to { transform: scale(0.82); }
+}
+.k-syu__vice {
+  transform-origin: center;
+  animation: k-syu-vice calc(2s * var(--syu-speed, 1)) ease-in-out infinite alternate;
+}
+
+/* Ядро пульсує В ПРОТИФАЗІ: дуги на мінімумі, ядро на максимумі яскравості. */
+@keyframes k-syu-resist {
+  from { opacity: 0.72; }
+  to { opacity: 1; }
+}
+.k-syu__resist {
+  animation: k-syu-resist calc(2s * var(--syu-speed, 1)) ease-in-out infinite alternate;
+}
+
+/* 3.5 Недосяжна орбіта: супутник іде від апогею до перигею і гасне на останніх
+   15% шляху. Точка згасання щоразу та сама, повернення не стається ніколи. */
+@keyframes k-syu-sat {
+  0% { offset-distance: 0%; opacity: 0; }
+  6% { opacity: 1; }
+  42.5% { opacity: 1; }
+  50% { offset-distance: 50%; opacity: 0; }
+  100% { offset-distance: 50%; opacity: 0; }
+}
+.k-syu__sat {
+  animation: k-syu-sat calc(9s * var(--syu-speed, 1)) linear infinite;
+}
+
+/* 3.6 Рій: сила формується знизу і торкається кільця. */
+@keyframes k-syu-swarm {
+  0% { transform: translate(0, 0); opacity: 0; }
+  20% { opacity: 0.95; }
+  92% { opacity: 0.95; }
+  100% { transform: translate(var(--dx), var(--dy)); opacity: 0; }
+}
+.k-syu__swarm {
+  animation: k-syu-swarm calc(7s * var(--syu-speed, 1)) linear infinite;
+  animation-delay: calc(var(--delay, 0s) * var(--syu-speed, 1));
+}
+
+/* Сплеск кільця в момент дотику: 300 мс на хвилю, чотири хвилі за цикл.
+
+   СВІДОМЕ РОЗХОДЖЕННЯ ЗІ СПЕКОЮ, назване вголос. Спека просить сплеск близько
+   +15% яскравості кільця. Тут він сильніший: накладене кільце виходить на
+   opacity 0.5 у тоні --syuzh-star поверх базового кільця --syuzh-dim, у якого
+   власна альфа 0.35, тож композит це 0.5 + 0.35 * 0.5 = 0.675 проти 0.35,
+   тобто близько +93%. Плюс сам штрих сплеску вдвічі товщий за штрих кільця.
+
+   Причина. Зоря на карті це 6-16px, кільце при r = 11 має штрих в один піксель.
+   Приріст у 15% на однопіксельній лінії лежить нижче за поріг помітності на
+   темному тлі: сплеск формально є, а дотику рою до кільця не видно, і вся
+   морфологія 3.6 розсипається на «кільце окремо, крапки окремо». Ціна за силу
+   мала: спалах триває 300 мс і повторюється чотири рази за 7-секундний цикл,
+   тобто це подія, а не блимання, і за межі кільця він не виходить.
+   Якщо приймання захоче рівно спеку, міняти треба тут одне число: 0.5 на 0.08
+   дає композит 0.4025, тобто рівно ті самі +15%. */
+@keyframes k-syu-hit {
+  0%, 82% { opacity: 0; }
+  88% { opacity: 0.5; }
+  100% { opacity: 0; }
+}
+.k-syu__hit {
+  animation: k-syu-hit calc(1.75s * var(--syu-speed, 1)) linear infinite;
+}
+
+/* 3.7 Конкуренція: привид другої сигнатури дихає, домінування не фіксоване. */
+@keyframes k-syu-ghost {
+  from { opacity: 0.2; }
+  to { opacity: 0.35; }
+}
+.k-syu__ghost {
+  opacity: 0.25;
+  animation: k-syu-ghost calc(3.5s * var(--syu-speed, 1)) ease-in-out infinite alternate;
+}
+

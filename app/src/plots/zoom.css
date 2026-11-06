@@ -1,0 +1,417 @@
+/* КАМЕРТОН · вкладка СЮЖЕТИ · зум-сцена сюжету
+
+   Файл вкладки розділений на три за зонами відповідальності, а не заради
+   охайності: морфології, сцена поля і зум-сцена правляться незалежно одна від
+   одної, і тримати їх в одному файлі означало правити три різні речі в одному
+   місці. Спільні токени і дисципліна руху живуть у scene.css. */
+
+/* ------------------------------------------------------------------ */
+/* 6. Зум-сцена                                                         */
+/* ------------------------------------------------------------------ */
+
+/* Вхід (сумарно 850 мс): 0-200 гаснуть решта вузлів, 100-750 камера зумиться
+   в зорю з центром у ній самій, 750-850 зоря перевтілюється в сцену через
+   crossfade. Читач не має побачити стрибка: зоря не зникає і не зʼявляється
+   в іншому місці, вона виростає. */
+.k-syuzh__parallax.is-zooming {
+  transform-origin: var(--zx, 50%) var(--zy, 50%);
+  animation: k-syuzh-camera 650ms 100ms var(--syuzh-ease) both;
+}
+
+@keyframes k-syuzh-camera {
+  from { transform: scale(1); }
+  to { transform: scale(7); }
+}
+
+.k-syuzh__parallax.is-zooming .k-syuzh__node { animation: k-syuzh-douse 200ms linear both; }
+.k-syuzh__parallax.is-zooming .k-syuzh__node.is-hero { animation: none; }
+
+@keyframes k-syuzh-douse { from { opacity: 1; } to { opacity: 0; } }
+
+/* Вихід за 450 мс: контент гасне (150), камера відʼїжджає (300), вузли
+   проявляються. */
+.k-syuzh__parallax.is-back-out {
+  transform-origin: var(--zx, 50%) var(--zy, 50%);
+  animation: k-syuzh-camera-out 300ms 150ms var(--syuzh-ease) both;
+}
+
+@keyframes k-syuzh-camera-out {
+  from { transform: scale(7); }
+  to { transform: scale(1); }
+}
+
+/* Сцена займає ВЕСЬ екран, а не місце карти: спека каже «повний екран», і
+   це не примха верстки. Зум це вихід з режиму читання карти в режим читання
+   історії, а сцена, затиснута в слот карти між шапкою і HUD, лишалась би ще
+   однією панеллю дашборду. Той самий приймач, що і в режиму ПРЕЦЕДЕНТИ:
+   position fixed, свій шар. */
+.k-syuzh__zoom {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  background: var(--syuzh-void);
+  animation: k-syuzh-veil 650ms 100ms var(--syuzh-ease) both;
+}
+
+@keyframes k-syuzh-veil { from { opacity: 0; } to { opacity: 1; } }
+
+/* Вихід це той самий рух назад, але контент гасне за 150 мс, а не за всі 450:
+   решту часу камера відʼїжджає, і текст сцени не має читатись поверх поля,
+   яке вже поїхало. Другий набір кадрів заради «те саме, але навпаки» це два
+   місця, які розійдуться при першій же правці, тому кадри ті самі. */
+.k-syuzh__zoom.is-leaving { animation: k-syuzh-veil 150ms var(--syuzh-ease) reverse both; }
+
+/* Небо сцени. Пил і туманності ті самі, що на полі (стилі живуть у scene.css),
+   але позиції туманностей тут свої: у сцені центр кадру належить зорі, а
+   нижню смугу тримає мова наслідків, тому плями відсунуті до країв. Текст не
+   має плавати на туманності, і правило 15% гучності від цього тільки виграє. */
+.k-syuzh__sky {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.k-syuzh__zoom .k-syuzh__neb--1 { left: -12%; top: -8%; }
+.k-syuzh__zoom .k-syuzh__neb--2 { right: -14%; top: 18%; }
+.k-syuzh__zoom .k-syuzh__neb--3 { left: 2%; bottom: -24%; }
+
+/* Контент стоїть над небом. Без явного шару статична шапка провалилась би під
+   позиціоноване небо, і пил ішов би поверх кнопки «назад». */
+.k-syuzh__zhead,
+.k-syuzh__scene { position: relative; z-index: 1; }
+
+.k-syuzh__zhead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--a-s3) var(--a-s5);
+}
+
+.k-syuzh__back {
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: var(--a-mono);
+  font-size: var(--a-fs-xs);
+  letter-spacing: var(--a-track);
+  color: var(--syuzh-dim);
+  cursor: pointer;
+}
+
+.k-syuzh__back:hover { color: var(--syuzh-focus); }
+
+.k-syuzh__scene {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* safe center це не примха: при переповненні звичайний center виносить
+     ПЕРШИЙ елемент вище області прокрутки, і заголовок сцени зрізається
+     намертво, бо scrollTop 0 туди вже не доскролює. */
+  justify-content: center;
+  justify-content: safe center;
+  gap: var(--a-s3);
+  padding: 0 var(--a-s6) var(--a-s5);
+  overflow: hidden auto;
+}
+
+.k-syuzh__title {
+  margin: 0;
+  font-family: var(--a-mono);
+  font-size: calc(var(--a-fs-xl) * 1.15);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  text-align: center;
+  color: var(--syuzh-star);
+}
+
+.k-syuzh__second {
+  margin: var(--a-s1) 0 0;
+  font-size: calc(var(--a-fs-xl) * 0.55);
+  line-height: 1.4;
+  text-align: center;
+  color: var(--syuzh-dim);
+}
+
+/* Маркер-привид біля назви secondary: та сама сигнатура, тільки прозоріша.
+   Конкуренція сюжетів це головний аналітичний сигнал шару, тому маркер має
+   читатись як ДРУГА ФОРМА тієї самої зорі, а не як крапка біля тексту.
+   Привидом він лишається прозорістю і розміром, а не непомітністю: сперечатись
+   із самою зорею сцени він однаково не може, вона в десять разів більша. */
+.k-syuzh__ghostmark {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 28px;
+  margin-right: 8px;
+  vertical-align: middle;
+  opacity: 0.5;
+}
+
+.k-syuzh__ghostmark .k-syu {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0.48);
+}
+
+.k-syuzh__subject {
+  margin: 0;
+  font-size: var(--a-fs-xs);
+  letter-spacing: var(--a-track);
+  color: var(--syuzh-dim);
+  text-align: center;
+}
+
+/* Тиша поля: вузол без розмітки. Один рядок по центру, розріджений трекінг і
+   багато повітря під ним. Це не помилка сцени, це її відповідь. */
+.k-syuzh__quiet {
+  margin: var(--a-s3) 0 0;
+  font-size: var(--a-fs-s);
+  line-height: 1.6;
+  letter-spacing: 0.24em;
+  color: var(--syuzh-dim);
+  text-align: center;
+}
+
+/* ------------------------------------------------------------------ */
+/* 6.1 Поле зорі: зоря, орбіта ролей, спектр психотипів                 */
+/* ------------------------------------------------------------------ */
+
+/* Одна система координат на всю сцену: центр цього блока це центр зорі, і все,
+   що тут стоїть, прибите до нього. Висота приходить з JS і дорівнює діаметру
+   орбіти ролей, тобто міряється в зорі, а не у вікні. Прозоре поле зору
+   морфології (8.4r проти 5r видимої зорі) у розкладці не бере участі: зоря
+   стоїть абсолютно, інакше її порожні поля виштовхнули б сцену за екран. */
+.k-syuzh__orbit {
+  position: relative;
+  width: 100%;
+  flex: none;
+}
+
+.k-syuzh__hero {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  /* Перевтілення: карта віддає зорю сцені через crossfade на 750-850 мс,
+     рівно у стик із зупинкою камери. */
+  animation: k-syuzh-morph 100ms linear 750ms both;
+}
+
+@keyframes k-syuzh-morph { from { opacity: 0; } to { opacity: 1; } }
+
+/* Видима орбіта ролей: тонке коло 1px на 20%. Без неї ролі читались би як
+   підписи збоку, а не як тіла, що обертаються навколо історії. Прозорість
+   зашита в колір рамки, а не в opacity: opacity тут забирає каскад появи. */
+.k-syuzh__ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border: 1px solid rgba(228, 244, 236, 0.20);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* Роль це тіло на орбіті плюс підпис збоку, звʼязані повідком. Зовнішній
+   елемент тримає місце на орбіті і власний дрейф, внутрішній каскад появи:
+   вішати обидві анімації на один елемент не можна, шорткат animation
+   пізнішого правила затирає ім'я попереднього, і роль лишається без руху
+   і без свого місця. */
+.k-syuzh__role {
+  position: absolute;
+  transform: translate(var(--bx), -50%);
+  animation: k-syuzh-role 12s ease-in-out infinite alternate;
+}
+
+/* Дрейф ±4° по орбіті. Рухається вся роль як ціле і по хорді, а не поворотом:
+   на 4° стріла дуги менша за піксель, тому тіло лишається на орбіті, зате
+   підпис не перекошується, а повідок не відривається від тіла. */
+@keyframes k-syuzh-role {
+  from { transform: translate(calc(var(--bx) - var(--fx)), calc(-50% - var(--fy))); }
+  to { transform: translate(calc(var(--bx) + var(--fx)), calc(-50% + var(--fy))); }
+}
+
+.k-syuzh__role-in { display: flex; align-items: center; }
+
+/* Ліва роль дзеркальна: підпис, повідок, тіло. Тіло в обох випадках сідає
+   рівно на орбіту, зсув на пів тіла зашитий у --bx. */
+.k-syuzh__role--a .k-syuzh__role-in { flex-direction: row-reverse; }
+
+.k-syuzh__role-dot {
+  flex: none;
+  border-radius: 50%;
+  background: var(--syuzh-star);
+  opacity: 0.85;
+}
+
+.k-syuzh__role-lead {
+  flex: none;
+  width: var(--lead, 24px);
+  height: 1px;
+  background: var(--syuzh-dim);
+}
+
+.k-syuzh__role-text { display: block; width: 17ch; }
+.k-syuzh__role--a .k-syuzh__role-text { text-align: right; }
+.k-syuzh__role--b .k-syuzh__role-text { text-align: left; }
+
+.k-syuzh__role-name {
+  display: block;
+  font-size: var(--a-fs-xs);
+  line-height: 1.4;
+  color: var(--syuzh-star);
+}
+
+.k-syuzh__role-who {
+  display: block;
+  font-size: calc(var(--a-fs-xs) * 0.92);
+  line-height: 1.4;
+  color: var(--syuzh-dim);
+}
+
+/* Спектр психотипів: сегментована дуга 180° під зорею, концентрична з нею.
+   Проявлення блока коротше за спільні 350 мс каскаду і дорівнює проходу пера:
+   дуга мусить домальовуватись на очах, а не проступати вже готовою. */
+.k-syuzh__psy {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Два класи в селекторі не для ваги, а щоб правило пережило шорткат animation
+   у .k-syuzh__step, який стоїть нижче і несе спільні 350 мс. */
+.k-syuzh__psy.k-syuzh__step { animation-duration: 150ms; }
+
+.k-syuzh__arc {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  overflow: visible;
+}
+
+/* Штрих 2px зі світінням у тон зорі: дуга має читатись як спектр цієї ж зорі,
+   а не як шкала приладу. Товстий штрих і був тим, що робив із неї датчик. */
+.k-syuzh__seg {
+  fill: none;
+  stroke: var(--syuzh-star);
+  stroke-opacity: 0.6;
+  stroke-linecap: butt;
+  filter: drop-shadow(0 0 4px rgba(228, 244, 236, 0.50));
+  /* Затримка рахується ВІД появи свого блока (800 мс плюс крок каскаду), а не
+     від відкриття сцени: інакше дуга домальовується під нульовою прозорістю і
+     читач бачить уже готову. Швидкість пера одна на всю дугу: --t0 і --dur
+     приходять з JS як частки тих самих 400 мс. */
+  animation: k-syuzh-draw var(--dur, 400ms) linear both;
+  animation-delay: calc(800ms + var(--step, 2) * 120ms + var(--t0, 0ms));
+}
+
+@keyframes k-syuzh-draw {
+  from { stroke-dashoffset: var(--len); }
+  to { stroke-dashoffset: 0; }
+}
+
+/* Підпис стоїть під СВОЇМ сегментом на тому ж радіусі: спільний рядок під усією
+   дугою змушував читача звіряти порядок слів з порядком дуг. */
+.k-syuzh__psy-label {
+  position: absolute;
+  width: 15ch;
+  transform: translate(-50%, -50%);
+  font-size: calc(var(--a-fs-xs) * 0.95);
+  line-height: 1.3;
+  text-align: center;
+  color: var(--syuzh-dim);
+}
+
+.k-syuzh__psy-label b { color: var(--syuzh-star); font-weight: 400; }
+
+.k-syuzh__method {
+  font-size: calc(var(--a-fs-xs) * 0.85);
+  letter-spacing: var(--a-track);
+  color: var(--syuzh-dim);
+  border: 1px solid rgba(228, 244, 236, 0.18);
+  padding: 1px 6px;
+  white-space: nowrap;
+}
+
+/* Мова наслідків: єдине місце сцени, де зʼявляється текст рекомендацій. */
+.k-syuzh__speech {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--a-s6);
+  width: min(100%, 880px);
+  margin-top: var(--a-s2);
+}
+
+.k-syuzh__speech h3 {
+  margin: 0 0 var(--a-s2);
+  font-family: var(--a-mono);
+  font-size: var(--a-fs-xs);
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  color: var(--syuzh-dim);
+}
+
+.k-syuzh__speech p {
+  margin: 0 0 6px;
+  font-size: var(--a-fs-s);
+  line-height: 1.6;
+  color: var(--syuzh-star);
+  opacity: 0.86;
+}
+
+.k-syuzh__speech em {
+  font-style: normal;
+  color: var(--syuzh-dim);
+}
+
+.k-syuzh__cut {
+  font-size: var(--a-fs-xs);
+  line-height: 1.6;
+  color: var(--syuzh-dim);
+  text-align: center;
+  max-width: 62ch;
+}
+
+/* Зрізані ролі стають рядком угорі поля зорі, там же, де стояла б орбіта.
+   Центрування через margin, а не через transform: transform тут забирає
+   каскад появи. */
+.k-syuzh__cut--top {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  margin: 0 auto;
+}
+
+.k-syuzh__link {
+  margin-top: var(--a-s2);
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: var(--a-mono);
+  font-size: var(--a-fs-xs);
+  letter-spacing: var(--a-track);
+  color: var(--syuzh-dim);
+  cursor: pointer;
+}
+
+.k-syuzh__link:hover { color: var(--syuzh-focus); }
+
+/* Каскад появи: заголовок, ролі, дуга психотипів, мова наслідків, лінк.
+   Це порядок читання сцени, а не ефект. */
+.k-syuzh__step {
+  animation: k-syuzh-step 350ms var(--syuzh-ease) both;
+  animation-delay: calc(800ms + var(--step, 0) * 120ms);
+}
+
+@keyframes k-syuzh-step {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}

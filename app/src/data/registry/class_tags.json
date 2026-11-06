@@ -1,0 +1,28 @@
+{
+  "_note": "Словник класів криз і кодів наслідків (розділ 3 Спеки F). Порожній список кейсів це нормально: корпус наповнюють люди з підписом, виконавець історичних кейсів не створює (правила 2 і 6). Нове значення заводиться явним записом тут.",
+  "class_tags": [
+    { "id": "institutional_claim", "label": "інституційна претензія" },
+    { "id": "cadre_decision", "label": "кадрове рішення" },
+    { "id": "mobilisation_pressure", "label": "мобілізаційний тиск" },
+    { "id": "corruption_case", "label": "корупційний кейс" },
+    { "id": "command_responsibility", "label": "відповідальність командування" },
+    { "id": "desertion_crackdown", "label": "реакція на масове залишення частини" }
+  ],
+  "outcome_codes": [
+    { "id": "faded", "label": "згасла", "polarity": "neutral" },
+    { "id": "systemic_distrust", "label": "недовіра стала системною", "polarity": "negative" },
+    { "id": "cadre_conflict", "label": "кадровий конфлікт", "polarity": "negative" },
+    { "id": "escalated", "label": "ескалація", "polarity": "negative" },
+    { "id": "other", "label": "інше", "polarity": "neutral" }
+  ],
+  "shelves": [
+    { "id": "internal", "label": "внутрішня хроніка поля" },
+    { "id": "external", "label": "зовнішній історичний кейс" }
+  ],
+  "card_status": [
+    { "id": "active", "label": "активна" },
+    { "id": "weakened", "label": "ослабла" },
+    { "id": "broken", "label": "зламалась" },
+    { "id": "confirmed", "label": "підтвердилась" }
+  ]
+}

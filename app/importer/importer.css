@@ -1,0 +1,81 @@
+/* Імпортер свідомо виглядає як інструмент, а не як продукт: щільна форма,
+   світлий фон, нуль декору. Плутати його з kamerton.html не можна навіть
+   краєм ока, бо це різні режими роботи і різна ціна помилки. */
+:root {
+  --i-bg: #F4F6F5;
+  --i-panel: #FFFFFF;
+  --i-line: #C9D3CF;
+  --i-text: #16211D;
+  --i-dim: #5A6A64;
+  --i-accent: #0E6E58;
+  --i-err: #A32B12;
+  --i-warn: #8A6100;
+  --i-ok: #1E6B33;
+  --i-mono: ui-monospace, 'SF Mono', Consolas, monospace;
+}
+
+body {
+  margin: 0;
+  background: var(--i-bg);
+  color: var(--i-text);
+  font: 15px/1.55 system-ui, 'Segoe UI', Roboto, sans-serif;
+}
+
+.i-root { max-width: 1040px; margin: 0 auto; padding: 24px 20px 80px; }
+
+.i-top { border-bottom: 2px solid var(--i-text); padding-bottom: 10px; margin-bottom: 8px; }
+.i-top h1 { margin: 0; font-size: 20px; letter-spacing: .04em; text-transform: uppercase; }
+
+.i-sec { background: var(--i-panel); border: 1px solid var(--i-line); padding: 16px 18px; margin-top: 14px; }
+.i-sec h2 { margin: 0 0 6px; font-size: 15px; text-transform: uppercase; letter-spacing: .06em; }
+.i-sec__n { font-family: var(--i-mono); color: var(--i-dim); margin-right: 6px; }
+
+.i-note { color: var(--i-dim); font-size: 13px; margin: 4px 0 10px; }
+.i-ok { color: var(--i-ok); font-size: 14px; }
+.i-err { color: var(--i-err); font-size: 14px; }
+.i-warn { color: var(--i-warn); font-size: 14px; }
+.i-err li, .i-warn li { margin-bottom: 6px; }
+
+.i-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin: 8px 0; }
+.i-week { font-family: var(--i-mono); font-size: 18px; }
+
+.i-f { display: flex; flex-direction: column; gap: 3px; margin: 8px 0; flex: 1 1 220px; }
+.i-f span { font-size: 12px; color: var(--i-dim); text-transform: uppercase; letter-spacing: .05em; }
+.i-f input, .i-f textarea, .i-tbl input {
+  font: inherit; padding: 6px 8px; border: 1px solid var(--i-line); background: #fff; color: inherit;
+}
+.i-f textarea { resize: vertical; }
+
+.i-btn {
+  display: inline-block; font: inherit; font-size: 13px; letter-spacing: .05em; text-transform: uppercase;
+  padding: 8px 14px; border: 1px solid var(--i-text); background: #fff; color: var(--i-text); cursor: pointer;
+}
+.i-btn--primary { background: var(--i-accent); border-color: var(--i-accent); color: #fff; }
+.i-btn:disabled { opacity: .4; cursor: not-allowed; }
+
+.i-tbl { width: 100%; border-collapse: collapse; font-size: 14px; }
+.i-tbl th { text-align: left; font-size: 11px; text-transform: uppercase; color: var(--i-dim); padding: 4px 6px; }
+.i-tbl td { padding: 2px 6px; border-top: 1px solid var(--i-line); }
+.i-tbl input { width: 100%; }
+.i-tbl tr.is-alias td { background: #FFF7E0; }
+.i-x { border: 0; background: none; cursor: pointer; color: var(--i-err); font-size: 15px; }
+
+.i-diff__row { margin-top: 4px; }
+.i-tag {
+  display: inline-block; min-width: 62px; font-size: 11px; text-transform: uppercase;
+  letter-spacing: .05em; color: var(--i-dim); margin-right: 8px;
+}
+.i-tag--add { color: var(--i-ok); }
+.i-tag--gone { color: var(--i-err); }
+
+.i-gate { border-left: 3px solid var(--i-warn); padding-left: 12px; margin: 12px 0; }
+.i-gate__q { font-weight: 600; }
+.i-radio { display: inline-flex; align-items: center; gap: 5px; font-size: 14px; }
+.i-reason { font: inherit; padding: 5px 8px; border: 1px solid var(--i-err); flex: 1 1 260px; }
+
+.i-prev { width: 100%; height: 260px; border: 1px solid var(--i-line); background: #fff; display: block; margin-top: 10px; }
+
+/* дві сторінки інструменту редактора */
+.i-nav { display: flex; gap: 2px; background: var(--i-text); padding: 6px 20px; }
+.i-nav a { color: #9FB3AC; text-decoration: none; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; padding: 6px 12px; }
+.i-nav a.is-on { background: var(--i-bg); color: var(--i-text); }

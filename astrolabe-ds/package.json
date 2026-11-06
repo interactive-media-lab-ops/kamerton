@@ -1,0 +1,11 @@
+{
+  "name": "astrolabe-ds",
+  "version": "2.1.0",
+  "description": "Астролябія: дизайн-система КАМЕРТОНА. Штабний HUD у граматиці космічних 4X-стратегій: зрізані кути, кутові дужки, латунний акцент на глибокому космосі. Серйозна, доросла, не корпоративна і не «дефолтно-AIшна».",
+  "main": "src/index.js",
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "files": ["src", "tokens", "README.md"],
+  "keywords": ["design-system", "hud", "strategy", "kamerton", "astrolabe"]
+}

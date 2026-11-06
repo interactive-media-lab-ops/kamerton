@@ -1,0 +1,68 @@
+[
+  {
+    "id": "gov",
+    "name": "Цивільна влада",
+    "type": "institution",
+    "first_seen": "2026-W29"
+  },
+  {
+    "id": "cmd_new",
+    "name": "Нове командування",
+    "type": "institution",
+    "first_seen": "2026-W30"
+  },
+  {
+    "id": "cmd_local",
+    "name": "Командири на місцях",
+    "type": "group",
+    "first_seen": "2026-W31"
+  },
+  {
+    "id": "tck",
+    "name": "ТЦК",
+    "type": "institution",
+    "first_seen": "2026-W29"
+  },
+  {
+    "id": "mil",
+    "name": "Військові (аудиторія)",
+    "type": "audience",
+    "first_seen": "2026-W29"
+  },
+  {
+    "id": "civ",
+    "name": "Цивільні (аудиторія)",
+    "type": "audience",
+    "first_seen": "2026-W29"
+  },
+  {
+    "id": "civ_core",
+    "name": "Радикальне ядро цивільних",
+    "type": "group",
+    "first_seen": "2026-W31"
+  },
+  {
+    "id": "vet",
+    "name": "Ветерани",
+    "type": "group",
+    "first_seen": "2026-W30"
+  },
+  {
+    "id": "street",
+    "name": "Вулиця і протест",
+    "type": "group",
+    "first_seen": "2026-W30"
+  },
+  {
+    "id": "blg",
+    "name": "Блогери і медіа",
+    "type": "group",
+    "first_seen": "2026-W29"
+  },
+  {
+    "id": "anon",
+    "name": "Анонімні канали",
+    "type": "amplifier",
+    "first_seen": "2026-W30"
+  }
+]

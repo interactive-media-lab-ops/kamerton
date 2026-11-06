@@ -1,0 +1,18 @@
+# залежності і кеші збірки
+node_modules/
+.vite/
+*.log
+
+# службові файли ОС
+Thumbs.db
+desktop.ini
+
+# знімки візуального QA: артефакти, відтворюються npm run qa:shots
+SPEC_NOTES/shots/
+
+# згенеровані збірки: відтворюються npm run build / npm run build:import
+app/dist/
+app/dist-import/
+
+# службові проби ревʼю-агентів
+app/src/data/__probe*.mjs

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="utf-8" />
+    <title>КАМЕРТОН · W30 і W31 поруч</title>
+    <style>
+      html, body { margin: 0; background: #04100D; color: #63E6C8;
+        font: 12.5px/1.5 ui-monospace, Consolas, monospace; }
+      .row { display: flex; gap: 8px; padding: 8px; }
+      .cell { flex: 1; min-width: 0; }
+      .cap { padding: 6px 2px; letter-spacing: .12em; text-transform: uppercase; }
+      .cap small { color: #8FB4A6; text-transform: none; letter-spacing: 0; }
+      /* кожен кадр це справжній застосунок у власному вікні 1440x900,
+         стиснутий до половини екрана: порівнюємо саме те, що бачить користувач */
+      .frame { position: relative; width: 100%; padding-top: 62.5%; overflow: hidden;
+        border: 1px solid #2C5A4F; }
+      .frame iframe { position: absolute; top: 0; left: 0; width: 1440px; height: 900px;
+        border: 0; transform-origin: 0 0; }
+      .note { padding: 4px 10px 14px; color: #557A6E; }
+    </style>
+  </head>
+  <body>
+    <div class="row">
+      <div class="cell">
+        <div class="cap">W30 · 18.07 - 24.07 <small>ваги з контракту, радіуси 14..40</small></div>
+        <div class="frame"><iframe src="./kamerton.html?week=2026-W30" title="W30"></iframe></div>
+      </div>
+      <div class="cell">
+        <div class="cap">W31 · 25.07 - 31.07 <small>ваг немає, радіус 20, трендові 24</small></div>
+        <div class="frame"><iframe src="./kamerton.html?week=2026-W31" title="W31"></iframe></div>
+      </div>
+    </div>
+    <div class="note">
+      Обидва кадри це живий застосунок, а не знімок: зорі дрейфують, філаменти течуть.
+      Масштаб підганяється під ширину вікна.
+    </div>
+    <script>
+      // тримаємо внутрішній в'юпорт рівно 1440x900 і стискаємо його під колонку,
+      // інакше кожен кадр рахував би власну safe zone під свою вузьку ширину
+      function fit() {
+        document.querySelectorAll('.frame').forEach(function (f) {
+          var k = f.clientWidth / 1440;
+          f.querySelector('iframe').style.transform = 'scale(' + k + ')';
+        });
+      }
+      addEventListener('resize', fit);
+      addEventListener('load', fit);
+      fit();
+    </script>
+  </body>
+</html>

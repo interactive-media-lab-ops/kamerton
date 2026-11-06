@@ -1,0 +1,274 @@
+[
+  {
+    "id": "t_hc_change",
+    "short_name": "Трансформація управління",
+    "short_name_todo": false,
+    "full_name": "Трансформація військового управління",
+    "first_seen": "2026-W29"
+  },
+  {
+    "id": "t_gov_trust",
+    "short_name": "Криза довіри до влади",
+    "short_name_todo": false,
+    "full_name": "Криза довіри до вищого політичного керівництва і стратегічного курсу",
+    "first_seen": "2026-W29"
+  },
+  {
+    "id": "t_tck",
+    "short_name": "Мобілізація і ТЦК",
+    "short_name_todo": false,
+    "full_name": "Справедливість мобілізації і ТЦК",
+    "first_seen": "2026-W29"
+  },
+  {
+    "id": "t_brotherhood",
+    "short_name": "Побратимство",
+    "short_name_todo": false,
+    "full_name": "Побратимство",
+    "first_seen": "2026-W29"
+  },
+  {
+    "id": "t_tech",
+    "short_name": "Технології і удари вглиб",
+    "short_name_todo": false,
+    "full_name": "Технології і удари вглиб",
+    "first_seen": "2026-W29",
+    "aliases": [
+      "t_tech_update"
+    ],
+    "merge_note": "Сюжет вівся під двома id: t_tech у W30 і t_tech_update у W32. Це одна тема, тому серії зшиваються за канонічним id."
+  },
+  {
+    "id": "t_cardboard",
+    "short_name": "«Картонні протести»",
+    "short_name_todo": false,
+    "full_name": "«Картонні протести» і тиск вулиці",
+    "first_seen": "2026-W30"
+  },
+  {
+    "id": "t_legitimacy",
+    "short_name": "Криза легітимності",
+    "short_name_todo": false,
+    "full_name": "Криза легітимності і владна вертикаль",
+    "first_seen": "2026-W30"
+  },
+  {
+    "id": "t_opk",
+    "short_name": "Корупція в ОПК",
+    "short_name_todo": false,
+    "full_name": "Корупція в ОПК і довіра до забезпечення",
+    "first_seen": "2026-W30"
+  },
+  {
+    "id": "t_anticorr",
+    "short_name": "Антикорупційний скепсис",
+    "short_name_todo": false,
+    "full_name": "Антикорупційний скепсис щодо держуправління (Міндічгейт)",
+    "first_seen": "2026-W31"
+  },
+  {
+    "id": "t_tech_update",
+    "short_name": "Технологічне оновлення",
+    "short_name_todo": false,
+    "full_name": "Технологічне оновлення і удари вглиб",
+    "first_seen": "2026-W31",
+    "merged_into": "t_tech",
+    "merge_note": "Сюжет вівся під двома id: t_tech у W30 і t_tech_update у W32. Це одна тема, тому серії зшиваються за канонічним id."
+  },
+  {
+    "id": "t_gratitude",
+    "short_name": "Цінність жертви",
+    "short_name_todo": false,
+    "full_name": "Вдячність і цінність жертви",
+    "first_seen": "2026-W31"
+  },
+  {
+    "id": "t_case_225",
+    "short_name": "Командування 225 і 425",
+    "short_name_todo": false,
+    "full_name": "Відповідальність командування 225 і 425 полків",
+    "first_seen": "2026-W31"
+  },
+  {
+    "id": "t_appointment",
+    "short_name": "Кадри розвідки",
+    "short_name_todo": false,
+    "full_name": "Кадрове призначення в керівництві зовнішньої розвідки",
+    "first_seen": "2026-W32"
+  },
+  {
+    "id": "t_rift",
+    "short_name": "Розлом тилу і фронту",
+    "short_name_todo": false,
+    "full_name": "Розлом між тилом і фронтом",
+    "first_seen": "2026-W32"
+  },
+  {
+    "id": "t_airdefence",
+    "short_name": "ППО і дефіцит озброєння",
+    "short_name_todo": false,
+    "full_name": "ППО, дефіцит озброєння і залежність від партнерів",
+    "first_seen": "2026-W32"
+  },
+  {
+    "id": "t_memory",
+    "short_name": "Памʼять про загиблих",
+    "short_name_todo": false,
+    "full_name": "Памʼять про загиблих і побратимство",
+    "first_seen": "2026-W32"
+  },
+  {
+    "id": "t_volunteer",
+    "short_name": "Волонтерство як участь",
+    "short_name_todo": false,
+    "full_name": "Волонтерство як самостійна форма участі у війні",
+    "first_seen": "2026-W32"
+  },
+  {
+    "id": "t_rehab",
+    "short_name": "Реабілітація і памʼять",
+    "short_name_todo": false,
+    "full_name": "Етика памʼяті та системна реабілітація як фундамент незламності",
+    "first_seen": "2026-W33"
+  },
+  {
+    "id": "t_burnout",
+    "short_name": "Виснаження у війську",
+    "short_name_todo": false,
+    "full_name": "Психологічне виснаження і посттравматичні стани у війську",
+    "first_seen": "2026-W33"
+  },
+  {
+    "id": "t_memory_ethics",
+    "short_name": "Етика вшанування",
+    "short_name_todo": false,
+    "full_name": "Етична криза вшанування памʼяті: виплати і символіка",
+    "first_seen": "2026-W33"
+  },
+  {
+    "id": "t_camp_scandal",
+    "short_name": "Скандал «концтабір»",
+    "short_name_todo": false,
+    "full_name": "Скандал довкола порівняння країни з «концтабором»",
+    "first_seen": "2026-W33"
+  },
+  {
+    "id": "t_heritage",
+    "short_name": "Тяглість спротиву",
+    "short_name_todo": false,
+    "full_name": "Історична тяглість спротиву",
+    "first_seen": "2026-W33"
+  },
+  {
+    "id": "t_energy",
+    "short_name": "Енергетична тривога",
+    "short_name_todo": false,
+    "full_name": "Енергетична тривога перед зимою",
+    "first_seen": "2026-W33"
+  },
+  {
+    "id": "t_diplomacy",
+    "short_name": "Зовнішня політика",
+    "short_name_todo": false,
+    "full_name": "Зовнішня політика: вибір зручного замість правильного",
+    "first_seen": "2026-W33"
+  },
+  {
+    "id": "t_humanity",
+    "short_name": "Опіка над слабшими",
+    "short_name_todo": false,
+    "full_name": "Збереження людяності через опіку над слабшими",
+    "first_seen": "2026-W33"
+  },
+  {
+    "id": "t_elections",
+    "short_name": "Вибори і е-голосування",
+    "full_name": "Вибори і цифрове голосування як запит на легітимну процедуру",
+    "first_seen": "2026-W34",
+    "short_name_todo": false
+  },
+  {
+    "id": "t_youth_recruit",
+    "short_name": "Вербування підлітків",
+    "full_name": "Гібридна війна за підлітків: вербування через соцмережі",
+    "first_seen": "2026-W34",
+    "short_name_todo": false
+  },
+  {
+    "id": "t_cmd_crisis",
+    "short_name": "Криза військового управління",
+    "full_name": "Криза військового управління та етика командування",
+    "first_seen": "2026-W34",
+    "short_name_todo": false
+  },
+  {
+    "id": "t_eu_sabotage",
+    "short_name": "Саботаж євроінтеграції",
+    "full_name": "Інституційний саботаж євроінтеграції",
+    "first_seen": "2026-W34",
+    "short_name_todo": false
+  },
+  {
+    "id": "t_peace_capitulation",
+    "short_name": "Мир як капітуляція",
+    "full_name": "«Мир як капітуляція»",
+    "first_seen": "2026-W34",
+    "short_name_todo": false
+  },
+  {
+    "id": "t_decolonization",
+    "short_name": "Деколонізація мови",
+    "full_name": "Деколонізація мови і культури",
+    "first_seen": "2026-W34",
+    "short_name_todo": false
+  },
+  {
+    "id": "t_symbols",
+    "short_name": "Сакралізація символів",
+    "full_name": "Незламність і сакралізація державних символів",
+    "first_seen": "2026-W35",
+    "short_name_todo": false
+  },
+  {
+    "id": "t_law_pressure",
+    "short_name": "Тиск на своїх",
+    "full_name": "Правоохоронне свавілля і репресії проти патріотів",
+    "first_seen": "2026-W35",
+    "short_name_todo": false
+  },
+  {
+    "id": "t_budget_populism",
+    "short_name": "Бюджетний популізм",
+    "full_name": "Економічний популізм на тлі бюджетної прірви",
+    "first_seen": "2026-W35",
+    "short_name_todo": false
+  },
+  {
+    "id": "t_vet_welfare",
+    "short_name": "Незахищеність ветеранів",
+    "full_name": "Соціальна незахищеність ветеранів",
+    "first_seen": "2026-W35",
+    "short_name_todo": false
+  },
+  {
+    "id": "t_identity",
+    "short_name": "Національна ідентичність",
+    "full_name": "Національна ідентичність як фундамент незламності",
+    "first_seen": "2026-W35",
+    "short_name_todo": false
+  },
+  {
+    "id": "t_resilience",
+    "short_name": "Психологічна стійкість",
+    "full_name": "Психологічна стійкість і ментальне здоровʼя",
+    "first_seen": "2026-W35",
+    "short_name_todo": false
+  },
+  {
+    "id": "t_cities",
+    "short_name": "Незламність міст",
+    "full_name": "Незламність міст",
+    "first_seen": "2026-W35",
+    "short_name_todo": false
+  }
+]
