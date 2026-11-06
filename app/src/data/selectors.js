@@ -4,7 +4,10 @@
 // Поле delta з контракту використовується тільки як fallback, коли попереднє значення null.
 // Екрани не лізуть у сирий JSON: вони працюють тільки через ці функції.
 
-import rawContract from './raw/weeks.json';
+// Контракт приходить у продукт СПРОЄКТОВАНИМ (scripts/build-contract.mjs):
+// без полів, яких екран не читає, і з дедуплікованими картками прецедентів.
+// Сирці живуть у raw/weeks.json і в бандл не їдуть.
+import contractProjection from './derived/contract.json';
 import derivedEnsemble from './derived/ensemble.json';
 import { plural } from '../util/plural.js';
 import { FIELD } from './thresholds.js';
@@ -89,6 +92,33 @@ function withDerived(base, derived) {
   };
 }
 
+/**
+ * Зворотний хід проєкції: картки прецедентів у тижні лежать ключами в таблицю
+ * precedent_cards, бо імпортер клонує їх з тижня в тиждень без змін. Тут вони
+ * збираються назад у масиви, і для решти коду тиждень виглядає як у сирцях.
+ * Невідомий ключ це дефект збірки, а не привід мовчки показати порожнє.
+ */
+function hydrateContract(proj) {
+  const table = proj.precedent_cards || {};
+  const { precedent_cards, projection, ...base } = proj;
+  return {
+    ...base,
+    weeks: (base.weeks || []).map((w) => {
+      if (!Array.isArray(w.precedents)) return w;
+      return {
+        ...w,
+        precedents: w.precedents.map((ref) => {
+          if (typeof ref !== 'string') return ref;
+          const card = table[ref];
+          if (!card) throw new Error(`контракт: картка прецедента ${ref} відсутня в проєкції (${w.id})`);
+          return card;
+        }),
+      };
+    }),
+  };
+}
+
+const rawContract = hydrateContract(contractProjection);
 const contract = withDerived(rawContract, derivedEnsemble);
 
 export const META = contract.meta;

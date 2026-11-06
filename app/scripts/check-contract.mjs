@@ -15,6 +15,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import { validateContract, formatIssues, toJsonSchema } from '../src/data/schema.js';
 
 const root = process.cwd();
@@ -48,6 +49,22 @@ fs.writeFileSync(
   path.join(docsDir, 'kamerton.schema.json'),
   JSON.stringify(toJsonSchema(), null, 2) + '\n'
 );
+
+// Проєкція для екрана (derived/contract.json) має бути зібрана з цих самих
+// сирців: інакше правка weeks.json не дійде до продукту, і ніхто не помітить.
+const rawPath = path.join(root, 'src', 'data', 'raw', 'weeks.json');
+const projPath = path.join(root, 'src', 'data', 'derived', 'contract.json');
+if (!fs.existsSync(projPath)) {
+  console.error('\nнемає derived/contract.json: запусти npm run build:contract');
+  process.exit(1);
+}
+const projection = JSON.parse(fs.readFileSync(projPath, 'utf8'));
+const rawHash = crypto.createHash('sha256').update(fs.readFileSync(rawPath)).digest('hex');
+if (projection.projection?.source_sha256 !== rawHash) {
+  console.error('\nderived/contract.json зібраний з інших сирців, ніж raw/weeks.json: ' +
+    'запусти npm run build:contract');
+  process.exit(1);
+}
 
 const weeks = raw.weeks.length;
 console.log(`контракт валідний: тижнів ${weeks}, тем у реєстрі ${reg.topics.length}, ` +
